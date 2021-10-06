@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>k-近邻算法 | 南极Python</title><meta name="description" content="开篇k-近邻算法是比较简单的一种机器学习算法，其核心思想可以用一句话来概括：近朱者赤，近墨者黑。 在具体介绍该算法之前，先通过一个栗子对该算法做一个感性上的认识。 Python爱好者 or C爱好者 ？ 上图中，每一个形状（三角形，圆形）都代表了一个人。总共有两种形状，说明这些人总共可以分为两类：Python爱好者、C爱好者。 三角形一共有7个，代表喜欢写Python的总共有7人； 圆形一共有6个"><meta name="keywords" content="ML"><meta name="author" content="雨落诗山山亦奇"><meta name="copyright" content="雨落诗山山亦奇"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/avatar.png"><link rel="canonical" href="http://yoursite.com/2021/01/26/k-%E8%BF%91%E9%82%BB%E7%AE%97%E6%B3%95/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="k-近邻算法"><meta property="og:url" content="http://yoursite.com/2021/01/26/k-%E8%BF%91%E9%82%BB%E7%AE%97%E6%B3%95/"><meta property="og:site_name" content="南极Python"><meta property="og:description" content="开篇k-近邻算法是比较简单的一种机器学习算法，其核心思想可以用一句话来概括：近朱者赤，近墨者黑。 在具体介绍该算法之前，先通过一个栗子对该算法做一个感性上的认识。 Python爱好者 or C爱好者 ？ 上图中，每一个形状（三角形，圆形）都代表了一个人。总共有两种形状，说明这些人总共可以分为两类：Python爱好者、C爱好者。 三角形一共有7个，代表喜欢写Python的总共有7人； 圆形一共有6个"><meta property="og:image" content="https://s3.ax1x.com/2021/02/02/ymxHHO.jpg"><meta property="article:published_time" content="2021-01-26T03:05:47.000Z"><meta property="article:modified_time" content="2021-02-02T05:07:52.284Z"><meta name="twitter:card" content="summary"><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#fff')
+  }
+}
+
+var getCookies = function (name) {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) return parts.pop().split(';').shift()
+}
+
+var autoChangeMode = 'false'
+var t = getCookies('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (Cookies.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="prev" title="kd树" href="http://yoursite.com/2021/01/27/kd%E6%A0%91/"><link rel="next" title="从模型演化的角度看待国家的发展" href="http://yoursite.com/2021/01/09/%E4%BB%8E%E6%A8%A1%E5%9E%8B%E6%BC%94%E5%8C%96%E7%9A%84%E8%A7%92%E5%BA%A6%E7%9C%8B%E5%BE%85%E5%9B%BD%E5%AE%B6%E7%9A%84%E5%8F%91%E5%B1%95/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: true,
+  copyright: undefined,
+  ClickShowText: {"text":"我爱学习,机器学习,深度学习,学习使我快乐","fontSize":"15px"},
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  highlightCopy: true,
+  highlightLang: true,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false    
+}</script><script>var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2021-02-02 13:07:52'
+}</script><noscript><style>
+#nav {
+  opacity: 1
+}
+.justified-gallery img{
+  opacity: 1
+}
+</style></noscript><link rel="stylesheet" href="/css/mouse.css">
+<link rel="stylesheet" href="/css/gundongtiao.css"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/macblack.css"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css"> <link rel="stylesheet" href="/css/waigua.css"> <link rel="stylesheet" href="/css/beijing.css"><div class="aplayer" data-id="476185587" data-server="netease" data-type="playlist" data-fixed="true" data-listFolded="false" data-order="list" data-preload="auto"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lete114/CDN/music/APlayer/APlayer.min.css"><script src="https://cdn.jsdelivr.net/gh/lete114/CDN/music/APlayer/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/meting@1.2.0/dist/Meting.min.js"></script><meta name="generator" content="Hexo 4.2.1"></head><body><canvas class="fireworks"></canvas><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">114</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">12</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">13</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#开篇"><span class="toc-number">1.</span> <span class="toc-text">开篇</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python爱好者-or-C爱好者-？"><span class="toc-number">2.</span> <span class="toc-text">Python爱好者 or C爱好者 ？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是k-近邻算法-？"><span class="toc-number">3.</span> <span class="toc-text">什么是k-近邻算法 ？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用Python实现k-近邻算法"><span class="toc-number">4.</span> <span class="toc-text">用Python实现k-近邻算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#测试k-近邻算法"><span class="toc-number">5.</span> <span class="toc-text">测试k-近邻算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更多关于k-近邻算法的使用技巧"><span class="toc-number">6.</span> <span class="toc-text">更多关于k-近邻算法的使用技巧</span></a></li></ol></div></div></div><div id="body-wrap"><div id="web_bg" data-type="color"></div><header class="post-bg" id="page-header" style="background-image: url(https://s3.ax1x.com/2021/02/02/ymxHHO.jpg)"><nav id="nav"><span class="pull-left" id="blog_name"><a class="blog_title" id="site-name" href="/">南极Python</a></span><span class="pull-right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">k-近邻算法</div></div><div id="post-meta"><div class="meta-firstline"><time class="post-meta__date"><span class="post-meta__date-created" title="发表于 2021-01-26 11:05:47"><i class="far fa-calendar-alt fa-fw"></i> 发表于 2021-01-26</span><span class="post-meta__separator">|</span><span class="post-meta__date-updated" title="更新于 2021-02-02 13:07:52"><i class="fas fa-history fa-fw"></i> 更新于 2021-02-02</span></time><span class="post-meta__categories"><span class="post-meta__separator">|</span><i class="fas fa-inbox fa-fw post-meta__icon"></i><a class="post-meta__categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95/">机器学习算法</a></span></div><div class="meta-secondline"> </div><div class="meta-thirdline"><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta__icon"></i><span>阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h3 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h3><p><code>k-近邻算法</code>是比较简单的一种机器学习算法，其核心思想可以用一句话来概括：<strong>近朱者赤，近墨者黑</strong>。</p>
+<p>在具体介绍该算法之前，先通过一个栗子对该算法做一个感性上的认识。</p>
+<h3 id="Python爱好者-or-C爱好者-？"><a href="#Python爱好者-or-C爱好者-？" class="headerlink" title="Python爱好者 or C爱好者 ？"></a>Python爱好者 or C爱好者 ？</h3><p><img src= "/img/loading.gif" data-src="be.jpg" alt=""></p>
+<p>上图中，每一个形状（三角形，圆形）都代表了一个人。总共有两种形状，说明这些人总共可以分为两类：Python爱好者、C爱好者。</p>
+<p>三角形一共有7个，代表喜欢写Python的总共有7人；</p>
+<p>圆形一共有6个，代表喜欢写C语言的总共有6人。</p>
+<p>现在，突然来了一个不知道是喜欢写Python还是C语言（并且只可能属于其中之一）的人—–五角星，要求你来判定这个人所属的类别。</p>
+<p><img src= "/img/loading.gif" data-src="ex.jpg" alt=""></p>
+<p>emm…</p>
+<p>你可能会说，那看看图上距离这个人（五角星）最近的几个人所属类别就可以了啊！比如就看距离这个人最近的<code>3</code>个人：其中有两个人喜欢写Python，而只有一个人喜欢写C语言（如下图所示）</p>
+<p><img src= "/img/loading.gif" data-src="k-%E8%BF%91%E9%82%BB%E7%AE%97%E6%B3%95/2.jpg" alt=""></p>
+<p>按照少数服从多数的原则，将这个新来的人（五角星）归类到三角形(Python爱好者)类别就搞定啦！</p>
+<p><img src= "/img/loading.gif" data-src="final.jpg" alt=""></p>
+<p>​                                                                      最终分类结果</p>
+<p>上面的栗子其实就使用了k-近邻算法的思想。现在，让我们对该算法做一个完整的定义。</p>
+<h3 id="什么是k-近邻算法-？"><a href="#什么是k-近邻算法-？" class="headerlink" title="什么是k-近邻算法 ？"></a>什么是k-近邻算法 ？</h3><p>k-近邻算法是一种有监督的机器学习算法，对于有监督的机器学习算法来说，其训练数据集的一般格式如下（0：类别1；1：类别2）：</p>
+<p><img src= "/img/loading.gif" data-src="all.jpg" alt=""></p>
+<p>当n取4，m取3时，就是一个含有4个样本，每个样本有3个特征的数据集了，如下图</p>
+<p><img src= "/img/loading.gif" data-src="data.jpg" alt=""></p>
+<p>k-近邻算法的<strong>核心思想</strong>为：<strong>对于一个给定的训练集，当新的样本到来时，找到训练集中与新样本距离最近的<code>k</code>个样本，然后查看这k个样本所属类别，并将新样本归类到这k个样本中大多数样本所属类别中。</strong></p>
+<p>没错，k-近邻算法的思想就是这么简洁。接下来，我们将用Python来实现该算法。</p>
+<h3 id="用Python实现k-近邻算法"><a href="#用Python实现k-近邻算法" class="headerlink" title="用Python实现k-近邻算法"></a>用Python实现k-近邻算法</h3><p>首先明确，k-近邻算法中的<code>k</code>是我们自己指定的（当然k的选取是有技巧的，这个稍后会说，这里我们仅仅关心如何用Python实现该算法），训练数据集也是自己的（废话，训练集肯定要自行准备的啊），所以有两个参数需要我们自行传入，其一为<code>k</code>，其二为训练集<code>data</code>。</p>
+<p>在实现k-近邻算法之前，先自行定义训练集：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DataSet</span><span class="params">()</span>:</span></span><br><span class="line">    feature=np.array([[<span class="number">2.3</span>,<span class="number">2.4</span>],</span><br><span class="line">                     [<span class="number">0.1</span>,<span class="number">0.2</span>],</span><br><span class="line">                     [<span class="number">2.4</span>,<span class="number">2.3</span>],</span><br><span class="line">                     [<span class="number">0.2</span>,<span class="number">0.1</span>],</span><br><span class="line">                     [<span class="number">0.2</span>,<span class="number">0.2</span>],</span><br><span class="line">                     [<span class="number">2.4</span>,<span class="number">2.4</span>]</span><br><span class="line">        ])</span><br><span class="line">    target=np.array([<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+<p>然后查看下训练数据集的分布（0和1代表样本所属的类别）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">data=DataSet()</span><br><span class="line">plt.scatter(data.feature[:,<span class="number">0</span>],data.feature[:,<span class="number">1</span>],c=data.target)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(data.feature)):</span><br><span class="line">    plt.text(data.feature[i,<span class="number">0</span>], data.feature[i,<span class="number">1</span>],data.target[i], fontsize=<span class="number">8</span>, color = <span class="string">"b"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-src="ss.png" alt=""></p>
+<p>现在开始实现k-近邻算法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyKNN</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,data,k)</span>:</span></span><br><span class="line">        self.samples_feature=data.feature<span class="comment">#样本特征</span></span><br><span class="line">        self.samples_target=data.target<span class="comment">#样本所属类别</span></span><br><span class="line">        self.k=k</span><br></pre></td></tr></table></figure>
+
+<p>由于k-近邻算法涉及到了距离，因此需要写一个计算距离的方法。距离的度量方式有很多，这里我们采用大家最为熟悉的L2距离，也就是欧氏距离：</p>
+<p><img src= "/img/loading.gif" data-src="gs.jpg" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cal_dist</span><span class="params">(self,sample1,sample2)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> np.sqrt(np.sum((sample-sample)**<span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+
+<p>接下来是k-近邻算法的核心实现步骤：</p>
+<ul>
+<li>1.分别计算新的样本与训练集中所有样本之间的距离；</li>
+<li>2.按照距离从小到大排序；</li>
+<li>3.选取距离新样本最近的k个距离及其对应样本所属类别；</li>
+<li>4.将新样本归类到与其距离最近的k个样本中大多数样本所属类别。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self,new_sample_feature)</span>:</span></span><br><span class="line">    <span class="comment">#对于每一个样本的特征</span></span><br><span class="line">    all_dists=[]</span><br><span class="line">    <span class="keyword">for</span> i, sample_feature <span class="keyword">in</span> enumerate(self.samples_feature):</span><br><span class="line">        <span class="comment">#1.分别计算新的样本与训练集中所有样本之间的距离</span></span><br><span class="line">        dist=self.cal_dist(sample_feature,new_sample_feature)</span><br><span class="line">        all_dists.append((dist,self.samples_target[i]))</span><br><span class="line">    <span class="comment">#2.按照距离从小到大排序</span></span><br><span class="line">    sorted_dist_with_target=sorted(all_dists,key=<span class="keyword">lambda</span> x:x[<span class="number">0</span>])</span><br><span class="line">    <span class="comment">#3.选取距离新样本最近的k个</span></span><br><span class="line">    top_k=sorted_dist_with_target[<span class="number">0</span>:self.k]</span><br><span class="line">    <span class="comment">#4.统计这k个样本中大多数样本所属类别</span></span><br><span class="line">    dic=&#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> top_k:</span><br><span class="line">        <span class="keyword">if</span> item[<span class="number">1</span>] <span class="keyword">in</span> dic:</span><br><span class="line">            dic[item[<span class="number">1</span>]]+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            dic[item[<span class="number">1</span>]]=<span class="number">1</span></span><br><span class="line">    result=sorted(dic.items(),key=<span class="keyword">lambda</span> x:x[<span class="number">1</span>])[<span class="number">-1</span>][<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+
+<p>这样，我们就实现了k-近邻算法，完整代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyKNN</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,data,k)</span>:</span></span><br><span class="line">        self.samples_feature=data.feature<span class="comment">#样本特征</span></span><br><span class="line">        self.samples_target=data.target<span class="comment">#样本所属类别</span></span><br><span class="line">        self.k=k</span><br><span class="line">    <span class="comment">#计算两个样本之间的欧氏距离（L2距离）</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal_dist</span><span class="params">(self,sample1_feature,sample2_feature)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> np.sqrt(np.sum((sample1_feature-sample2_feature)**<span class="number">2</span>))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self,new_sample_feature)</span>:</span></span><br><span class="line">        <span class="comment">#对于每一个样本的特征</span></span><br><span class="line">        all_dists=[]</span><br><span class="line">        <span class="keyword">for</span> i, sample_feature <span class="keyword">in</span> enumerate(self.samples_feature):</span><br><span class="line">            <span class="comment">#分别计算新的样本与训练集中所有样本之间的距离</span></span><br><span class="line">            dist=self.cal_dist(sample_feature,new_sample_feature)</span><br><span class="line">            all_dists.append((dist,self.samples_target[i]))</span><br><span class="line">        <span class="comment">#按照距离从小到大排序</span></span><br><span class="line">        sorted_dist_with_target=sorted(all_dists,key=<span class="keyword">lambda</span> x:x[<span class="number">0</span>])</span><br><span class="line">        <span class="comment">#选取距离新样本最近的k个</span></span><br><span class="line">        top_k=sorted_dist_with_target[<span class="number">0</span>:self.k]</span><br><span class="line">        <span class="comment">#统计这k个样本中大多数样本所属类别</span></span><br><span class="line">        dic=&#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> top_k:</span><br><span class="line">            <span class="keyword">if</span> item[<span class="number">1</span>] <span class="keyword">in</span> dic:</span><br><span class="line">                dic[item[<span class="number">1</span>]]+=<span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dic[item[<span class="number">1</span>]]=<span class="number">1</span></span><br><span class="line">        result=sorted(dic.items(),key=<span class="keyword">lambda</span> x:x[<span class="number">1</span>])[<span class="number">-1</span>][<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+
+<h3 id="测试k-近邻算法"><a href="#测试k-近邻算法" class="headerlink" title="测试k-近邻算法"></a>测试k-近邻算法</h3><p>我们前面已经实现了k-近邻算法，那么它的分类能力究竟如何呢？</p>
+<p>现在，自定义一个测试集，用刚刚实现的k-近邻算法对测试集样本进行分类(这里的k不妨取3)：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">test_samples_feature=np.array([[<span class="number">2.4</span>,<span class="number">2.5</span>],</span><br><span class="line">                               [<span class="number">0.3</span>,<span class="number">0.1</span>],</span><br><span class="line">                               [<span class="number">2.3</span>,<span class="number">1.9</span>],</span><br><span class="line">                               [<span class="number">0.1</span>,<span class="number">0.3</span>]</span><br><span class="line">    ])</span><br><span class="line"><span class="keyword">for</span> i,item <span class="keyword">in</span> enumerate(test_samples_feature):</span><br><span class="line">    print(<span class="string">'第&#123;&#125;个样本所属类别为&#123;&#125;'</span>.format(i+<span class="number">1</span>,knn.run(item)))</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">第1个样本所属类别为1</span><br><span class="line">第2个样本所属类别为0</span><br><span class="line">第3个样本所属类别为1</span><br><span class="line">第4个样本所属类别为0</span><br></pre></td></tr></table></figure>
+
+<p>那这个结果可不可靠呢？ 我们需要评估一下。千言万语不及一张图，所以这里我们还是用可视化的方式来演示。</p>
+<p>在训练数据可视化结果图的基础上，将测试数据也绘制在这张图上，完整代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">data=DataSet()</span><br><span class="line"><span class="comment">#训练数据</span></span><br><span class="line">plt.scatter(data.feature[:,<span class="number">0</span>],data.feature[:,<span class="number">1</span>],c=data.target)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(data.feature)):</span><br><span class="line">    plt.text(data.feature[i,<span class="number">0</span>], data.feature[i,<span class="number">1</span>],data.target[i], fontsize=<span class="number">8</span>, color = <span class="string">"b"</span>)</span><br><span class="line">   </span><br><span class="line"><span class="comment">#测试数据</span></span><br><span class="line">plt.scatter(test_samples_feature[:,<span class="number">0</span>],test_samples_feature[:,<span class="number">1</span>])</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(test_samples_feature)):</span><br><span class="line">    plt.text(test_samples_feature[i,<span class="number">0</span>], test_samples_feature[i,<span class="number">1</span>], <span class="string">'sample&#123;&#125;:\n'</span>.format(i+<span class="number">1</span>)+str((test_samples_feature[i,<span class="number">0</span>],test_samples_feature[i,<span class="number">1</span>])), fontsize=<span class="number">10</span>, color = <span class="string">"r"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-src="test_data.png" alt=""></p>
+<p>观察上图，当k取3时：</p>
+<p>与样本1距离最近的3个样本中，大多数样本都是属于类别1的（本例是特例，全部3个样本都属于类别1），因此样本1应该归类到类别1；</p>
+<p>与样本2距离最近的3个样本中，大多数样本都是属于类别0的，因此样本2应该归类到类别0；</p>
+<p>与样本3距离最近的3个样本中，大多数样本都是属于类别1的，因此样本3应该归类到类别1；</p>
+<p>与样本4距离最近的3个样本中，大多数样本都是属于类别0的，因此样本4应该归类到类别0。</p>
+<p>所以，最终的分类结果应该是：[1,0,1,0]，这与程序跑出来的结果是对应的，从而我们实现的k-近邻算法是成功的。</p>
+<h3 id="更多关于k-近邻算法的使用技巧"><a href="#更多关于k-近邻算法的使用技巧" class="headerlink" title="更多关于k-近邻算法的使用技巧"></a>更多关于k-近邻算法的使用技巧</h3><ul>
+<li>k值通常取奇数，这是因为，当k取偶数，比如k=2时，有可能距离新样本最近的2个样本分别属于两个不同的类别，此时无法判定新样本所属类别；</li>
+<li>k不宜过大，也不宜过小，通常采用交叉验证的方式进行k值的选取；</li>
+<li>同大多数机器学习算法一样，在实际应用k-近邻算法时，为了减少特征的量纲不同而导致的各特征重要程度不一致现象，往往在将数据喂入机器学习算法之前，先对数据做归一化或者标准化等预处理工作。举个例子，对于具有3个特征的两个样本：[0.2,0.3,999], [0.3,0.2, 899]，由于第三个特征数值相对于前两个特征较大，因此在计算这两个样本的距离时，第三个特征将主导最后的距离计算结果，而前两个特征的作用几乎被忽略不计了，这样的话，就相当于前两个特征传递的信息丢失了，这可不是我们所希望的！因此这一步很有必要。</li>
+</ul>
+<p>参考：</p>
+<ul>
+<li>[1] [李航-统计学习方法]</li>
+<li>[2] [Peter Harrington-机器学习实战]</li>
+</ul>
+</div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ML/">ML</a></div><div class="post_share"><div class="social-share" data-image="https://www.cdnjson.com/images/2021/10/06/0.png" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"/><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/01/27/kd%E6%A0%91/"><img class="prev-cover" data-src="https://s3.ax1x.com/2021/02/02/ymxjCd.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">kd树</div></div></a></div><div class="next-post pull-right"><a href="/2021/01/09/%E4%BB%8E%E6%A8%A1%E5%9E%8B%E6%BC%94%E5%8C%96%E7%9A%84%E8%A7%92%E5%BA%A6%E7%9C%8B%E5%BE%85%E5%9B%BD%E5%AE%B6%E7%9A%84%E5%8F%91%E5%B1%95/"><img class="next-cover" data-src="https://s1.ax1x.com/2020/10/03/010qXT.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">从模型演化的角度看待国家的发展</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2021/02/04/AdaBoost/" title="AdaBoost"><img class="relatedPosts_cover" data-src="https://s3.ax1x.com/2021/02/11/yBy7wt.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2021-02-04</div><div class="relatedPosts_title">AdaBoost</div></div></a></div><div class="relatedPosts_item"><a href="/2021/01/27/kd树/" title="kd树"><img class="relatedPosts_cover" data-src="https://s3.ax1x.com/2021/02/02/ymxjCd.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-27</div><div class="relatedPosts_title">kd树</div></div></a></div><div class="relatedPosts_item"><a href="/2021/01/31/决策树/" title="决策树"><img class="relatedPosts_cover" data-src="https://s3.ax1x.com/2021/02/02/ymz9Df.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-31</div><div class="relatedPosts_title">决策树</div></div></a></div><div class="relatedPosts_item"><a href="/2021/02/08/回归树/" title="回归树"><img class="relatedPosts_cover" data-src="https://s3.ax1x.com/2021/02/11/yBySIK.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2021-02-08</div><div class="relatedPosts_title">回归树</div></div></a></div><div class="relatedPosts_item"><a href="/2020/12/22/手写kmeans算法/" title="手写kmeans算法"><img class="relatedPosts_cover" data-src="https://s3.ax1x.com/2020/12/22/rrTxBD.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-22</div><div class="relatedPosts_title">手写kmeans算法</div></div></a></div><div class="relatedPosts_item"><a href="/2021/02/02/朴素贝叶斯/" title="朴素贝叶斯"><img class="relatedPosts_cover" data-src="https://s3.ax1x.com/2021/02/03/ylZ48s.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2021-02-02</div><div class="relatedPosts_title">朴素贝叶斯</div></div></a></div></div></div></article></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By 雨落诗山山亦奇</div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font_plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font_minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script src="/js/third-party/activate-power-mode.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script src="/js/third-party/ClickShowText.js"></script><script src="https://cdn.jsdelivr.net/gh/lete114/CDN/Sum/sakura.js"></script><script src="/js/egao.js"></script><script src="https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/autoload.js"></script><script src="/js/snow.js"></script></body></html>
