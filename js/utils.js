@@ -1,175 +1,158 @@
-/* global CONFIG */
+/* eslint-disable no-unused-vars */
 
-HTMLElement.prototype.wrap = function (wrapper) {
-  this.parentNode.insertBefore(wrapper, this);
-  this.parentNode.removeChild(this);
-  wrapper.appendChild(this);
+function debounce (func, wait, immediate) {
+  let timeout
+  return function () {
+    const context = this
+    const args = arguments
+    const later = function () {
+      timeout = null
+      if (!immediate) func.apply(context, args)
+    }
+    const callNow = immediate && !timeout
+    clearTimeout(timeout)
+    timeout = setTimeout(later, wait)
+    if (callNow) func.apply(context, args)
+  }
 };
+
+function throttle (func, wait, options) {
+  let timeout, context, args
+  let previous = 0
+  if (!options) options = {}
+
+  const later = function () {
+    previous = options.leading === false ? 0 : new Date().getTime()
+    timeout = null
+    func.apply(context, args)
+    if (!timeout) context = args = null
+  }
+
+  const throttled = function () {
+    const now = new Date().getTime()
+    if (!previous && options.leading === false) previous = now
+    const remaining = wait - (now - previous)
+    context = this
+    args = arguments
+    if (remaining <= 0 || remaining > wait) {
+      if (timeout) {
+        clearTimeout(timeout)
+        timeout = null
+      }
+      previous = now
+      func.apply(context, args)
+      if (!timeout) context = args = null
+    } else if (!timeout && options.trailing !== false) {
+      timeout = setTimeout(later, remaining)
+    }
+  }
+
+  return throttled
+}
+
+function sidebarPaddingR () {
+  const innerWidth = window.innerWidth
+  const clientWidth = document.body.clientWidth
+  const paddingRight = innerWidth - clientWidth
+  if (innerWidth !== clientWidth) {
+    $('body').css('padding-right', paddingRight)
+  }
+}
+
+// iPadOS
+function isIpad () {
+  return navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1
+}
+
+function isTMobile () {
+  const ua = navigator.userAgent
+  const pa = /iPad|iPhone|iPod|Android|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP|IEMobile|Symbian/g
+  return window.screen.width < 992 && pa.test(ua)
+}
+
+function isMobile () {
+  return this.isIpad() || this.isTMobile()
+}
+
+function isDesktop () {
+  return !this.isMobile()
+}
+
+function scrollToDest (name, offset = 0) {
+  const scrollOffset = $(name).offset()
+  $('body,html').animate({
+    scrollTop: scrollOffset.top - offset
+  })
+};
+
+function loadScript (url, callback) {
+  const script = document.createElement('script')
+  script.type = 'text/javascript'
+  if (script.readyState) { // IE
+    script.onreadystatechange = function () {
+      if (script.readyState === 'loaded' ||
+        script.readyState === 'complete') {
+        script.onreadystatechange = null
+        callback()
+      }
+    }
+  } else { // Others
+    script.onload = function () {
+      callback()
+    }
+  }
+  script.src = url
+  document.body.appendChild(script)
+};
+
+function snackbarShow (text, showAction, duration) {
+  const sa = (typeof showAction !== 'undefined') ? showAction : false
+  const dur = (typeof duration !== 'undefined') ? duration : 2000
+  const position = GLOBAL_CONFIG.Snackbar.position
+  const bg = document.documentElement.getAttribute('data-theme') === 'light' ? GLOBAL_CONFIG.Snackbar.bgLight : GLOBAL_CONFIG.Snackbar.bgDark
+  Snackbar.show({
+    text: text,
+    backgroundColor: bg,
+    showAction: sa,
+    duration: dur,
+    pos: position
+  })
+}
+
+const Cookies = {
+  get: function (name) {
+    const value = `; ${document.cookie}`
+    const parts = value.split(`; ${name}=`)
+    if (parts.length === 2) return parts.pop().split(';').shift()
+  },
+  set: function (name, value, days) {
+    let expires = ''
+    if (days) {
+      const date = new Date()
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000))
+      expires = '; expires=' + date.toUTCString()
+    }
+    document.cookie = name + '=' + (value || '') + expires + '; path=/'
+  }
+}
+
+const initJustifiedGallery = function (selector) {
+  selector.each(function (i, o) {
+    if ($(this).is(':visible')) {
+      $(this).justifiedGallery({
+        rowHeight: 220,
+        margins: 4
+      })
+    }
+  })
+}
 
 /**
- * 公共辅助函数
+ * lazyload
  */
-Yun.utils = {
-  /**
-   * 是否为主页
-   * @returns {boolean}
-   */
-  isHome() {
-    return window.location.pathname === CONFIG.root;
-  },
-
-  /**
-   * 包裹表格，添加 class 以控制 table 样式
-   */
-  wrapTable() {
-    document.querySelectorAll("table").forEach((el) => {
-      const container = document.createElement("div");
-      container.className = "table-container";
-      el.wrap(container);
-    });
-  },
-
-  /**
-   * 动态获取脚本，并执行回调函数
-   * @param {*} url
-   * @param {*} callback
-   * @param {*} condition 是否存在对应实例，判断是否加载脚本
-   */
-  getScript(url, callback, condition) {
-    if (condition) {
-      callback();
-    } else {
-      const script = document.createElement("script");
-      script.onload = () => {
-        setTimeout(callback);
-      };
-      script.src = url;
-      document.head.appendChild(script);
-    }
-  },
-
-  /**
-   * click btn to copy codeblock
-   */
-  insertCopyCodeBtn() {
-    const codeblocks = document.querySelectorAll("pre[class*='language-']");
-
-    codeblocks.forEach((codeblock) => {
-      if (!CONFIG.copycode) return;
-
-      const container = document.createElement("div");
-      container.className = "code-container";
-      codeblock.wrap(container);
-
-      container.insertAdjacentHTML(
-        "beforeend",
-        '<div class="copy-btn"><svg class="icon"><use xlink:href="#icon-file-copy-line" aria-label="copy"></use></svg></div>'
-      );
-
-      const copyBtn = container.querySelector(".copy-btn");
-      copyBtn.addEventListener("click", () => {
-        const lines =
-          container.querySelector("code[class*='language-']") ||
-          container.querySelector(".token");
-        const code = lines.innerText;
-        const ta = document.createElement("textarea");
-        ta.style.top = window.scrollY + "px"; // Prevent page scrolling
-        ta.style.position = "absolute";
-        ta.style.opacity = "0";
-        ta.readOnly = true;
-        ta.value = code;
-        document.body.append(ta);
-        ta.select();
-        ta.setSelectionRange(0, code.length);
-        ta.readOnly = false;
-        // copy success
-        const result = document.execCommand("copy");
-        const iconName = result ? "#icon-check-line" : "#icon-timer-line";
-        const iconSvg = copyBtn.querySelector("svg use");
-        iconSvg.setAttribute("xlink:href", iconName);
-        iconSvg.setAttribute("color", result ? "green" : "red");
-
-        ta.blur(); // For iOS
-        copyBtn.blur();
-        document.body.removeChild(ta);
-      });
-
-      container.addEventListener("mouseleave", () => {
-        setTimeout(() => {
-          const iconSvg = copyBtn.querySelector("svg use");
-          iconSvg.setAttribute("xlink:href", "#icon-file-copy-line");
-          iconSvg.setAttribute("color", "gray");
-        }, 200);
-      });
-    });
-  },
-
-  /**
-   * 使用 KaTeX 渲染公式
-   * 须已引入 KaTeX CDN
-   * https://github.com/KaTeX/KaTeX
-   */
-  renderKatex() {
-    if (typeof renderMathInElement !== "undefined") {
-      renderMathInElement(document.body, {
-        delimiters: [
-          { left: "$$", right: "$$", display: true },
-          { left: "$", right: "$", display: false },
-          { left: "\\(", right: "\\)", display: false },
-          { left: "\\[", right: "\\]", display: true },
-        ],
-      });
-    } else {
-      console.error(
-        "Please check if you have introduced KaTeX(https://github.com/KaTeX/KaTeX) CDN."
-      );
-    }
-  },
-
-  /**
-   * 注册监听滚动百分比事件
-   */
-  registerScrollPercent() {
-    const backToTop = document.querySelector("#back-to-top");
-    const progressCircle = document.querySelector("#progressCircle");
-
-    if (!backToTop) {
-      return;
-    }
-
-    /**
-     * 页面滚动百分比
-     * @param {number} curTop
-     */
-    function scrollPercent(curTop) {
-      const bodyHeight = document.body.clientHeight;
-      const windowHeight = window.innerHeight;
-      const circumference = progressCircle.r.baseVal.value * 2 * Math.PI;
-      const offset =
-        circumference - (curTop / (bodyHeight - windowHeight)) * circumference;
-      progressCircle.setAttribute(
-        "stroke-dasharray",
-        `${circumference} ${circumference}`
-      );
-      progressCircle.setAttribute("stroke-dashoffset", offset);
-    }
-
-    window.addEventListener("scroll", () => {
-      backToTop.classList.toggle("show", window.scrollY > 64);
-      scrollPercent(window.scrollY);
-    });
-  },
-
-  /**
-   * 注册切换侧边栏按钮事件
-   */
-  registerToggleSidebar() {
-    const toggleBtns = document.querySelectorAll(".sidebar-toggle");
-    toggleBtns.forEach((el) => {
-      el.addEventListener("click", () => {
-        document.querySelector(".hamburger").classList.toggle("is-active");
-        document.querySelector(".container").classList.toggle("sidebar-open");
-      });
-    });
-  },
-};
+if (GLOBAL_CONFIG.islazyload) {
+  window.lazyLoadOptions = {
+    elements_selector: 'img',
+    threshold: 0
+  }
+}
