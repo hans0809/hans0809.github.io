@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Spark编程基础-Python版本 | 南极Python</title><meta name="description" content="Spark编程基础-Python版本"><meta name="keywords" content="Python|机器学习|深度学习|生活感悟"><meta name="author" content="雨落诗山山亦奇"><meta name="copyright" content="雨落诗山山亦奇"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/avatar.png"><link rel="canonical" href="http://yoursite.com/2021/11/09/Spark%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-Python%E7%89%88%E6%9C%AC/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="Spark编程基础-Python版本"><meta property="og:url" content="http://yoursite.com/2021/11/09/Spark%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-Python%E7%89%88%E6%9C%AC/"><meta property="og:site_name" content="南极Python"><meta property="og:description" content="Spark编程基础-Python版本"><meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><meta property="article:published_time" content="2021-11-09T07:43:33.000Z"><meta property="article:modified_time" content="2021-11-09T07:43:33.939Z"><meta name="twitter:card" content="summary"><script>var activateDarkMode = function () {
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Spark编程基础-Python版本 | 南极Python</title><meta name="description" content="第一章、基础概念目前的主流大数据技术：Hadoop、Spark、Flink、Beam. Hadoop MapReduce像写单机任务一样. 使用前提：任务必须满足可以分而治之. YARNHadoop2.0出现. 统一调配资源，实现底层数据无缝共享. Spark全能选手. Hadoop的缺点 有些不能转成Map和Reduce的业务无法使用Hadoop. 需要反复迭代，磁盘IO开销大. 磁盘IO，任务"><meta name="keywords" content="Spark"><meta name="author" content="雨落诗山山亦奇"><meta name="copyright" content="雨落诗山山亦奇"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/avatar.png"><link rel="canonical" href="http://yoursite.com/2021/11/09/Spark%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-Python%E7%89%88%E6%9C%AC/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="Spark编程基础-Python版本"><meta property="og:url" content="http://yoursite.com/2021/11/09/Spark%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80-Python%E7%89%88%E6%9C%AC/"><meta property="og:site_name" content="南极Python"><meta property="og:description" content="第一章、基础概念目前的主流大数据技术：Hadoop、Spark、Flink、Beam. Hadoop MapReduce像写单机任务一样. 使用前提：任务必须满足可以分而治之. YARNHadoop2.0出现. 统一调配资源，实现底层数据无缝共享. Spark全能选手. Hadoop的缺点 有些不能转成Map和Reduce的业务无法使用Hadoop. 需要反复迭代，磁盘IO开销大. 磁盘IO，任务"><meta property="og:image" content="https://www.cdnjson.com/images/2021/11/18/11.png"><meta property="article:published_time" content="2021-11-09T07:43:33.000Z"><meta property="article:modified_time" content="2021-11-18T03:29:39.147Z"><meta name="twitter:card" content="summary"><script>var activateDarkMode = function () {
   document.documentElement.setAttribute('data-theme', 'dark')
   if (document.querySelector('meta[name="theme-color"]') !== null) {
     document.querySelector('meta[name="theme-color"]').setAttribute('content', '#000')
@@ -88,8 +88,8 @@ if (autoChangeMode === '1') {
   isPost: true,
   isHome: false,
   isHighlightShrink: false,
-  isSidebar: false,
-  postUpdate: '2021-11-09 15:43:33'
+  isSidebar: true,
+  postUpdate: '2021-11-18 11:29:39'
 }</script><noscript><style>
 #nav {
   opacity: 1
@@ -98,7 +98,286 @@ if (autoChangeMode === '1') {
   opacity: 1
 }
 </style></noscript><link rel="stylesheet" href="/css/mouse.css">
-<link rel="stylesheet" href="/css/gundongtiao.css"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/macblack.css"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css"> <link rel="stylesheet" href="/css/waigua.css"> <link rel="stylesheet" href="/css/beijing.css"><div class="aplayer" data-id="476185587" data-server="netease" data-type="playlist" data-fixed="true" data-listFolded="false" data-order="list" data-preload="auto"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lete114/CDN/music/APlayer/APlayer.min.css"><script src="https://cdn.jsdelivr.net/gh/lete114/CDN/music/APlayer/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/meting@1.2.0/dist/Meting.min.js"></script><meta name="generator" content="Hexo 4.2.1"></head><body><canvas class="fireworks"></canvas><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">130</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">12</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">7</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="web_bg" data-type="color"></div><header class="post-bg" id="page-header" style="background-image: url(https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg)"><nav id="nav"><span class="pull-left" id="blog_name"><a class="blog_title" id="site-name" href="/">南极Python</a></span><span class="pull-right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">Spark编程基础-Python版本</div></div><div id="post-meta"><div class="meta-firstline"><time class="post-meta__date"><span class="post-meta__date-created" title="发表于 2021-11-09 15:43:33"><i class="far fa-calendar-alt fa-fw"></i> 发表于 2021-11-09</span><span class="post-meta__separator">|</span><span class="post-meta__date-updated" title="更新于 2021-11-09 15:43:33"><i class="fas fa-history fa-fw"></i> 更新于 2021-11-09</span></time></div><div class="meta-secondline"> </div><div class="meta-thirdline"><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta__icon"></i><span>阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://www.cdnjson.com/images/2021/11/02/7.png" data-sites="wechat,weibo,qq"></div><link rel="stylesheet noopener" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" target="_blank"/><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/11/16/%E7%AE%97%E6%B3%95(%E4%B8%8A)/%E7%AE%97%E6%B3%95(%E4%B8%8A)/"><img class="prev-cover" data-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">算法(上)/算法(上)</div></div></a></div><div class="next-post pull-right"><a href="/2021/11/06/%E7%BB%8F%E5%85%B8%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B-DeepCross/"><img class="next-cover" data-src="https://www.cdnjson.com/images/2021/11/06/3.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">经典推荐模型:DeepCross</div></div></a></div></nav></article></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By 雨落诗山山亦奇</div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font_plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font_minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script src="/js/third-party/activate-power-mode.js"></script><script>POWERMODE.colorful = true;
+<link rel="stylesheet" href="/css/gundongtiao.css"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/macblack.css"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css"> <link rel="stylesheet" href="/css/waigua.css"> <link rel="stylesheet" href="/css/beijing.css"><div class="aplayer" data-id="476185587" data-server="netease" data-type="playlist" data-fixed="true" data-listFolded="false" data-order="list" data-preload="auto"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lete114/CDN/music/APlayer/APlayer.min.css"><script src="https://cdn.jsdelivr.net/gh/lete114/CDN/music/APlayer/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/meting@1.2.0/dist/Meting.min.js"></script><meta name="generator" content="Hexo 4.2.1"></head><body><canvas class="fireworks"></canvas><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">132</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">13</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">8</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第一章、基础概念"><span class="toc-number">1.</span> <span class="toc-text">第一章、基础概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hadoop"><span class="toc-number">1.1.</span> <span class="toc-text">Hadoop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MapReduce"><span class="toc-number">1.2.</span> <span class="toc-text">MapReduce</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#YARN"><span class="toc-number">1.3.</span> <span class="toc-text">YARN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spark"><span class="toc-number">1.4.</span> <span class="toc-text">Spark</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hadoop的缺点"><span class="toc-number">1.5.</span> <span class="toc-text">Hadoop的缺点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spark的优势"><span class="toc-number">1.6.</span> <span class="toc-text">Spark的优势</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spark和Hadoop的关系"><span class="toc-number">1.7.</span> <span class="toc-text">Spark和Hadoop的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Flink"><span class="toc-number">1.8.</span> <span class="toc-text">Flink</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Beam"><span class="toc-number">1.9.</span> <span class="toc-text">Beam</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第二章、Spark的设计与运行原理"><span class="toc-number">2.</span> <span class="toc-text">第二章、Spark的设计与运行原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Spark的特点"><span class="toc-number">2.1.</span> <span class="toc-text">Spark的特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对比Spark与Hadoop"><span class="toc-number">2.2.</span> <span class="toc-text">对比Spark与Hadoop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spark生态系统"><span class="toc-number">2.3.</span> <span class="toc-text">Spark生态系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spark的基本概念"><span class="toc-number">2.4.</span> <span class="toc-text">Spark的基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spark的架构设计"><span class="toc-number">2.5.</span> <span class="toc-text">Spark的架构设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spark运行的基本流程"><span class="toc-number">2.6.</span> <span class="toc-text">Spark运行的基本流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RDD运行原理-概念、操作和特性"><span class="toc-number">2.7.</span> <span class="toc-text">RDD运行原理: 概念、操作和特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RDD的运行原理-RDD之间的依赖关系"><span class="toc-number">2.8.</span> <span class="toc-text">RDD的运行原理:RDD之间的依赖关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RDD的运行原理-阶段的划分以及RDD的运行过程"><span class="toc-number">2.9.</span> <span class="toc-text">RDD的运行原理:阶段的划分以及RDD的运行过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spark的部署和应用方式"><span class="toc-number">2.10.</span> <span class="toc-text">Spark的部署和应用方式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第三章、环境配置"><span class="toc-number">3.</span> <span class="toc-text">第三章、环境配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#在pyspark中运行代码"><span class="toc-number">3.1.</span> <span class="toc-text">在pyspark中运行代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开发Spark独立应用程序"><span class="toc-number">3.2.</span> <span class="toc-text">开发Spark独立应用程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spark集群环境搭建"><span class="toc-number">3.3.</span> <span class="toc-text">Spark集群环境搭建</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#第四章、RDD编程"><span class="toc-number">4.</span> <span class="toc-text">第四章、RDD编程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#RDD创建"><span class="toc-number">4.1.</span> <span class="toc-text">RDD创建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RDD操作：转换操作"><span class="toc-number">4.2.</span> <span class="toc-text">RDD操作：转换操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RDD操作：行动操作"><span class="toc-number">4.3.</span> <span class="toc-text">RDD操作：行动操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RDD持久化"><span class="toc-number">4.4.</span> <span class="toc-text">RDD持久化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RDD分区"><span class="toc-number">4.5.</span> <span class="toc-text">RDD分区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#键值对RDD的创建"><span class="toc-number">4.6.</span> <span class="toc-text">键值对RDD的创建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#键值对RDD的转换操作"><span class="toc-number">4.7.</span> <span class="toc-text">键值对RDD的转换操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一个综合实例"><span class="toc-number">4.8.</span> <span class="toc-text">一个综合实例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#文件数据读写"><span class="toc-number">4.9.</span> <span class="toc-text">文件数据读写</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase数据读写：HBase简介"><span class="toc-number">4.10.</span> <span class="toc-text">HBase数据读写：HBase简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase数据读写：创建HBase表"><span class="toc-number">4.11.</span> <span class="toc-text">HBase数据读写：创建HBase表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase数据读写：配置Spark"><span class="toc-number">4.12.</span> <span class="toc-text">HBase数据读写：配置Spark</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase数据读写：编写程序读取HBase数据"><span class="toc-number">4.13.</span> <span class="toc-text">HBase数据读写：编写程序读取HBase数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase数据读写：编写程序向HBase写入数据"><span class="toc-number">4.14.</span> <span class="toc-text">HBase数据读写：编写程序向HBase写入数据</span></a></li></ol></li></ol></div></div></div><div id="body-wrap"><div id="web_bg" data-type="color"></div><header class="post-bg" id="page-header" style="background-image: url(https://www.cdnjson.com/images/2021/11/18/11.png)"><nav id="nav"><span class="pull-left" id="blog_name"><a class="blog_title" id="site-name" href="/">南极Python</a></span><span class="pull-right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">Spark编程基础-Python版本</div></div><div id="post-meta"><div class="meta-firstline"><time class="post-meta__date"><span class="post-meta__date-created" title="发表于 2021-11-09 15:43:33"><i class="far fa-calendar-alt fa-fw"></i> 发表于 2021-11-09</span><span class="post-meta__separator">|</span><span class="post-meta__date-updated" title="更新于 2021-11-18 11:29:39"><i class="fas fa-history fa-fw"></i> 更新于 2021-11-18</span></time><span class="post-meta__categories"><span class="post-meta__separator">|</span><i class="fas fa-inbox fa-fw post-meta__icon"></i><a class="post-meta__categories" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a></span></div><div class="meta-secondline"> </div><div class="meta-thirdline"><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta__icon"></i><span>阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="第一章、基础概念"><a href="#第一章、基础概念" class="headerlink" title="第一章、基础概念"></a>第一章、基础概念</h1><p>目前的主流大数据技术：Hadoop、Spark、Flink、Beam.</p>
+<h2 id="Hadoop"><a href="#Hadoop" class="headerlink" title="Hadoop"></a>Hadoop</h2><p><img src= "/img/loading.gif" data-src="./1.png" alt="Alt text"></p>
+<h2 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h2><p>像写单机任务一样.</p>
+<p>使用前提：任务必须满足可以分而治之.<br><img src= "/img/loading.gif" data-src="./2.png" alt="Alt text"></p>
+<h2 id="YARN"><a href="#YARN" class="headerlink" title="YARN"></a>YARN</h2><p>Hadoop2.0出现.</p>
+<p>统一调配资源，实现底层数据无缝共享.<br><img src= "/img/loading.gif" data-src="./3.png" alt="Alt text"></p>
+<h2 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h2><p>全能选手.<br><img src= "/img/loading.gif" data-src="./4.png" alt="Alt text"></p>
+<h2 id="Hadoop的缺点"><a href="#Hadoop的缺点" class="headerlink" title="Hadoop的缺点"></a>Hadoop的缺点</h2><p><img src= "/img/loading.gif" data-src="./6.png" alt="Alt text"></p>
+<p>有些不能转成Map和Reduce的业务无法使用Hadoop.<br><img src= "/img/loading.gif" data-src="./5.png" alt="Alt text"></p>
+<p>需要反复迭代，磁盘IO开销大.<br><img src= "/img/loading.gif" data-src="./7.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./8.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./9.png" alt="Alt text"></p>
+<p>磁盘IO，任务之间的衔接延迟高.</p>
+<p>衔接延迟：3个Map任务全部结束才能执行REduce任务.<br><img src= "/img/loading.gif" data-src="./10.png" alt="Alt text"><br>因此难以胜任多阶段的复杂任务.</p>
+<h2 id="Spark的优势"><a href="#Spark的优势" class="headerlink" title="Spark的优势"></a>Spark的优势</h2><p>Spark本质上也属于MapReduce，但是不再局限于Map和Reduce这两个操作，还可以执行其它操作，比如groupby，filter，join等等，因此具有更强大的表达能力.</p>
+<p><img src= "/img/loading.gif" data-src="./11.png" alt="Alt text"></p>
+<p>Spark可以将数据读到内存中进行操作，提升了迭代时的运行效率.<br><img src= "/img/loading.gif" data-src="./12.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./13.png" alt="Alt text"></p>
+<p>Spark使用了有向无环图的调度机制，使得相关的操作可以优化，从而很多操作可以进行流水线化处理.<br><img src= "/img/loading.gif" data-src="./14.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./15.png" alt="Alt text"></p>
+<p>对比Hadoop和Spark的读取和查询：Hadoop每次都要读写磁盘，而Spark可以直接在内存中完成，所以性能更好.<br><img src= "/img/loading.gif" data-src="./16.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./17.png" alt="Alt text"></p>
+<h2 id="Spark和Hadoop的关系"><a href="#Spark和Hadoop的关系" class="headerlink" title="Spark和Hadoop的关系"></a>Spark和Hadoop的关系</h2><p>Spark只是用来计算的，而存储仍然靠Hadoop中的HDFS。因此，Spark并不是取代Hadoop，而是取代Hadoop中的计算框架MapReduce.<br><img src= "/img/loading.gif" data-src="./18.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./19.png" alt="Alt text"></p>
+<h2 id="Flink"><a href="#Flink" class="headerlink" title="Flink"></a>Flink</h2><p>与Spark是竞争关系.<br><img src= "/img/loading.gif" data-src="./20.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./21.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./22.png" alt="Alt text"></p>
+<h2 id="Beam"><a href="#Beam" class="headerlink" title="Beam"></a>Beam</h2><p>一种编程接口，就可以翻译成不同(Hadoop, Spark)框架，想一统天下，但未果.<br><img src= "/img/loading.gif" data-src="./23.png" alt="Alt text"></p>
+<h1 id="第二章、Spark的设计与运行原理"><a href="#第二章、Spark的设计与运行原理" class="headerlink" title="第二章、Spark的设计与运行原理"></a>第二章、Spark的设计与运行原理</h1><p> <img src= "/img/loading.gif" data-src="./24.png" alt="Alt text"></p>
+<h2 id="Spark的特点"><a href="#Spark的特点" class="headerlink" title="Spark的特点"></a>Spark的特点</h2><p> 运行速度快.<br> <img src= "/img/loading.gif" data-src="./25.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./26.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./27.png" alt="Alt text"></p>
+<p>容易使用.<br><img src= "/img/loading.gif" data-src="./28.png" alt="Alt text"></p>
+<p>通用性.<br><img src= "/img/loading.gif" data-src="./29.png" alt="Alt text"></p>
+<p>运行模式多样.<br><img src= "/img/loading.gif" data-src="./32.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./31.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./30.png" alt="Alt text"></p>
+<h2 id="对比Spark与Hadoop"><a href="#对比Spark与Hadoop" class="headerlink" title="对比Spark与Hadoop"></a>对比Spark与Hadoop</h2><p><img src= "/img/loading.gif" data-src="./33.png" alt="Alt text"></p>
+<p>Hadoop：<br><img src= "/img/loading.gif" data-src="./34.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./35.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./36.png" alt="Alt text"></p>
+<p>Spark：<br><img src= "/img/loading.gif" data-src="./37.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./38.png" alt="Alt text"><br>…</p>
+<h2 id="Spark生态系统"><a href="#Spark生态系统" class="headerlink" title="Spark生态系统"></a>Spark生态系统</h2><p><img src= "/img/loading.gif" data-src="./39.png" alt="Alt text"></p>
+<p>需要生态系统的原因：<br><img src= "/img/loading.gif" data-src="./40.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./41.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./42.png" alt="Alt text"></p>
+<p>Spark的生态系统：<br><img src= "/img/loading.gif" data-src="./43.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./44.png" alt="Alt text"></p>
+<p><img src= "/img/loading.gif" data-src="./45.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./46.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./47.png" alt="Alt text"></p>
+<h2 id="Spark的基本概念"><a href="#Spark的基本概念" class="headerlink" title="Spark的基本概念"></a>Spark的基本概念</h2><p><img src= "/img/loading.gif" data-src="./48.png" alt="Alt text"></p>
+<p>RDD：数据可多可少，少时可以放一台机器，多了可以存放在很多台机器的内存中.<br><img src= "/img/loading.gif" data-src="./49.png" alt="Alt text"></p>
+<p>DAG：反映RDD之间的依赖关系<br><img src= "/img/loading.gif" data-src="./50.png" alt="Alt text"></p>
+<p>Executor：<br><img src= "/img/loading.gif" data-src="./51.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./52.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./53.png" alt="Alt text"></p>
+<p>Task：<br><img src= "/img/loading.gif" data-src="./54.png" alt="Alt text"></p>
+<p>Job：提交Application后，会被分解成多个作业.<br><img src= "/img/loading.gif" data-src="./55.png" alt="Alt text"></p>
+<p>Stage： 作业的基本调度单位，每个作业会被分解成多组任务，每组任务的集合就叫做Stage.<br><img src= "/img/loading.gif" data-src="./56.png" alt="Alt text"></p>
+<p>以上概念之间的关系如下：<br><img src= "/img/loading.gif" data-src="./59.png" alt="Alt text"></p>
+<h2 id="Spark的架构设计"><a href="#Spark的架构设计" class="headerlink" title="Spark的架构设计"></a>Spark的架构设计</h2><p><img src= "/img/loading.gif" data-src="./57.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./58.png" alt="Alt text"></p>
+<p>执行过程如下.</p>
+<p>开始执行：<br><img src= "/img/loading.gif" data-src="./60.png" alt="Alt text"></p>
+<p>执行完毕：<br><img src= "/img/loading.gif" data-src="./61.png" alt="Alt text"><br>or<br><img src= "/img/loading.gif" data-src="./62.png" alt="Alt text"></p>
+<h2 id="Spark运行的基本流程"><a href="#Spark运行的基本流程" class="headerlink" title="Spark运行的基本流程"></a>Spark运行的基本流程</h2><p><img src= "/img/loading.gif" data-src="./63.png" alt="Alt text"><br>Driver节点创建一个指挥官，即SparkContext.</p>
+<p>申请资源：<br><img src= "/img/loading.gif" data-src="./65.png" alt="Alt text"></p>
+<p>分配资源：<br><img src= "/img/loading.gif" data-src="./66.png" alt="Alt text"></p>
+<p>执行：<br><img src= "/img/loading.gif" data-src="./67.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./68.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./69.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./70.png" alt="Alt text"></p>
+<p>分发任务：<br><img src= "/img/loading.gif" data-src="./71.png" alt="Alt text"><br>遵循”计算向数据靠拢”的原则.<br><img src= "/img/loading.gif" data-src="./72.png" alt="Alt text"></p>
+<p>执行完任务，返回结果：<br><img src= "/img/loading.gif" data-src="./64.png" alt="Alt text"></p>
+<h2 id="RDD运行原理-概念、操作和特性"><a href="#RDD运行原理-概念、操作和特性" class="headerlink" title="RDD运行原理: 概念、操作和特性"></a>RDD运行原理: 概念、操作和特性</h2><p>在MapReduce中含有大量的序列化/反序列化过程，开销大<br><img src= "/img/loading.gif" data-src="./73.png" alt="Alt text"></p>
+<p>RDD的提供了抽象的数据结构，将一系列行为表达为转换处理：<br><img src= "/img/loading.gif" data-src="./74.png" alt="Alt text"></p>
+<p>不同的RDD转换之间形成依赖关系：<br><img src= "/img/loading.gif" data-src="./75.png" alt="Alt text"></p>
+<p>借助有向无环图表达依赖关系，避免了数据落磁盘，而是马上可以给另一个操作作为输入：<br><img src= "/img/loading.gif" data-src="./76.png" alt="Alt text"></p>
+<p>RDD可以存在单个机器上：<br><img src= "/img/loading.gif" data-src="./77.png" alt="Alt text"></p>
+<p>如果RDD很大，也可以分布式存储：<br><img src= "/img/loading.gif" data-src="./78.png" alt="Alt text"></p>
+<p>RDD本质上是一个只读的分区记录集合，不允许被改来改去：<br><img src= "/img/loading.gif" data-src="./79.png" alt="Alt text"></p>
+<p>如果要改，需要生成新的RDD：<br><img src= "/img/loading.gif" data-src="./80.png" alt="Alt text"></p>
+<p>比如，给每个学生加5分：<br><img src= "/img/loading.gif" data-src="./81.png" alt="Alt text"></p>
+<p>当然，加5分后得到的新的RDD也是只读的.</p>
+<p>RDD的操作类型如下：<br><img src= "/img/loading.gif" data-src="./82.png" alt="Alt text"></p>
+<p>它们都是粗粒度的，只能对整体操作：<br><img src= "/img/loading.gif" data-src="./83.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./84.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./85.png" alt="Alt text"></p>
+<p>尽管如此受限，但Spark提供了丰富的转换操作，使得Spark几乎具有其它框架的所有操作：<br><img src= "/img/loading.gif" data-src="./86.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./87.png" alt="Alt text"></p>
+<p>Spark的执行过程：<br><img src= "/img/loading.gif" data-src="./88.png" alt="Alt text"></p>
+<p><img src= "/img/loading.gif" data-src="./89.png" alt="Alt text"></p>
+<p>注意，Spark中有一个惰性机制，即：前面的各种转换操作，并不是说立即执行，而是只有在触发动作操作后才从头开始执行，有点像tf的静态图机制.<br><img src= "/img/loading.gif" data-src="./90.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./91.png" alt="Alt text"></p>
+<p>RDD具有高效运算能力的3个原因.<br><img src= "/img/loading.gif" data-src="./92.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./93.png" alt="Alt text"><br>天然的容错性：<br><img src= "/img/loading.gif" data-src="./94.png" alt="Alt text"></p>
+<h2 id="RDD的运行原理-RDD之间的依赖关系"><a href="#RDD的运行原理-RDD之间的依赖关系" class="headerlink" title="RDD的运行原理:RDD之间的依赖关系"></a>RDD的运行原理:RDD之间的依赖关系</h2><p><img src= "/img/loading.gif" data-src="./95.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./96.png" alt="Alt text"></p>
+<p>是否包含Shuffle操作是区分宽依赖和窄依赖的依据.</p>
+<p>所谓Shuffle，中文是洗牌，下面的交叉线就是一种Shuffle：<br><img src= "/img/loading.gif" data-src="./97.png" alt="Alt text"></p>
+<p>如果发生了Shuffle，就是宽依赖，否则就是窄依赖.<br><img src= "/img/loading.gif" data-src="./98.png" alt="Alt text"></p>
+<p>具体来讲，窄依赖指的是以下两种情况：</p>
+<p>1.一个父RDD对应一个子RDD<br><img src= "/img/loading.gif" data-src="./99.png" alt="Alt text"></p>
+<ol start="2">
+<li>多个父RDD对应一个子RDD<br><img src= "/img/loading.gif" data-src="./100.png" alt="Alt text"></li>
+</ol>
+<p>举几个栗子：<br><img src= "/img/loading.gif" data-src="./102.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./101.png" alt="Alt text"></p>
+<p>而宽依赖指的是”一个父RDD对应一个RDD的多个分区”：<br><img src= "/img/loading.gif" data-src="./103.png" alt="Alt text"></p>
+<p>举几个栗子：<br><img src= "/img/loading.gif" data-src="./104.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./105.png" alt="Alt text"></p>
+<h2 id="RDD的运行原理-阶段的划分以及RDD的运行过程"><a href="#RDD的运行原理-阶段的划分以及RDD的运行过程" class="headerlink" title="RDD的运行原理:阶段的划分以及RDD的运行过程"></a>RDD的运行原理:阶段的划分以及RDD的运行过程</h2><p><img src= "/img/loading.gif" data-src="./106.png" alt="Alt text"></p>
+<p>因为宽依赖不能进行流水线优化，所以才把宽依赖分成不同的阶段(Stage).</p>
+<p>宽依赖之所以不能进行流水线优化，跟Spark的优化原理有关.</p>
+<p>RDD的一次转换，就是一次fork和join的过程：fork负责将每个分区送到不同机器上并行执行，再提供join把每台机器上的结果组合起来得到结果.<br><img src= "/img/loading.gif" data-src="./107.png" alt="Alt text"></p>
+<p>fork&amp;join操作一般是多次的：<br><img src= "/img/loading.gif" data-src="./108.png" alt="Alt text"></p>
+<p>举个栗子：<br>全校学生从北京飞到厦门，一种方案如下：<br><img src= "/img/loading.gif" data-src="./109.png" alt="Alt text"></p>
+<p>这个方案中，在上海的join操作存在无意义的等待，因此可以优化如下：不在上海停<br><img src= "/img/loading.gif" data-src="./110.png" alt="Alt text"></p>
+<p>这样时间从6小时变成了5小时，优化后的方案其实就对应了窄依赖，即：可以进行流水线优化.<br><img src= "/img/loading.gif" data-src="./111.png" alt="Alt text"></p>
+<p>如果现在条件变了，要求在上海之后，改为班长带1班飞…，那么各个同学就要从以男女为单位改成以班级为单位，于是发生了数据Shuffle，而只要哦发生Shuffle就一定会写磁盘，因此就无法进行流水线优化，这就对应了宽依赖：<br><img src= "/img/loading.gif" data-src="./112.png" alt="Alt text"></p>
+<p>以上就解释了为什么宽依赖为什么需要划分成多个阶段(Stage)进行处理.</p>
+<p>那如何划分成多个阶段呢？<br><img src= "/img/loading.gif" data-src="./113.png" alt="Alt text"><br>即：窄依赖可单独作为一个阶段，宽依赖划分成多个不同阶段(每个阶段是窄依赖的).</p>
+<p>一个划分的栗子：<br><img src= "/img/loading.gif" data-src="./114.png" alt="Alt text"></p>
+<p>每一个阶段内部都没有Shuffle，都是窄依赖，可以流水线化处理，而阶段与阶段之间存在Shuffle，因而存在等待.</p>
+<p>总结一下RDD的整个运行过程：</p>
+<p>把写的代码交给框架，框架会转成DAG图，然后分成不同阶段，向右走，向上走.<br><img src= "/img/loading.gif" data-src="./115.png" alt="Alt text"></p>
+<h2 id="Spark的部署和应用方式"><a href="#Spark的部署和应用方式" class="headerlink" title="Spark的部署和应用方式"></a>Spark的部署和应用方式</h2><p>可单机也可集群.<br><img src= "/img/loading.gif" data-src="./121.png" alt="Alt text"></p>
+<p>3种集群模式：<br><img src= "/img/loading.gif" data-src="./116.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./117.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./118.png" alt="Alt text"></p>
+<h1 id="第三章、环境配置"><a href="#第三章、环境配置" class="headerlink" title="第三章、环境配置"></a>第三章、环境配置</h1><h2 id="在pyspark中运行代码"><a href="#在pyspark中运行代码" class="headerlink" title="在pyspark中运行代码"></a>在pyspark中运行代码</h2><p><img src= "/img/loading.gif" data-src="./120.png" alt="Alt text"></p>
+<p><img src= "/img/loading.gif" data-src="./122.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./123.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./124.png" alt="Alt text"></p>
+<p><img src= "/img/loading.gif" data-src="./125.png" alt="Alt text"></p>
+<p>举个栗子：<br><img src= "/img/loading.gif" data-src="./126.png" alt="Alt text"></p>
+<p>启动时只写pyspark，则默认进入local[*]模式：<br><img src= "/img/loading.gif" data-src="./127.png" alt="Alt text"></p>
+<p><img src= "/img/loading.gif" data-src="./128.png" alt="Alt text"></p>
+<p><img src= "/img/loading.gif" data-src="./129.png" alt="Alt text"></p>
+<h2 id="开发Spark独立应用程序"><a href="#开发Spark独立应用程序" class="headerlink" title="开发Spark独立应用程序"></a>开发Spark独立应用程序</h2><p>一个简单的栗子:<br><img src= "/img/loading.gif" data-src="./130.png" alt="Alt text"></p>
+<p>写完代码后，可以直接使用python运行：<br><img src= "/img/loading.gif" data-src="./131.png" alt="Alt text"></p>
+<p>也可以使用spark-submit提交应用程序:<br><img src= "/img/loading.gif" data-src="./132.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./133.png" alt="Alt text"></p>
+<p>一个调试小技巧：<br><img src= "/img/loading.gif" data-src="./134.png" alt="Alt text"></p>
+<h2 id="Spark集群环境搭建"><a href="#Spark集群环境搭建" class="headerlink" title="Spark集群环境搭建"></a>Spark集群环境搭建</h2><p>配置主节点：<br><img src= "/img/loading.gif" data-src="./135.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./136.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./137.png" alt="Alt text"></p>
+<p>配置从节点：<br><img src= "/img/loading.gif" data-src="./138.png" alt="Alt text"><br>slave01和slave02是(从)主机的具体名称.</p>
+<p><img src= "/img/loading.gif" data-src="./140.png" alt="Alt text"></p>
+<p>第一行完成Spark和Hdoop的挂接</p>
+<p>第二行说明Hadoop相关配置信息的目录</p>
+<p>第三行设置Spark管家节点(主节点)的ip地址(事先配置好的)</p>
+<p>完成以上操作后：<br><img src= "/img/loading.gif" data-src="./141.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./142.png" alt="Alt text"></p>
+<p>开始启动，先启动Hadoop, 后启动Spark：<br><img src= "/img/loading.gif" data-src="./143.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./144.png" alt="Alt text"></p>
+<p>在浏览器输入访问地址即可进入：<br><img src= "/img/loading.gif" data-src="./145.png" alt="Alt text"></p>
+<p>使用完毕，关闭：<br><img src= "/img/loading.gif" data-src="./146.png" alt="Alt text"></p>
+<p>##在集群上运行Spark应用程序</p>
+<p><img src= "/img/loading.gif" data-src="./147.png" alt="Alt text"></p>
+<ul>
+<li>使用Standalone集群管理器</li>
+</ul>
+<p>启动&amp;运行：<br><img src= "/img/loading.gif" data-src="./148.png" alt="Alt text"></p>
+<p>运行pyspark:<br><img src= "/img/loading.gif" data-src="./149.png" alt="Alt text"></p>
+<p>查看运行信息:<br><img src= "/img/loading.gif" data-src="./150.png" alt="Alt text"></p>
+<ul>
+<li>使用Hadoop YARN集群管理器</li>
+</ul>
+<p>启动&amp;运行:<br><img src= "/img/loading.gif" data-src="./151.png" alt="Alt text"></p>
+<p>运行pyspark:</p>
+<p><img src= "/img/loading.gif" data-src="./154.png" alt="Alt text"></p>
+<p>查看运行信息：<br><img src= "/img/loading.gif" data-src="./152.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./153.png" alt="Alt text"></p>
+<p>查看整个集群的运行信息:<br><img src= "/img/loading.gif" data-src="./155.png" alt="Alt text"></p>
+<h1 id="第四章、RDD编程"><a href="#第四章、RDD编程" class="headerlink" title="第四章、RDD编程"></a>第四章、RDD编程</h1><p><img src= "/img/loading.gif" data-src="./156.png" alt="Alt text"><br>RDD编程，指的是对Spark Core进行编程.</p>
+<p>由于Spark Core就是对RDD进行不断地转换，因此被称为RDD编程.</p>
+<p>RDD编程基础如下：<br><img src= "/img/loading.gif" data-src="./157.png" alt="Alt text"></p>
+<p>接下来各个击破.</p>
+<h2 id="RDD创建"><a href="#RDD创建" class="headerlink" title="RDD创建"></a>RDD创建</h2><p>主要有以下两种RDD创建方式：<br><img src= "/img/loading.gif" data-src="./158.png" alt="Alt text"></p>
+<ul>
+<li>从本地加载数据</li>
+</ul>
+<p><img src= "/img/loading.gif" data-src="./159.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./160.png" alt="Alt text"></p>
+<p>举个栗子：<br><img src= "/img/loading.gif" data-src="./161.png" alt="Alt text"><br>sc是SparkContext对象，位于Master节点中.</p>
+<p>在交互式环境中，系统已经默认创建好了一个SparkContext 对象，而单独一个py文件中，则需要自行导入.</p>
+<p>第一行将本地的word.txt从磁盘加载进来，生成一个RDD（抽象结构）.</p>
+<p><img src= "/img/loading.gif" data-src="./162.png" alt="Alt text"></p>
+<ul>
+<li>从分布式文件系统HDFS中加载数据</li>
+</ul>
+<p><img src= "/img/loading.gif" data-src="./163.png" alt="Alt text"></p>
+<p><img src= "/img/loading.gif" data-src="./164.png" alt="Alt text"></p>
+<ul>
+<li>通过并行集合(数组)创建RDD</li>
+</ul>
+<p><img src= "/img/loading.gif" data-src="./165.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./166.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./167.png" alt="Alt text"></p>
+<h2 id="RDD操作：转换操作"><a href="#RDD操作：转换操作" class="headerlink" title="RDD操作：转换操作"></a>RDD操作：转换操作</h2><p><img src= "/img/loading.gif" data-src="./168.png" alt="Alt text"></p>
+<p>所有这些转换操作构成了一张有向无环图DAG：<br><img src= "/img/loading.gif" data-src="./169.png" alt="Alt text"></p>
+<p>转化操作并不会发生真正的计算：<br><img src= "/img/loading.gif" data-src="./170.png" alt="Alt text"></p>
+<p>只有遇到动作操作时，才会发生真正的从头到尾的计算：<br><img src= "/img/loading.gif" data-src="./171.png" alt="Alt text"></p>
+<p>这被称为RDD转换操作的惰性机制.</p>
+<p>常用的RDD转换操作如下：<br><img src= "/img/loading.gif" data-src="./172.png" alt="Alt text"></p>
+<ul>
+<li>filter操作</li>
+</ul>
+<p><img src= "/img/loading.gif" data-src="./173.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./174.png" alt="Alt text"></p>
+<ul>
+<li>map操作</li>
+</ul>
+<p><img src= "/img/loading.gif" data-src="./175.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./176.png" alt="Alt text"></p>
+<p><img src= "/img/loading.gif" data-src="./177.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./178.png" alt="Alt text"></p>
+<ul>
+<li>flatMap</li>
+</ul>
+<p><img src= "/img/loading.gif" data-src="./179.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./180.png" alt="Alt text"></p>
+<ul>
+<li>groupByKey</li>
+</ul>
+<p><img src= "/img/loading.gif" data-src="./181.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./182.png" alt="Alt text"></p>
+<ul>
+<li>reduceByKey</li>
+</ul>
+<p>对所有key相同的键值对做聚合操作.<br><img src= "/img/loading.gif" data-src="./183.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./184.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./185.png" alt="Alt text"></p>
+<h2 id="RDD操作：行动操作"><a href="#RDD操作：行动操作" class="headerlink" title="RDD操作：行动操作"></a>RDD操作：行动操作</h2><p><img src= "/img/loading.gif" data-src="./186.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./187.png" alt="Alt text"></p>
+<p>其中reduce的执行过程如下：<br><img src= "/img/loading.gif" data-src="./188.png" alt="Alt text"></p>
+<p><img src= "/img/loading.gif" data-src="./189.png" alt="Alt text"></p>
+<h2 id="RDD持久化"><a href="#RDD持久化" class="headerlink" title="RDD持久化"></a>RDD持久化</h2><p>看个栗子：<br><img src= "/img/loading.gif" data-src="./190.png" alt="Alt text"></p>
+<p>由于每遇到一个行动操作，就会从头到尾执行一次，所以在运行第3行和第4行时，都分别执行了第1行的操作，造成了重复生成相同的rdd.</p>
+<p>所以可以将rdd持久化，即缓存下来：<br><img src= "/img/loading.gif" data-src="./191.png" alt="Alt text"></p>
+<p>常用持久化方法如下：<br><img src= "/img/loading.gif" data-src="./192.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./193.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./194.png" alt="Alt text"></p>
+<p>当不再需要持久化存储时，可以手动移除：<br><img src= "/img/loading.gif" data-src="./195.png" alt="Alt text"></p>
+<p>看个栗子：<br><img src= "/img/loading.gif" data-src="./196.png" alt="Alt text"></p>
+<h2 id="RDD分区"><a href="#RDD分区" class="headerlink" title="RDD分区"></a>RDD分区</h2><p><strong>分区的作用</strong>：<br>增加并行度<br><img src= "/img/loading.gif" data-src="./197.png" alt="Alt text"></p>
+<p>减少通信开销<br><img src= "/img/loading.gif" data-src="./199.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./198.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./200.png" alt="Alt text"></p>
+<p><strong>分区的原则</strong>：<br><img src= "/img/loading.gif" data-src="./201.png" alt="Alt text"></p>
+<p>不同模式下的分区数：<br><img src= "/img/loading.gif" data-src="./202.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./203.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./204.png" alt="Alt text"></p>
+<p>而对于Standalone和YARN模式，分区数=max(集群中所有CPU核心数目的总和, 2).</p>
+<p><strong>设置分区的方法</strong>:<br><img src= "/img/loading.gif" data-src="./205.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./206.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./207.png" alt="Alt text"></p>
+<p><strong>自定义分区的方法</strong>:<br><img src= "/img/loading.gif" data-src="./208.png" alt="Alt text"></p>
+<p>举个栗子：<br><img src= "/img/loading.gif" data-src="./209.png" alt="Alt text"></p>
+<p><img src= "/img/loading.gif" data-src="./210.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./211.png" alt="Alt text"></p>
+<p>之所以弄成键值对(值全为1)的形式，是因为partitionBY只能操作键值对.</p>
+<p>最后保存的路径仅仅传入了一个目录，是因为分区后会形成10个分区，每个分区一个文件，所有在传入目录下会新生成共10个文件.</p>
+<p>写完代码，就可以运行了：<br><img src= "/img/loading.gif" data-src="./212.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./213.png" alt="Alt text"></p>
+<p>##一个综合实例：词频统计<br><img src= "/img/loading.gif" data-src="./214.png" alt="Alt text"><br>实现代码如下：<br><img src= "/img/loading.gif" data-src="./215.png" alt="Alt text"></p>
+<p>具体解释：<br><img src= "/img/loading.gif" data-src="./216.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./217.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./218.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./219.png" alt="Alt text"></p>
+<p>以上是在单机上进行的，当数据分布在多台机器上时，需要多机并行执行.</p>
+<p>此时需要把Hadoop和Spark同时部署在同一个集群中，具体地，将集群中的某个节点既作为HDFS的存储节点，同时也作为Saprk的工作节点.<br><img src= "/img/loading.gif" data-src="./220.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./221.png" alt="Alt text"></p>
+<h2 id="键值对RDD的创建"><a href="#键值对RDD的创建" class="headerlink" title="键值对RDD的创建"></a>键值对RDD的创建</h2><p> 键值对RDD: RDD中的每一个元素都是一个键值对.</p>
+<p><img src= "/img/loading.gif" data-src="./222.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./223.png" alt="Alt text"></p>
+<h2 id="键值对RDD的转换操作"><a href="#键值对RDD的转换操作" class="headerlink" title="键值对RDD的转换操作"></a>键值对RDD的转换操作</h2><p><img src= "/img/loading.gif" data-src="./224.png" alt="Alt text"></p>
+<ul>
+<li>reduceByKey</li>
+</ul>
+<p>对所有key相同的键值对做聚合操作.<br><img src= "/img/loading.gif" data-src="./225.png" alt="Alt text"></p>
+<ul>
+<li>groupByKey</li>
+</ul>
+<p>对具有相同key的键值对进行分组，不进行聚合计算.<br><img src= "/img/loading.gif" data-src="./227.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./226.png" alt="Alt text"></p>
+<p>对比reduceByKey和groupByKey：<br><img src= "/img/loading.gif" data-src="./228.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./229.png" alt="Alt text"></p>
+<ul>
+<li>keys ,values</li>
+</ul>
+<p>把Pair(键值对)RDD 中的key(value)回形成一个新的RDD.<br><img src= "/img/loading.gif" data-src="./230.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./231.png" alt="Alt text"></p>
+<ul>
+<li>sortByKey</li>
+</ul>
+<p><img src= "/img/loading.gif" data-src="./232.png" alt="Alt text"></p>
+<p>对比sortByKey和sortBy：</p>
+<p>前者只能根据key进行排序，而后者更灵活.<br><img src= "/img/loading.gif" data-src="./233.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./234.png" alt="Alt text"></p>
+<ul>
+<li>mapValues</li>
+</ul>
+<p>对键值对RDD中的每个value都应用一个函数，key不会发生变化.</p>
+<p><img src= "/img/loading.gif" data-src="./235.png" alt="Alt text"></p>
+<ul>
+<li>join</li>
+</ul>
+<p><img src= "/img/loading.gif" data-src="./237.png" alt="Alt text"></p>
+<h2 id="一个综合实例"><a href="#一个综合实例" class="headerlink" title="一个综合实例"></a>一个综合实例</h2><p><img src= "/img/loading.gif" data-src="./238.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./239.png" alt="Alt text"></p>
+<h2 id="文件数据读写"><a href="#文件数据读写" class="headerlink" title="文件数据读写"></a>文件数据读写</h2><p>本地文件的读写：<br><img src= "/img/loading.gif" data-src="./240.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./241.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./242.png" alt="Alt text"></p>
+<p>分布式文件的读写：<br><img src= "/img/loading.gif" data-src="./243.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./244.png" alt="Alt text"></p>
+<h2 id="HBase数据读写：HBase简介"><a href="#HBase数据读写：HBase简介" class="headerlink" title="HBase数据读写：HBase简介"></a>HBase数据读写：HBase简介</h2><p><img src= "/img/loading.gif" data-src="./245.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./246.png" alt="Alt text"></p>
+<p>HBase是Hadoop家族的一个组件，是一个分布式数据库，是构建在HDFS基础上的，也就是说，HBase是一个分布式数据库，但它的数据被保存在了底层的HDFS中.</p>
+<p><img src= "/img/loading.gif" data-src="./247.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./248.png" alt="Alt text"></p>
+<p><img src= "/img/loading.gif" data-src="./249.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./250.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./251.png" alt="Alt text"></p>
+<p>在关系型数据库中，给定行和列(2维)就能够定位：<br><img src= "/img/loading.gif" data-src="./252.png" alt="Alt text"></p>
+<p>而在HBase中，则需要4维才能定位：<br><img src= "/img/loading.gif" data-src="./253.png" alt="Alt text"></p>
+<p><img src= "/img/loading.gif" data-src="./254.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./255.png" alt="Alt text"></p>
+<h2 id="HBase数据读写：创建HBase表"><a href="#HBase数据读写：创建HBase表" class="headerlink" title="HBase数据读写：创建HBase表"></a>HBase数据读写：创建HBase表</h2><p>安装HBase，然后先启动Hadoop，再启动HBase：<br><img src= "/img/loading.gif" data-src="./256.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./257.png" alt="Alt text"></p>
+<p>假设要创建的student表如下：<br><img src= "/img/loading.gif" data-src="./258.png" alt="Alt text"></p>
+<p>开始创建：<br><img src= "/img/loading.gif" data-src="./259.png" alt="Alt text"></p>
+<p>关系型数据可以一列直接写入，但HBase只能一个单元格一个单元格的写：<br><img src= "/img/loading.gif" data-src="./260.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./261.png" alt="Alt text"></p>
+<h2 id="HBase数据读写：配置Spark"><a href="#HBase数据读写：配置Spark" class="headerlink" title="HBase数据读写：配置Spark"></a>HBase数据读写：配置Spark</h2><p><img src= "/img/loading.gif" data-src="./262.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./263.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./264.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./265.png" alt="Alt text"></p>
+<h2 id="HBase数据读写：编写程序读取HBase数据"><a href="#HBase数据读写：编写程序读取HBase数据" class="headerlink" title="HBase数据读写：编写程序读取HBase数据"></a>HBase数据读写：编写程序读取HBase数据</h2><p><img src= "/img/loading.gif" data-src="./266.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./267.png" alt="Alt text"></p>
+<p>count统计总共有多少个键值对（行键：行键对应的值）.</p>
+<p><img src= "/img/loading.gif" data-src="./268.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./269.png" alt="Alt text"></p>
+<h2 id="HBase数据读写：编写程序向HBase写入数据"><a href="#HBase数据读写：编写程序向HBase写入数据" class="headerlink" title="HBase数据读写：编写程序向HBase写入数据"></a>HBase数据读写：编写程序向HBase写入数据</h2><p><img src= "/img/loading.gif" data-src="./270.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./271.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./272.png" alt="Alt text"><br><img src= "/img/loading.gif" data-src="./273.png" alt="Alt text"></p>
+</div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Spark/">Spark</a></div><div class="post_share"><div class="social-share" data-image="https://www.cdnjson.com/images/2021/11/19/122.jpg" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"/><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/11/16/%E7%AE%97%E6%B3%95(%E4%B8%8A)/%E7%AE%97%E6%B3%95(%E4%B8%8A)/"><img class="prev-cover" data-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">算法(上)/算法(上)</div></div></a></div><div class="next-post pull-right"><a href="/2021/11/06/%E7%BB%8F%E5%85%B8%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B-DeepCross/"><img class="next-cover" data-src="https://www.cdnjson.com/images/2021/11/06/3.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">经典推荐模型:DeepCross</div></div></a></div></nav></article></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By 雨落诗山山亦奇</div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="font_plus" type="button" title="放大字体"><i class="fas fa-plus"></i></button><button id="font_minus" type="button" title="缩小字体"><i class="fas fa-minus"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  CommonHTML: {
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "HTML-CSS": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  },
+  "SVG": { 
+    linebreaks: { automatic: true, width: "90% container" }
+  }
+});
+</script><script type="text/x-mathjax-config">MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for (i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script src="/js/third-party/activate-power-mode.js"></script><script>POWERMODE.colorful = true;
 POWERMODE.shake = true;
 document.body.addEventListener('input', POWERMODE);
 </script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script src="/js/third-party/ClickShowText.js"></script><script src="https://cdn.jsdelivr.net/gh/lete114/CDN/Sum/sakura.js"></script><script src="/js/egao.js"></script><script src="/js/snow.js"></script></body></html>
