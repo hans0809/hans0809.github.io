@@ -1,0 +1,300 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>分支循环，效率加速器-Python基础连载（八） | 南极Python</title><meta name="keywords" content="Python"><meta name="author" content="雨落诗山山亦奇"><meta name="copyright" content="雨落诗山山亦奇"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="开篇你可能已经发现，前面的七期内容有一个共同的特点，那就是偏向理论基础，似乎学完之后只是了解了一些实用的方法，比如字符串如何进行增删改查，如何交互实现输入输出，Python运算符的种类等等。 此刻的你，是不是一点也没有感受到程序带来的效率翻倍？ 今天就来填补这个大坑，一起来学习分支和循环吧！ 分支所谓分支，可以形象的理解为一棵树的分叉：  满足哪个条件，就往哪个分叉方向前进。 写成Python伪代">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分支循环，效率加速器-Python基础连载（八）">
+<meta property="og:url" content="http://yoursite.com/2020/07/10/%E5%88%86%E6%94%AF%E5%BE%AA%E7%8E%AF%EF%BC%8C%E6%95%88%E7%8E%87%E5%8A%A0%E9%80%9F%E5%99%A8-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E5%85%AB%EF%BC%89/index.html">
+<meta property="og:site_name" content="南极Python">
+<meta property="og:description" content="开篇你可能已经发现，前面的七期内容有一个共同的特点，那就是偏向理论基础，似乎学完之后只是了解了一些实用的方法，比如字符串如何进行增删改查，如何交互实现输入输出，Python运算符的种类等等。 此刻的你，是不是一点也没有感受到程序带来的效率翻倍？ 今天就来填补这个大坑，一起来学习分支和循环吧！ 分支所谓分支，可以形象的理解为一棵树的分叉：  满足哪个条件，就往哪个分叉方向前进。 写成Python伪代">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2020/07/10/UugkVK.jpg">
+<meta property="article:published_time" content="2020-07-10T02:49:21.000Z">
+<meta property="article:modified_time" content="2020-07-10T03:19:40.087Z">
+<meta property="article:author" content="雨落诗山山亦奇">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/07/10/UugkVK.jpg"><link rel="shortcut icon" href="https://www.cdnjson.com/images/2021/11/27/_20210211193948.png"><link rel="canonical" href="http://yoursite.com/2020/07/10/%E5%88%86%E6%94%AF%E5%BE%AA%E7%8E%AF%EF%BC%8C%E6%95%88%E7%8E%87%E5%8A%A0%E9%80%9F%E5%99%A8-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E5%85%AB%EF%BC%89/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '分支循环，效率加速器-Python基础连载（八）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-07-10 11:19:40'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/macblack.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://www.cdnjson.com/images/2021/11/27/_20210211193948.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">134</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.ax1x.com/2020/07/10/UugkVK.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">南极Python</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">分支循环，效率加速器-Python基础连载（八）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-07-10T02:49:21.000Z" title="发表于 2020-07-10 10:49:21">2020-07-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-07-10T03:19:40.087Z" title="更新于 2020-07-10 11:19:40">2020-07-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8Python%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/">零基础入门Python系列教程</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="分支循环，效率加速器-Python基础连载（八）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h3><p>你可能已经发现，前面的七期内容有一个共同的特点，那就是偏向理论基础，似乎学完之后只是了解了一些实用的方法，比如字符串如何进行增删改查，如何交互实现输入输出，<code>Python</code>运算符的种类等等。</p>
+<p>此刻的你，是不是一点也没有感受到程序带来的效率翻倍？</p>
+<p>今天就来填补这个大坑，一起来学习<strong>分支</strong>和<strong>循环</strong>吧！</p>
+<h3 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h3><p>所谓分支，可以形象的理解为一棵树的分叉：</p>
+<p><img src="1.jpg" alt="img"></p>
+<p>满足哪个条件，就往哪个分叉方向前进。</p>
+<p>写成<code>Python</code>伪代码的格式如下：</p>
+<p><img src="2.jpg" alt="img"></p>
+<p>这便是最简单的分支结构：<code>if...else...</code></p>
+<p>还记得之前讲的缩进吗？在这里，<code>:</code>之后按回车键就会自动缩进了，一个缩进相当于按一次<code>Tab</code>键</p>
+<p>缩进的存在，使得<code>Python</code>代码的可读性更强。</p>
+<p>再举两个栗子来练习一下，建议小白同学手动敲一遍：</p>
+<p>【栗子1】数字比较</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x=<span class="number">1</span></span><br><span class="line">y=<span class="number">2</span></span><br><span class="line"><span class="keyword">if</span> x&gt;y:</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&#x27;x比y大！&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:    </span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&#x27;x比y小！&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x比y小！</span><br></pre></td></tr></table></figure>
+
+<p>【栗子2】年龄验证</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">age=<span class="built_in">input</span>(<span class="string">&#x27;请输入你的年龄：&#x27;</span>)</span><br><span class="line">age=<span class="built_in">int</span>(age)<span class="comment">#input输入的是字符串，所以使用int()将其转为数字类型，你还记的吗</span></span><br><span class="line"><span class="keyword">if</span> age&gt;=<span class="number">18</span>:</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&#x27;你好！&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;欢迎光临！&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&#x27;未成年人禁止入内!&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输入18：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">请输入你的年龄：18你好！欢迎光临！</span><br></pre></td></tr></table></figure>
+
+<p>输入12：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">请输入你的年龄：12未成年人禁止入内!</span><br></pre></td></tr></table></figure>
+
+<p>需要注意：</p>
+<p><strong><code>:</code>后面缩进的内容是一个整体，比如【栗子2】中的<code>print(&#39;你好！&#39;)</code>和<code>print(&#39;欢迎光临！&#39;)</code></strong></p>
+<p>但是，如果某一个问题的答案并不是单纯的为**<code>是</code><strong>或者</strong><code>否</code>**，而是有多于两种的答案，那么上面所讲的<code>if ... else...</code>分支语句就无能为力了。</p>
+<p>于是<code>多分支结构</code>出现了！</p>
+<p>同样是小树分叉的形式：</p>
+<p><img src="3.jpg" alt="img"></p>
+<p>图中的栗子写成可以运行的<code>Python</code>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">x=<span class="built_in">input</span>(<span class="string">&#x27;请输入某同学的考试分数：&#x27;</span>)</span><br><span class="line">x=<span class="built_in">int</span>(x)</span><br><span class="line"><span class="keyword">if</span> x&lt;<span class="number">60</span>: </span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&#x27;不及格！&#x27;</span>)</span><br><span class="line"><span class="keyword">elif</span> x&lt;<span class="number">80</span>: </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;中等&#x27;</span>)</span><br><span class="line"><span class="keyword">elif</span> x&lt;<span class="number">90</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;良好&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&#x27;优秀！&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>运行及结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">请输入某同学的考试分数：99优秀！</span><br></pre></td></tr></table></figure>
+
+<p>这种多分支结构采用了<code>elif</code>关键字，它的全称是<code>else if</code>，意思是在否定它上面的条件之后，同时又满足它自身的条件时，就执行它所对应的缩进块内的代码。</p>
+<p>在上面的栗子中，假设<code>x=99</code>，我们一起走一遍：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">检查if语句，发现if后面的x&lt;60不满足，因此跳转到if下面紧邻的第一条elif语句 </span><br><span class="line"></span><br><span class="line">检查第1条elif语句（此时由于已经检查了if语句，所以x&gt;=60是默认成立的），发现后面的x&lt;80不满足，因此跳转到第二条elif语句</span><br><span class="line"></span><br><span class="line">检查第2条elif语句（此时由于已经检查了第一条elif语句，所以x&gt;=80是默认成立的），发现后面的x&lt;90不满足，因此跳转到最后的else语句</span><br><span class="line"></span><br><span class="line">检查最后的else语句（此时由于已经检查了第2条elif语句，所以x&gt;=90是默认成立的），发现x=99满足x&gt;=90这个条件，于是打印&#x27;优秀！&#x27;，程序运行结束。</span><br></pre></td></tr></table></figure>
+
+<p>以上便是基本的分支结构包含的知识点。</p>
+<p>这里再说一下嵌套的分支结构，也就是<code>if</code>里面包裹着<code>if</code>，直接上栗子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x=<span class="number">1</span></span><br><span class="line">y=<span class="number">2</span></span><br><span class="line">z=<span class="number">3</span></span><br><span class="line"><span class="keyword">if</span> x&lt;y:</span><br><span class="line">	<span class="keyword">if</span> y&lt;z:</span><br><span class="line">    	<span class="built_in">print</span>(<span class="string">&#x27;x&lt;y&lt;z&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x&lt;y&lt;z</span><br></pre></td></tr></table></figure>
+
+<p>解释：在第一个<code>if</code>中,满足<code>x，于是继续向下执行第二个</code>if<code>语句（此时已经是在满足</code>x成立的前提下进行的），条件<code>y也满足，于是打印输出</code>x。</p>
+<p>你可能也发现了，最后一个条件不必须是<code>else</code>，可以没有，当然也可以是<code>elif</code>。这一点在今后的编程中你将逐渐体会。</p>
+<h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><p>在<code>Python</code>中，循环有两种，一种是<code>while</code>循环，另一种是<code>for</code>循环。</p>
+<h4 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h4><p><code>while</code>后面跟一个条件表达式，只要条件满足，就一直执行while里面缩进的代码块。举个例栗子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x=<span class="number">1</span></span><br><span class="line"><span class="built_in">sum</span>=<span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> x&lt;=<span class="number">10</span>:</span><br><span class="line">	<span class="built_in">sum</span>+=x</span><br><span class="line">    x=x+<span class="number">1</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;1+2+...+10=&#x27;</span>,<span class="built_in">sum</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这个栗子用来求解<code>1</code>到<code>10</code>之和。</p>
+<p>首先，初始化<code>x</code>为<code>1</code>，用于存放求和结果的变量<code>sum</code>被初始化为<code>0</code>。</p>
+<p>只要条件表达式<code>x&lt;=10</code>满足，那么就一直执行<code>while</code>所包裹的缩进的内容，也就是</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sum</span>+=x</span><br><span class="line">x=x+<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p><code>x</code>从<code>1</code>开始，每运行一次，<code>x</code>就加<code>1</code>，最终<code>x</code>变为<code>11</code>，此时不再满足条件<code>x&lt;=10</code>，于是退出<code>while</code>循环，打印求和结果，程序运行结束。</p>
+<h4 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h4><p><code>for</code>循环的结构为</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> 迭代变量 <span class="keyword">in</span> 可迭代对象:</span><br><span class="line">	代码块</span><br></pre></td></tr></table></figure>
+
+<p>我们目前所学习到的可迭代对象只有字符串，因此这里便先用字符串举例子了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">word=<span class="string">&#x27;Python&#x27;</span></span><br><span class="line"><span class="keyword">for</span> letter <span class="keyword">in</span> word:</span><br><span class="line">	<span class="built_in">print</span>(letter)</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">P</span><br><span class="line">y</span><br><span class="line">t</span><br><span class="line">h</span><br><span class="line">o</span><br><span class="line">n</span><br></pre></td></tr></table></figure>
+
+<p>现在来使用<code>for</code>循环求<code>1</code>到<code>10</code>之和：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sum</span>=<span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> number <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">11</span>):</span><br><span class="line">	<span class="built_in">sum</span>+=number</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;1+2+3+...+10=&#x27;</span>,<span class="built_in">sum</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>+<span class="number">2</span>+<span class="number">3</span>+...+<span class="number">10</span>= <span class="number">55</span></span><br></pre></td></tr></table></figure>
+
+<p>这里使用到了<code>range()</code>函数，它用于生成左闭右开的一个数字序列，具体用法如下：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">range(start,end,step)</span><br></pre></td></tr></table></figure>
+
+<p>其中，</p>
+<p><code>start</code>：开始的数字</p>
+<p><code>end</code>：结束的数字+1</p>
+<p><code>step</code>：步长</p>
+<p><code>start</code>和<code>end</code>必须是整数(可正可负)，<code>step</code>无限制</p>
+<p>如果不写步长值<code>step</code>，则默认步长为<code>1</code></p>
+<p>如果不写开始值<code>start</code>，默认从<code>0</code>开始 ,此时不能指定<code>step</code>，否则逻辑会出错</p>
+<p>看几个栗子：</p>
+<p>【栗子1】不写<code>step</code>，则默认为<code>1</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x=<span class="built_in">range</span>(<span class="number">1</span>,<span class="number">4</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> x:   </span><br><span class="line">	<span class="built_in">print</span>(i)</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+
+<p>【栗子2】不写<code>start</code>，默认从<code>0</code>开始</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x=<span class="built_in">range</span>(<span class="number">4</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> x:</span><br><span class="line">	<span class="built_in">print</span>(i,end=<span class="string">&#x27; &#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 1 2 3 </span><br></pre></td></tr></table></figure>
+
+<p>【栗子3】写<code>step</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x=<span class="built_in">range</span>(<span class="number">4</span>,<span class="number">2</span>,-<span class="number">1</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> x:</span><br><span class="line">	<span class="built_in">print</span>(i)</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">4</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+
+<p>你甚至可以像操作字符串那样对<code>range()</code>生成的对象按照下标访问，也可以做切片（只是返回的仍是可迭代对象）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x=<span class="built_in">range</span>(<span class="number">1</span>,<span class="number">10</span>) <span class="comment">#[1,9]</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[<span class="number">0</span>]</span><br><span class="line"><span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[<span class="number">1</span>]</span><br><span class="line"><span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[<span class="number">8</span>]</span><br><span class="line"><span class="number">9</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[<span class="number">9</span>] <span class="comment">#下标越界，所以报错</span></span><br><span class="line">Traceback (most recent call last):  File <span class="string">&quot;&lt;pyshell#22&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;    x[<span class="number">9</span>]IndexError: <span class="built_in">range</span> <span class="built_in">object</span> index out of <span class="built_in">range</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#切片</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[<span class="number">1</span>:<span class="number">3</span>]<span class="comment">#取下标1到2，注意左闭右开，所以3取不到</span></span><br><span class="line"><span class="built_in">range</span>(<span class="number">2</span>, <span class="number">4</span>)<span class="comment">#下标1对应数字2，下标2对应数字3，注意左闭右开，所以数字4取不到</span></span><br></pre></td></tr></table></figure>
+
+<p>说了这么多，你应该已经很清楚，在求<code>1</code>到<code>10</code>之和的<code>for</code>循环程序中，<code>range(1,11)</code>得到的是一个从<code>1</code>到<code>10</code>的可迭代对象。通过<code>for</code>循环，依次取出可迭代对象中的每一个值，加到<code>sum</code>中，最后打印<code>sum</code>即为所求。</p>
+<h3 id="break和continue"><a href="#break和continue" class="headerlink" title="break和continue"></a>break和continue</h3><p>这两个用于循环中，用来控制循环的走向。</p>
+<p><code>break</code>：直接跳出循环，不再运行循环体内的代码块</p>
+<p><code>continue</code>：只结束本次循环，不会再执行<code>continue</code>语句之后的代码，而是转而从头开始运行循环体内的代码块</p>
+<p>举两个栗子来对比这两者：</p>
+<p>【栗子1】 <code>break</code>的用法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sum</span>=<span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">7</span>):<span class="comment">#i从1到6    </span></span><br><span class="line">	<span class="keyword">if</span> i&gt;<span class="number">5</span>:        </span><br><span class="line">		<span class="keyword">break</span>    <span class="comment">#只有在上面的i&gt;5不成立时才执行下面的代码 </span></span><br><span class="line">    <span class="built_in">sum</span>+=i</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">sum</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">15</span><br></pre></td></tr></table></figure>
+
+<p>解释：当<code>i</code>变为<code>6</code>时，满足<code>if</code>条件，于是执行<code>break</code>语句，跳出整个循环。</p>
+<p>所以，上面的代码的作用是求解<code>1+2+3+4+5</code>的和，也就是<code>15</code>。</p>
+<p>【栗子2】<code>continue</code>的用法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sum</span>=<span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">7</span>):<span class="comment">#i从1到6    </span></span><br><span class="line">	<span class="keyword">if</span> i==<span class="number">5</span>:        </span><br><span class="line">		<span class="keyword">continue</span><span class="comment">#当i=5时，不再执行下面的代码，而是重新开始一次新的循环</span></span><br><span class="line">    <span class="built_in">sum</span>+=i</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">sum</span>) </span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">16</span><br></pre></td></tr></table></figure>
+
+<p>解释：当<code>i=5</code>时，满足<code>if</code>条件，所以会直接进入下一次循环。所以，上面代码的作用就是求解<code>1+2+3+4+6</code>之和，也就是<code>16</code>。</p>
+<h3 id="补充while循环和for循环的另一种用法：while-…else…与for-…else-…"><a href="#补充while循环和for循环的另一种用法：while-…else…与for-…else-…" class="headerlink" title="补充while循环和for循环的另一种用法：while …else…与for …else …"></a>补充while循环和for循环的另一种用法：while …else…与for …else …</h3><p>不管是在<code>while ...else...</code>中，还是在<code>for ...else ...</code>中，只要循环体内的代码是正常执行完之后跳出的循环，那么都会执行<code>else</code>中的代码。但是，如果循环是被<code>break</code>强行终止的，那么抱歉，此时<code>else</code>中的语句会被忽略掉。</p>
+<p>这里就以<code>while ...else...</code>为例进行演示：</p>
+<p>【栗子1】循环体内没有写<code>break</code>，正常结束循环，于是会执行<code>else</code>中的代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">x=<span class="number">1</span></span><br><span class="line"><span class="built_in">sum</span>=<span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> x&lt;=<span class="number">10</span>:</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&#x27;x=&#x27;</span>,x)</span><br><span class="line">    <span class="built_in">sum</span>+=x    </span><br><span class="line">    x=x+<span class="number">1</span></span><br><span class="line"><span class="keyword">else</span>:    </span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&#x27;x=&#123;&#125;，x&lt;=10不再满足，即将退出while循环&#x27;</span>.<span class="built_in">format</span>(x))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;1+2+...+10=&#x27;</span>,<span class="built_in">sum</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">x= <span class="number">1</span></span><br><span class="line">x= <span class="number">2</span></span><br><span class="line">x= <span class="number">3</span></span><br><span class="line">x= <span class="number">4</span></span><br><span class="line">x= <span class="number">5</span></span><br><span class="line">x= <span class="number">6</span></span><br><span class="line">x= <span class="number">7</span></span><br><span class="line">x= <span class="number">8</span></span><br><span class="line">x= <span class="number">9</span></span><br><span class="line">x= <span class="number">10</span></span><br><span class="line">x=<span class="number">11</span>，x&lt;=<span class="number">10</span>不再满足，即将退出<span class="keyword">while</span>循环</span><br><span class="line"><span class="number">1</span>+<span class="number">2</span>+...+<span class="number">10</span>= <span class="number">55</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>【栗子2】循环体内写了<code>break</code>语句，但是<code>break</code>语句并没有被执行，因此也会执行<code>else</code>中的代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sum</span>=<span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">7</span>):</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">sum</span>&gt;<span class="number">100</span>:        </span><br><span class="line">		<span class="keyword">break</span>    </span><br><span class="line">	<span class="built_in">sum</span>+=i</span><br><span class="line"><span class="keyword">else</span>:   </span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&#x27;程序正常结束&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">sum</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">程序正常结束21</span><br></pre></td></tr></table></figure>
+
+
+
+<p>【栗子3】循环体内写了<code>break</code>语句，并且触发了<code>break</code>语句，循环被迫终止，所以此时不会执行<code>else</code>中的代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sum</span>=<span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">7</span>):</span><br><span class="line">	<span class="keyword">if</span> i&gt;<span class="number">5</span>:        </span><br><span class="line">		<span class="keyword">break</span>    </span><br><span class="line">	<span class="built_in">sum</span>+=i</span><br><span class="line"><span class="keyword">else</span>:    </span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&#x27;程序正常结束&#x27;</span>)</span><br><span class="line">	</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">sum</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">15</span><br></pre></td></tr></table></figure></article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Python/">Python</a></div><div class="post_share"><div class="social-share" data-image="https://s1.ax1x.com/2020/07/10/UugkVK.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/07/10/Tensorflow%E5%9F%BA%E7%A1%80/"><img class="prev-cover" src="https://s1.ax1x.com/2020/07/10/UKkian.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Tensorflow基础</div></div></a></div><div class="next-post pull-right"><a href="/2020/07/09/%E5%B0%8F%E5%B0%8F%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%8C%E6%9E%84%E7%AD%91%E5%A4%A7%E4%B8%96%E7%95%8C-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E4%B8%83%EF%BC%89/"><img class="next-cover" src="https://s1.ax1x.com/2020/07/09/Um7728.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">小小运算符，构筑大世界-Python基础连载（七）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/01/29/Python%E5%B0%86%E6%89%B9%E9%87%8F%E5%9B%BE%E7%89%87%E8%BD%ACpdf/" title="Python将批量图片转pdf"><img class="cover" src="https://s3.ax1x.com/2021/02/02/ymxIjx.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-29</div><div class="title">Python将批量图片转pdf</div></div></a></div><div><a href="/2020/07/02/%E4%B8%80%E5%88%87%E9%83%BD%E8%A6%81%E4%BB%8E%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83%E8%AF%B4%E8%B5%B7-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD1/" title="一切都要从搭建环境说起-Python基础连载(一)"><img class="cover" src="https://s1.ax1x.com/2020/07/03/NjVDBt.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-02</div><div class="title">一切都要从搭建环境说起-Python基础连载(一)</div></div></a></div><div><a href="/2021/04/05/%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E6%90%9E%E5%AE%9A%E6%96%87%E4%BB%B6%E6%89%B9%E9%87%8F%E9%87%8D%E5%91%BD%E5%90%8D/" title="一行代码搞定文件批量重命名"><img class="cover" src="https://z3.ax1x.com/2021/04/05/cM6vX4.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-05</div><div class="title">一行代码搞定文件批量重命名</div></div></a></div><div><a href="/2020/08/13/%E5%85%83%E7%BB%84%E4%B8%8E%E9%9B%86%E5%90%88-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/" title="元组与集合-Python基础连载（十一）"><img class="cover" src="https://s1.ax1x.com/2020/08/13/az8yu9.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-13</div><div class="title">元组与集合-Python基础连载（十一）</div></div></a></div><div><a href="/2020/07/04/%E5%88%87%E7%89%87%EF%BC%8C%E7%81%B5%E6%B4%BB%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E4%B8%89%EF%BC%89/" title="切片，灵活的字符串-Python基础连载（三）"><img class="cover" src="https://s1.ax1x.com/2020/07/04/Nv0zxe.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-04</div><div class="title">切片，灵活的字符串-Python基础连载（三）</div></div></a></div><div><a href="/2020/08/17/%E5%87%BD%E6%95%B0%EF%BC%8C%E5%8C%96%E7%B9%81%E4%B8%BA%E7%AE%80-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" title="函数，化繁为简-Python基础连载（十二）"><img class="cover" src="https://s1.ax1x.com/2020/08/17/dZHgOO.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-17</div><div class="title">函数，化繁为简-Python基础连载（十二）</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://www.cdnjson.com/images/2021/11/27/_20210211193948.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">雨落诗山山亦奇</div><div class="author-info__description">昨夜星辰昨夜风</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">134</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">机器爱学习</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E7%AF%87"><span class="toc-number">1.</span> <span class="toc-text">开篇</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%94%AF"><span class="toc-number">2.</span> <span class="toc-text">分支</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF"><span class="toc-number">3.</span> <span class="toc-text">循环</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#while%E5%BE%AA%E7%8E%AF"><span class="toc-number">3.1.</span> <span class="toc-text">while循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#for%E5%BE%AA%E7%8E%AF"><span class="toc-number">3.2.</span> <span class="toc-text">for循环</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#break%E5%92%8Ccontinue"><span class="toc-number">4.</span> <span class="toc-text">break和continue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A5%E5%85%85while%E5%BE%AA%E7%8E%AF%E5%92%8Cfor%E5%BE%AA%E7%8E%AF%E7%9A%84%E5%8F%A6%E4%B8%80%E7%A7%8D%E7%94%A8%E6%B3%95%EF%BC%9Awhile-%E2%80%A6else%E2%80%A6%E4%B8%8Efor-%E2%80%A6else-%E2%80%A6"><span class="toc-number">5.</span> <span class="toc-text">补充while循环和for循环的另一种用法：while …else…与for …else …</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/11/23/%E7%BB%8F%E5%85%B8%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B-NFM/" title="经典推荐模型:NFM"><img src="https://www.cdnjson.com/images/2021/11/23/2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="经典推荐模型:NFM"/></a><div class="content"><a class="title" href="/2021/11/23/%E7%BB%8F%E5%85%B8%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B-NFM/" title="经典推荐模型:NFM">经典推荐模型:NFM</a><time datetime="2021-11-23T13:34:19.000Z" title="发表于 2021-11-23 21:34:19">2021-11-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/19/%E7%94%A8Python%E5%AE%9E%E7%8E%B0%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E7%AE%97%E6%B3%95/" title="用Python实现协同过滤算法"><img src="https://www.cdnjson.com/images/2021/11/19/122.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="用Python实现协同过滤算法"/></a><div class="content"><a class="title" href="/2021/11/19/%E7%94%A8Python%E5%AE%9E%E7%8E%B0%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E7%AE%97%E6%B3%95/" title="用Python实现协同过滤算法">用Python实现协同过滤算法</a><time datetime="2021-11-19T06:39:33.000Z" title="发表于 2021-11-19 14:39:33">2021-11-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/18/%E7%BB%8F%E5%85%B8%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B-FNN/" title="经典推荐模型:FNN，DeepFM"><img src="https://www.cdnjson.com/images/2021/11/21/marc-olivier-jodoin-NqOInJ-ttqM-unsplash.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="经典推荐模型:FNN，DeepFM"/></a><div class="content"><a class="title" href="/2021/11/18/%E7%BB%8F%E5%85%B8%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B-FNN/" title="经典推荐模型:FNN，DeepFM">经典推荐模型:FNN，DeepFM</a><time datetime="2021-11-18T05:54:19.000Z" title="发表于 2021-11-18 13:54:19">2021-11-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/17/%E5%9F%BA%E4%BA%8ENeuralCF%E7%9A%84%E5%9B%BE%E4%B9%A6%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" title="基于NeuralCF的图书推荐系统"><img src="https://www.cdnjson.com/images/2021/11/02/7.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基于NeuralCF的图书推荐系统"/></a><div class="content"><a class="title" href="/2021/11/17/%E5%9F%BA%E4%BA%8ENeuralCF%E7%9A%84%E5%9B%BE%E4%B9%A6%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" title="基于NeuralCF的图书推荐系统">基于NeuralCF的图书推荐系统</a><time datetime="2021-11-17T07:40:50.000Z" title="发表于 2021-11-17 15:40:50">2021-11-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/16/%E8%B7%A8%E8%80%83%E5%B0%8F%E7%99%BD%E5%AD%A6%E5%88%B7%E9%A2%98(%E4%B8%8A)/%E7%AE%97%E6%B3%95(%E4%B8%8A)/" title="无题"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2021/11/16/%E8%B7%A8%E8%80%83%E5%B0%8F%E7%99%BD%E5%AD%A6%E5%88%B7%E9%A2%98(%E4%B8%8A)/%E7%AE%97%E6%B3%95(%E4%B8%8A)/" title="无题">无题</a><time datetime="2021-11-16T08:34:08.248Z" title="发表于 2021-11-16 16:34:08">2021-11-16</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://s1.ax1x.com/2020/07/10/UugkVK.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By 雨落诗山山亦奇</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
