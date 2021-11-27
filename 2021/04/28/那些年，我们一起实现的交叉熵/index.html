@@ -1,0 +1,232 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>那些年，我们一起实现的交叉熵 | 南极Python</title><meta name="keywords" content="DL"><meta name="author" content="雨落诗山山亦奇"><meta name="copyright" content="雨落诗山山亦奇"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="最近在做交叉熵的魔改，所以需要好好了解下交叉熵，遂有此文。 关于交叉熵的定义请自行百度，相信点进来的你对其基本概念不陌生。 本文将结合PyTorch，介绍离散形式的交叉熵在二分类以及多分类中的应用。注意，本文出现的二分类交叉熵和多分类交叉熵，本质上都是一个东西，二分类交叉熵可以看作是多分类交叉熵的一个特例，只不过在PyTorch中对应方法的实现方式不同（不同之处将在正文详细讲解）。 好了，废话少叙">
+<meta property="og:type" content="article">
+<meta property="og:title" content="那些年，我们一起实现的交叉熵">
+<meta property="og:url" content="http://yoursite.com/2021/04/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%EF%BC%8C%E6%88%91%E4%BB%AC%E4%B8%80%E8%B5%B7%E5%AE%9E%E7%8E%B0%E7%9A%84%E4%BA%A4%E5%8F%89%E7%86%B5/index.html">
+<meta property="og:site_name" content="南极Python">
+<meta property="og:description" content="最近在做交叉熵的魔改，所以需要好好了解下交叉熵，遂有此文。 关于交叉熵的定义请自行百度，相信点进来的你对其基本概念不陌生。 本文将结合PyTorch，介绍离散形式的交叉熵在二分类以及多分类中的应用。注意，本文出现的二分类交叉熵和多分类交叉熵，本质上都是一个东西，二分类交叉熵可以看作是多分类交叉熵的一个特例，只不过在PyTorch中对应方法的实现方式不同（不同之处将在正文详细讲解）。 好了，废话少叙">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://z3.ax1x.com/2021/04/29/gFotZF.jpg">
+<meta property="article:published_time" content="2021-04-28T10:59:03.000Z">
+<meta property="article:modified_time" content="2021-04-29T05:16:14.711Z">
+<meta property="article:author" content="雨落诗山山亦奇">
+<meta property="article:tag" content="DL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://z3.ax1x.com/2021/04/29/gFotZF.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://yoursite.com/2021/04/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%EF%BC%8C%E6%88%91%E4%BB%AC%E4%B8%80%E8%B5%B7%E5%AE%9E%E7%8E%B0%E7%9A%84%E4%BA%A4%E5%8F%89%E7%86%B5/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '那些年，我们一起实现的交叉熵',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-04-29 13:16:14'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">134</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://z3.ax1x.com/2021/04/29/gFotZF.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">南极Python</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">那些年，我们一起实现的交叉熵</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-28T10:59:03.000Z" title="发表于 2021-04-28 18:59:03">2021-04-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-04-29T05:16:14.711Z" title="更新于 2021-04-29 13:16:14">2021-04-29</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">深度学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="那些年，我们一起实现的交叉熵"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>最近在做交叉熵的魔改，所以需要好好了解下交叉熵，遂有此文。</p>
+<p>关于交叉熵的定义请自行百度，相信点进来的你对其基本概念不陌生。</p>
+<p>本文将结合PyTorch，介绍离散形式的交叉熵在二分类以及多分类中的应用。注意，本文出现的二分类交叉熵和多分类交叉熵，本质上都是一个东西，二分类交叉熵可以看作是多分类交叉熵的一个特例，只不过在PyTorch中对应方法的实现方式不同（不同之处将在正文详细讲解）。</p>
+<p>好了，废话少叙，正文开始~</p>
+<h2 id="二分类交叉熵"><a href="#二分类交叉熵" class="headerlink" title="二分类交叉熵"></a>二分类交叉熵</h2><p>$$L=-\frac1N \sum_{i=1}^{N}[y_ilog(p_i)+(1-y_i)log(1-p_i)]$$<br>其中，$N$是总样本数，$y_i$是第$i$个样本的所属类别，$p_i$是第$i$个样本的预测值，一般来说，它是一个概率值。</p>
+<p>上栗子：</p>
+<table>
+<thead>
+<tr>
+<th align="center">.</th>
+<th align="center">$y_i$</th>
+<th align="center">$p_i$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">第1个样本</td>
+<td align="center">1</td>
+<td align="center">0.8</td>
+</tr>
+<tr>
+<td align="center">第1个样本</td>
+<td align="center">0</td>
+<td align="center">0.2</td>
+</tr>
+<tr>
+<td align="center">第1个样本</td>
+<td align="center">0</td>
+<td align="center">0.4</td>
+</tr>
+</tbody></table>
+<p>按照上面的公式，交叉熵计算如下：<br>$$L=\frac13[(1*log0.8+(1-1)<em>log(1-0.8))+(0</em>log0.2+(1-0)<em>log(1-0.2))+(0</em>log0.4+(1-0)*log(1-0.4))]=0.319$$<br><img src="./1.png" alt="Alt text"></p>
+<p>其实，在PyTorch中已经内置了<code>BCELoss</code>，它的主要用途是计算二分类问题的交叉熵，我们可以调用该方法，并将结果与上面手动计算的结果做个比较：<br><img src="./2.png" alt="Alt text"></p>
+<p>嗯，结果是一致的。</p>
+<p>需要注意的是，输入<code>BCELoss</code>中的预测值应该是个概率$p_i$。</p>
+<p>上面的栗子直接给出了预测的$p_i$，这是符合要求的。但在更一般的二分类问题中，网络的输出取值是整个实数域(可正可负可为0)。</p>
+<p>为了由这种输出值得到对应的$p_i$，你可以在网络的输出层之后新加一个<code>Sigmoid</code>层，这样便可以将输出值的取值规范到0和1之间，这就是交叉熵公式中的$p_i$。</p>
+<p>当然，你也可以不更改网络输出，而是在将输出值送入交叉熵公式进行性计算之前，手动用<code>Simgmoid</code>函数做一个映射。</p>
+<p>在PyTorch中，甚至提供了<code>BCEWithLogitsLoss</code>方法，它可以直接将输入的值规范到0和1 之间，相当于将<code>Sigmoid</code>和<code>BCELoss</code>集成在了一个方法中。</p>
+<p>还是举个栗子来具体进行说明：假设pred是shape为[4,2]的tensor，其中4代表样本个数，2代表该样本分别属于两个类别的概率（前提是规范到了0和1之间，否则就是两个实数域上的值，记住，现在我们讨论的是二分类）；target是shape为[4]的tensor，4即样本数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pred=torch.randn(<span class="number">4</span>,<span class="number">2</span>)<span class="comment">#预测值</span></span><br><span class="line">target=torch.rand(<span class="number">4</span>).random_(<span class="number">0</span>,<span class="number">2</span>)<span class="comment">#真实类别标签</span></span><br></pre></td></tr></table></figure>
+
+<p>在使用任何一种方法之前，都需要先对target做独热编码，否则target和pred维度不匹配：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#将target进行独热编码</span></span><br><span class="line">onehot_target=torch.eye(<span class="number">2</span>)[target.long(), :]</span><br></pre></td></tr></table></figure>
+<p>在做编码前，target看起来长这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tensor([0., 1., 1., 1.])</span><br></pre></td></tr></table></figure>
+<p>编码后，target变成了这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tensor([[1., 0.],</span><br><span class="line">        [0., 1.],</span><br><span class="line">        [0., 1.],</span><br><span class="line">        [0., 1.]])</span><br></pre></td></tr></table></figure>
+<p>现在，target的shape也是[4,2]了，和pred的shape一样，所以下面可以开始计算交叉熵了。</p>
+<ul>
+<li>使用<code>Sigmoid</code>和<code>BCELoss</code>计算交叉熵  先使用<code>nn.Sigmoid</code>做一下映射：<br>  <img src="./3.png" alt="Alt text"><br>  可以看到，映射后的取值已经被规范到了0和1之间。  然后使用<code>BCELoss</code>进行计算：<br>  <img src="./4.png" alt="Alt text"></li>
+</ul>
+<ul>
+<li>只使用<code>BCELossWithLogits</code>计算交叉熵<br>  <img src="./5.png" alt="Alt text"></li>
+</ul>
+<p>两种方法的计算结果完全一致。不过官方建议使用<code>BCELossWithLogits</code>，理由是能够提升数值计算稳定性。</p>
+<p>以后，当你使用PyTorch内置的二分类交叉熵损失函数时，只要保证输入的预测值和真实标签的维度一致（N,…），且输入的预测值是一个概率即可。满足这两点，一般就能避免常见的错误了。<br><img src="./7.png" alt="Alt text"><br>(BCELoss的使用)</p>
+<p>关于二分类交叉熵的介绍就到这里，接下来介绍多分类交叉熵。</p>
+<h2 id="多分类交叉熵"><a href="#多分类交叉熵" class="headerlink" title="多分类交叉熵"></a>多分类交叉熵</h2><p>$$L=-{\frac1N} {\sum_{i=1}^{N}}  {\sum_{c=1}^{K}} y_{ic}log(p_{ic})$$<br>其中，N代表样本数，K代表类别数，$p_{ic}$代表第i个样本属于类别c的概率，$\sum_{c=1}^{K}p_{ic}=1,i=1,2,…,N$，$y_{ic}\in {0,1}$，可以看作一个one-hot编码（若第i个样本属于类别c，则对应位置的$y_ic$取1，否则取0）。</p>
+<p>这个公式乍看上去有点复杂，其实不难。不妨取第$i$个样本，计算这个样本的交叉熵，公式如下：<br>$$L_i=\sum_{c=1}^{K}y_{ic}log(p_{ic})$$</p>
+<p>假设N=2, K=3，即总共3个样本，3个类别，样本的数据如下</p>
+<p>|.      |    $y_{i1}$|   $y_{i2}$   |$y_{i3}$|$p_{i1}$|$p_{i2}$|$p_{i3}$|<br>| :——–: | :——–:| :——: |:——:|<br>| 第1个样本   |   0|  1  |0|0.2|0.3|0.5<br>| 第2个样本   |   1|  0 |0|0.3|0.2|0.5<br>| 第3个样本   |   0|  0  |1|0.4|0.4|0.2</p>
+<p>$$L_1=0<em>log(0.2)+1</em>log(0.3)+0<em>log(0.5)=-1.2039$$<br>$$L_2=1</em>log(0.3)+0<em>log(0.2)+0</em>log(0.5)=-1.2039$$<br>$$L_3=0<em>log(0.4)+0</em>log(0.4)+0*log(0.2)=-1.6094$$</p>
+<p>看吧，最终的交叉熵只不过是做了N这样的计算，然后平均一下，加个负号：<br>$$L=-\frac13(L_1+L_2+L_3)=1.3391$$</p>
+<p>你可能已经发现，这里的$p_{ic},c=1,2,3$之和为1。没错，这是网络的输出做了softmax后得到的结果。在上一部分<strong>关于二分类的问题中，输入交叉熵公式的网络预测值必须经过<code>Sigmoid</code>进行映射，而在这里的多分类问题中，需要将<code>Sigmoid</code>替换成<code>Softmax</code>，这是两者的一个重要区别！</strong></p>
+<p>现在让我们用代码来实现上面的计算过程：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#预测值，假设已做softmax</span></span><br><span class="line">pred=torch.tensor([[<span class="number">0.2</span>,<span class="number">0.3</span>,<span class="number">0.5</span>],[<span class="number">0.3</span>,<span class="number">0.2</span>,<span class="number">0.5</span>],[<span class="number">0.4</span>,<span class="number">0.4</span>,<span class="number">0.2</span>]])</span><br><span class="line"><span class="comment">#真实类别标签</span></span><br><span class="line">target=torch.tensor([<span class="number">1</span>,<span class="number">0</span>,<span class="number">2</span>])</span><br><span class="line"><span class="comment"># 对真实类别标签做 独热编码</span></span><br><span class="line">one_hot = F.one_hot(target).<span class="built_in">float</span>()</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">one_hot:</span></span><br><span class="line"><span class="string">tensor([[0., 1., 0.],</span></span><br><span class="line"><span class="string">        [1., 0., 0.],</span></span><br><span class="line"><span class="string">        [0., 0., 1.]])</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="comment">#对预测值取log</span></span><br><span class="line">log=torch.log(pred)</span><br><span class="line"><span class="comment">#计算最终的结果</span></span><br><span class="line">res=-torch.<span class="built_in">sum</span>(one_hot*log)/target.shape[<span class="number">0</span>]</span><br><span class="line"><span class="built_in">print</span>(res)<span class="comment"># tensor(1.3391)</span></span><br></pre></td></tr></table></figure>
+<p>这和我们之前手动计算的结果是一样的。代码很简单，只需注意代码中的<code>one_hot*log</code>是逐元素做乘法。</p>
+<p>以上是其内部实现原理。在实际使用时，为了方便，PyTorch已经封装好了以上过程，你只需要调用一下相应的方法或函数即可。</p>
+<p>在PyTorch中，有一个叫做<code>nll_loss</code>的函数，可以帮助我们更快的实现上述计算，此时无需对target进行独热编码，于是代码可简化如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch.nn.functional <span class="keyword">as</span> F</span><br><span class="line"><span class="comment">#预测值，已做softmax</span></span><br><span class="line">pred=torch.tensor([[<span class="number">0.2</span>,<span class="number">0.3</span>,<span class="number">0.5</span>],[<span class="number">0.3</span>,<span class="number">0.2</span>,<span class="number">0.5</span>],[<span class="number">0.4</span>,<span class="number">0.4</span>,<span class="number">0.2</span>]])</span><br><span class="line"><span class="comment">#真实类别标签,此时无需再做one_hot，因为nll_loss会自动做</span></span><br><span class="line">target=torch.tensor([<span class="number">1</span>,<span class="number">0</span>,<span class="number">2</span>])</span><br><span class="line"><span class="comment">#对预测值取log</span></span><br><span class="line">log=torch.log(pred)</span><br><span class="line"><span class="comment">#计算最终的结果</span></span><br><span class="line">res=F.nll_loss(log, target)</span><br><span class="line"><span class="built_in">print</span>(res)<span class="comment"># tensor(1.3391)</span></span><br></pre></td></tr></table></figure>
+
+<p>等等，还没完。在PyTorch中，最常用于多分类问题的，是<code>CrossEntropyLoss</code>.</p>
+<p>它可以看作是<code>softmax</code>+<code>log</code>+<code>nll_loss</code>的集成。</p>
+<p>上面的栗子中的预测值是已经做完softmax之后的，为了说明<code>CrossEntropyLoss</code>的原理，我们换一个预测值没有做过softmax的新栗子，这种栗子也是我们通常会遇到的情况：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#4个样本，3分类</span></span><br><span class="line">pred=torch.rand(<span class="number">4</span>,<span class="number">3</span>)</span><br><span class="line"><span class="comment">#真实类别标签</span></span><br><span class="line">target=torch.tensor([<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+<p>先按照<code>softmax</code>+<code>log</code>+<code>nll_loss</code>的步骤走一遍：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">logsoftmax=F.log_softmax(pred)</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">logsoftmax:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">tensor([[-0.8766, -1.4375, -1.0605],</span></span><br><span class="line"><span class="string">        [-1.0188, -0.9754, -1.3397],</span></span><br><span class="line"><span class="string">        [-0.8926, -1.0962, -1.3615],</span></span><br><span class="line"><span class="string">        [-1.0364, -0.8817, -1.4645]])</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">res=F.nll_loss(logsoftmax,target)</span><br><span class="line">pritnt(res)<span class="comment">#tensor(1.0523)</span></span><br></pre></td></tr></table></figure>
+
+<p>直接使用<code>CrossEntropyLoss</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">res=F.cross_entropy(pred, target)</span><br><span class="line"><span class="built_in">print</span>(res)<span class="comment">#tensor(1.0523)</span></span><br></pre></td></tr></table></figure>
+<p>结果是一样的。</p>
+<p><img src="./8.png" alt="Alt text"><br>(CrossEntropyLoss的使用)</p>
+<p>参考：</p>
+<ul>
+<li>[1] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/35709485">https://zhuanlan.zhihu.com/p/35709485</a></li>
+<li>[2] <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/159477597">https://zhuanlan.zhihu.com/p/159477597</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">雨落诗山山亦奇</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2021/04/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%EF%BC%8C%E6%88%91%E4%BB%AC%E4%B8%80%E8%B5%B7%E5%AE%9E%E7%8E%B0%E7%9A%84%E4%BA%A4%E5%8F%89%E7%86%B5/">http://yoursite.com/2021/04/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%EF%BC%8C%E6%88%91%E4%BB%AC%E4%B8%80%E8%B5%B7%E5%AE%9E%E7%8E%B0%E7%9A%84%E4%BA%A4%E5%8F%89%E7%86%B5/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yoursite.com" target="_blank">南极Python</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/DL/">DL</a></div><div class="post_share"><div class="social-share" data-image="https://z3.ax1x.com/2021/04/29/gFotZF.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/05/01/%E9%AD%94%E6%94%B9%E4%BA%A4%E5%8F%89%E7%86%B5/"><img class="prev-cover" src="https://www.cdnjson.com/images/2021/05/02/rishi-WiCvC9u7OpE-unsplash.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">魔改交叉熵</div></div></a></div><div class="next-post pull-right"><a href="/2021/04/09/FaceFromX/"><img class="next-cover" src="https://z3.ax1x.com/2021/04/09/cUQzfU.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">FaceFromX</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/04/05/1%E5%B0%8F%E6%97%B6%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8PyTorch/" title="1小时快速入门PyTorch"><img class="cover" src="https://z3.ax1x.com/2021/04/10/cajxDs.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-05</div><div class="title">1小时快速入门PyTorch</div></div></a></div><div><a href="/2020/10/12/Keras%E4%B8%AD%E5%85%B3%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84trainable%E7%8A%B6%E6%80%81%E7%9A%84%E9%97%AE%E9%A2%98/" title="Keras中关于模型的trainable状态的问题"><img class="cover" src="https://s1.ax1x.com/2020/07/19/URRLqI.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-10-12</div><div class="title">Keras中关于模型的trainable状态的问题</div></div></a></div><div><a href="/2021/06/11/NLP%E6%9E%81%E7%AE%80%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0/" title="NLP极简入门笔记"><img class="cover" src="https://www.cdnjson.com/images/2021/06/11/87.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-06-11</div><div class="title">NLP极简入门笔记</div></div></a></div><div><a href="/2020/08/16/LSTM/" title="LSTM"><img class="cover" src="https://s1.ax1x.com/2020/08/16/dVcI61.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-16</div><div class="title">LSTM</div></div></a></div><div><a href="/2020/08/16/RNN%E5%9C%A8TF%E4%B8%AD%E7%9A%84%E5%AE%9E%E7%8E%B0/" title="RNN在TF中的实现"><img class="cover" src="https://s1.ax1x.com/2020/08/16/dVBEsU.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-16</div><div class="title">RNN在TF中的实现</div></div></a></div><div><a href="/2020/11/23/ResNet/" title="ResNet"><img class="cover" src="https://s3.ax1x.com/2020/11/23/DYivdK.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-11-23</div><div class="title">ResNet</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">雨落诗山山亦奇</div><div class="author-info__description">昨夜星辰昨夜风</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">134</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%88%86%E7%B1%BB%E4%BA%A4%E5%8F%89%E7%86%B5"><span class="toc-number">1.</span> <span class="toc-text">二分类交叉熵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E5%88%86%E7%B1%BB%E4%BA%A4%E5%8F%89%E7%86%B5"><span class="toc-number">2.</span> <span class="toc-text">多分类交叉熵</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/11/23/%E7%BB%8F%E5%85%B8%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B-NFM/" title="经典推荐模型:NFM"><img src="https://www.cdnjson.com/images/2021/11/23/2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="经典推荐模型:NFM"/></a><div class="content"><a class="title" href="/2021/11/23/%E7%BB%8F%E5%85%B8%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B-NFM/" title="经典推荐模型:NFM">经典推荐模型:NFM</a><time datetime="2021-11-23T13:34:19.000Z" title="发表于 2021-11-23 21:34:19">2021-11-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/19/%E7%94%A8Python%E5%AE%9E%E7%8E%B0%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E7%AE%97%E6%B3%95/" title="用Python实现协同过滤算法"><img src="https://www.cdnjson.com/images/2021/11/19/122.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="用Python实现协同过滤算法"/></a><div class="content"><a class="title" href="/2021/11/19/%E7%94%A8Python%E5%AE%9E%E7%8E%B0%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E7%AE%97%E6%B3%95/" title="用Python实现协同过滤算法">用Python实现协同过滤算法</a><time datetime="2021-11-19T06:39:33.000Z" title="发表于 2021-11-19 14:39:33">2021-11-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/18/%E7%BB%8F%E5%85%B8%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B-FNN/" title="经典推荐模型:FNN，DeepFM"><img src="https://www.cdnjson.com/images/2021/11/21/marc-olivier-jodoin-NqOInJ-ttqM-unsplash.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="经典推荐模型:FNN，DeepFM"/></a><div class="content"><a class="title" href="/2021/11/18/%E7%BB%8F%E5%85%B8%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B-FNN/" title="经典推荐模型:FNN，DeepFM">经典推荐模型:FNN，DeepFM</a><time datetime="2021-11-18T05:54:19.000Z" title="发表于 2021-11-18 13:54:19">2021-11-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/17/%E5%9F%BA%E4%BA%8ENeuralCF%E7%9A%84%E5%9B%BE%E4%B9%A6%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" title="基于NeuralCF的图书推荐系统"><img src="https://www.cdnjson.com/images/2021/11/02/7.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基于NeuralCF的图书推荐系统"/></a><div class="content"><a class="title" href="/2021/11/17/%E5%9F%BA%E4%BA%8ENeuralCF%E7%9A%84%E5%9B%BE%E4%B9%A6%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" title="基于NeuralCF的图书推荐系统">基于NeuralCF的图书推荐系统</a><time datetime="2021-11-17T07:40:50.000Z" title="发表于 2021-11-17 15:40:50">2021-11-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/16/%E7%AE%97%E6%B3%95(%E4%B8%8A)/%E7%AE%97%E6%B3%95(%E4%B8%8A)/" title="无题"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2021/11/16/%E7%AE%97%E6%B3%95(%E4%B8%8A)/%E7%AE%97%E6%B3%95(%E4%B8%8A)/" title="无题">无题</a><time datetime="2021-11-16T08:34:08.248Z" title="发表于 2021-11-16 16:34:08">2021-11-16</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By 雨落诗山山亦奇</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
