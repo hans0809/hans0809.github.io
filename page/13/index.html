@@ -1,20 +1,377 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0078E7"><meta name="author" content="雨落诗山山亦奇"><meta name="copyright" content="雨落诗山山亦奇"><meta name="generator" content="Hexo 4.2.1"><meta name="theme" content="hexo-theme-yun"><title>南极Python</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/star-markdown-css@0.1.25/dist/yun/yun-markdown.min.css"><script src="//at.alicdn.com/t/font_1140697_dxory92pb0h.js" async></script><script src="https://cdn.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>function initScrollReveal() {
-  [".post-card",".post-content img"].forEach((target)=> {
-    ScrollReveal().reveal(target);
-  })
-}
-document.addEventListener("DOMContentLoaded", initScrollReveal);
-document.addEventListener("pjax:success", initScrollReveal);
-</script><link rel="icon" href="/yun.svg"><link rel="mask-icon" href="/yun.svg" color="#0078E7"><link rel="alternate icon" href="/yun.ico"><link rel="preload" href="/js/ui/banner.js" as="script"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="preload" href="/js/utils.js" as="script"><link rel="preload" href="/js/hexo-theme-yun.js" as="script"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><script id="yun-config">
-    const Yun = window.Yun || {};
-    window.CONFIG = {"hostname":"yoursite.com","root":"/","title":"云游君的小站","version":"1.6.3","mode":"auto","copycode":true,"page":{"isPost":false},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）"},"anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","say":{"api":"https://v1.hitokoto.cn","hitokoto":true},"fireworks":{"colors":["102, 167, 221","62, 131, 225","33, 78, 194"]}};
-  </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/utils.js"></script><script src="/js/hexo-theme-yun.js"></script><meta name="description" content="昨夜星辰昨夜风">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>南极Python - Python|机器学习|深度学习</title><meta name="keywords" content="Python|机器学习|深度学习|生活感悟"><meta name="author" content="雨落诗山山亦奇"><meta name="copyright" content="雨落诗山山亦奇"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="昨夜星辰昨夜风">
 <meta property="og:type" content="website">
 <meta property="og:title" content="南极Python">
 <meta property="og:url" content="http://yoursite.com/page/13/index.html">
 <meta property="og:site_name" content="南极Python">
 <meta property="og:description" content="昨夜星辰昨夜风">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
 <meta property="article:author" content="雨落诗山山亦奇">
 <meta property="article:tag" content="Python|机器学习|深度学习|生活感悟">
-<meta name="twitter:card" content="summary"><script src="/js/ui/mode.js"></script></head><body class="is-home"><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js"></script><div class="sidebar-panel sidebar-panel-active" id="site-overview-wrap"><div class="site-info"><a class="site-author-avatar" href="/about/" title="雨落诗山山亦奇"><img width="96" loading="lazy" src="/yun.png" alt="雨落诗山山亦奇"></a><div class="site-author-name"><a href="/about/">雨落诗山山亦奇</a></div><span class="site-name">南极Python</span><sub class="site-subtitle">Python|机器学习|深度学习</sub><div class="site-desciption">昨夜星辰昨夜风</div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="首页"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">134</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">9</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">13</span></a></div><a class="site-state-item hty-icon-button" href="https://yun.yunyoujun.cn" target="_blank" rel="noopener" title="文档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-settings-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="/atom.xml" title="RSS" target="_blank" style="color:orange"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-rss-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://qm.qq.com/cgi-bin/qm/qr?k=kZJzggTTCf4SpvEQ8lXWoi5ZjhAx0ILZ&amp;jump_from=webapi" title="QQ 群 1050458482" target="_blank" style="color:#12B7F5"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-qq-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/YunYouJun" title="GitHub" target="_blank" style="color:#6e5494"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://weibo.com/jizhideyunyoujun" title="微博" target="_blank" style="color:#E6162D"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-weibo-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.douban.com/people/yunyoujun/" title="豆瓣" target="_blank" style="color:#007722"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-douban-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://music.163.com/#/user/home?id=247102977" title="网易云音乐" target="_blank" style="color:#C20C0C"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-netease-cloud-music-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.zhihu.com/people/yunyoujun/" title="知乎" target="_blank" style="color:#0084FF"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-zhihu-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/1579790" title="哔哩哔哩" target="_blank" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/about/white-qrcode-and-search.jpg" title="微信公众号" target="_blank" style="color:#1AAD19"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-wechat-2-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://twitter.com/YunYouJun" title="Twitter" target="_blank" style="color:#1da1f2"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-twitter-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://t.me/elpsycn" title="Telegram Channel" target="_blank" style="color:#0088CC"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-telegram-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="mailto:me@yunyoujun.cn" title="E-Mail" target="_blank" style="color:#8E71C1"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-mail-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://travellings.link" title="Travelling" target="_blank" style="color:var(--hty-text-color)"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-train-line"></use></svg></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/links/" title="我的小伙伴们" style="color:dodgerblue"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-genderless-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div></aside><main class="sidebar-translate" id="content"><section class="hty-layout-grid" id="recent-posts"><div class="hty-layout-grid__cell hty-layout-grid__cell--span-12"><article class="post-card" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/16/%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="雨落诗山山亦奇"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="南极Python"></span><div class="post-card-header"><header class="post-header"><h2 class="post-title" itemprop="name headline"><a class="post-title-link" itemprop="url" href="/2020/07/16/%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/">反向传播算法推导</a></h2><div class="post-meta"><div class="post-time" style="display:inline-block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2020-07-16 08:52:06" itemprop="dateCreated datePublished" datetime="2020-07-16T08:52:06+08:00">2020-07-16</time></div></div></header></div><div class="post-card-content text-center"><div class="post-card-excerpt markdown-body"></div></div><div class="hty-card__actions post-card__actions"><div class="post-card-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">深度学习笔记</span></a></span></div><div class="post-card-tag"><a class="tag-item" href="/tags/DL/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">DL</span></a></div></div></article></div><div class="hty-layout-grid__cell hty-layout-grid__cell--span-12"><article class="post-card" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/16/%E5%85%B3%E4%BA%8E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%93%B2%E5%AD%A6%E3%80%90HuLuan%E3%80%91%E6%80%9D%E8%80%83-%E5%91%93%E8%AF%AD%E7%B3%BB%E5%88%97%E8%BF%9E%E8%BD%BD%EF%BC%88%E4%B8%80%EF%BC%89/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="雨落诗山山亦奇"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="南极Python"></span><div class="post-card-header"><header class="post-header"><h2 class="post-title" itemprop="name headline"><a class="post-title-link" itemprop="url" href="/2020/07/16/%E5%85%B3%E4%BA%8E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%93%B2%E5%AD%A6%E3%80%90HuLuan%E3%80%91%E6%80%9D%E8%80%83-%E5%91%93%E8%AF%AD%E7%B3%BB%E5%88%97%E8%BF%9E%E8%BD%BD%EF%BC%88%E4%B8%80%EF%BC%89/">关于神经网络的哲学【HuLuan】思考</a></h2><div class="post-meta"><div class="post-time" style="display:inline-block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2020-07-16 00:49:22" itemprop="dateCreated datePublished" datetime="2020-07-16T00:49:22+08:00">2020-07-16</time><span class="post-meta-divider">-</span><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-2-line"></use></svg></span> <time title="修改时间：2021-04-05 12:37:53" itemprop="dateModified" datetime="2021-04-05T12:37:53+08:00">2021-04-05</time></div></div></header></div><div class="post-card-content text-center"><div class="post-card-excerpt markdown-body"></div></div><div class="hty-card__actions post-card__actions"><div class="post-card-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/%E5%91%93%E8%AF%AD%E7%B3%BB%E5%88%97%E8%BF%9E%E8%BD%BD/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">呓语系列连载</span></a></span></div><div class="post-card-tag"><a class="tag-item" href="/tags/%E5%91%93%E8%AF%AD/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">呓语</span></a></div></div></article></div><div class="hty-layout-grid__cell hty-layout-grid__cell--span-12"><article class="post-card" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/14/%E5%88%97%E8%A1%A8%EF%BC%8C%E7%AE%80%E5%8D%95%E5%8D%B4%E5%BC%BA%E5%A4%A7-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E4%B9%9D%EF%BC%89/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="雨落诗山山亦奇"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="南极Python"></span><div class="post-card-header"><header class="post-header"><h2 class="post-title" itemprop="name headline"><a class="post-title-link" itemprop="url" href="/2020/07/14/%E5%88%97%E8%A1%A8%EF%BC%8C%E7%AE%80%E5%8D%95%E5%8D%B4%E5%BC%BA%E5%A4%A7-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E4%B9%9D%EF%BC%89/">列表，简单却强大-Python基础连载（九）</a></h2><div class="post-meta"><div class="post-time" style="display:inline-block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2020-07-14 18:02:48" itemprop="dateCreated datePublished" datetime="2020-07-14T18:02:48+08:00">2020-07-14</time></div></div></header></div><div class="post-card-content text-center"><div class="post-card-excerpt markdown-body"></div></div><div class="hty-card__actions post-card__actions"><div class="post-card-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8Python%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">零基础入门Python系列教程</span></a></span></div><div class="post-card-tag"><a class="tag-item" href="/tags/Python/" style="--text-color:#3776ab"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">Python</span></a></div></div></article></div><div class="hty-layout-grid__cell hty-layout-grid__cell--span-12"><article class="post-card" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/10/Tensorflow%E4%B8%AD%E7%9A%84%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="雨落诗山山亦奇"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="南极Python"></span><div class="post-card-header"><header class="post-header"><h2 class="post-title" itemprop="name headline"><a class="post-title-link" itemprop="url" href="/2020/07/10/Tensorflow%E4%B8%AD%E7%9A%84%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/">Tensorflow中的高级操作</a></h2><div class="post-meta"><div class="post-time" style="display:inline-block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2020-07-10 22:39:17" itemprop="dateCreated datePublished" datetime="2020-07-10T22:39:17+08:00">2020-07-10</time><span class="post-meta-divider">-</span><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-2-line"></use></svg></span> <time title="修改时间：2021-10-14 14:22:12" itemprop="dateModified" datetime="2021-10-14T14:22:12+08:00">2021-10-14</time></div></div></header></div><div class="post-card-content text-center"><div class="post-card-excerpt markdown-body"></div></div><div class="hty-card__actions post-card__actions"><div class="post-card-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">深度学习笔记</span></a></span></div><div class="post-card-tag"><a class="tag-item" href="/tags/Tensorflow/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">Tensorflow</span></a></div></div></article></div><div class="hty-layout-grid__cell hty-layout-grid__cell--span-12"><article class="post-card" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/10/Tensorflow%E8%BF%9B%E9%98%B6/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="雨落诗山山亦奇"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="南极Python"></span><div class="post-card-header"><header class="post-header"><h2 class="post-title" itemprop="name headline"><a class="post-title-link" itemprop="url" href="/2020/07/10/Tensorflow%E8%BF%9B%E9%98%B6/">Tensorflow进阶</a></h2><div class="post-meta"><div class="post-time" style="display:inline-block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2020-07-10 16:19:56" itemprop="dateCreated datePublished" datetime="2020-07-10T16:19:56+08:00">2020-07-10</time><span class="post-meta-divider">-</span><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-2-line"></use></svg></span> <time title="修改时间：2021-10-14 14:21:38" itemprop="dateModified" datetime="2021-10-14T14:21:38+08:00">2021-10-14</time></div></div></header></div><div class="post-card-content text-center"><div class="post-card-excerpt markdown-body"></div></div><div class="hty-card__actions post-card__actions"><div class="post-card-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">深度学习笔记</span></a></span></div><div class="post-card-tag"><a class="tag-item" href="/tags/Tensorflow/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">Tensorflow</span></a></div></div></article></div><div class="hty-layout-grid__cell hty-layout-grid__cell--span-12"><article class="post-card" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/10/Tensorflow%E5%9F%BA%E7%A1%80/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="雨落诗山山亦奇"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="南极Python"></span><div class="post-card-header"><header class="post-header"><h2 class="post-title" itemprop="name headline"><a class="post-title-link" itemprop="url" href="/2020/07/10/Tensorflow%E5%9F%BA%E7%A1%80/">Tensorflow基础</a></h2><div class="post-meta"><div class="post-time" style="display:inline-block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2020-07-10 13:57:44" itemprop="dateCreated datePublished" datetime="2020-07-10T13:57:44+08:00">2020-07-10</time><span class="post-meta-divider">-</span><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-2-line"></use></svg></span> <time title="修改时间：2021-10-14 14:20:55" itemprop="dateModified" datetime="2021-10-14T14:20:55+08:00">2021-10-14</time></div></div></header></div><div class="post-card-content text-center"><div class="post-card-excerpt markdown-body"></div></div><div class="hty-card__actions post-card__actions"><div class="post-card-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">深度学习笔记</span></a></span></div><div class="post-card-tag"><a class="tag-item" href="/tags/Tensorflow/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">Tensorflow</span></a></div></div></article></div><div class="hty-layout-grid__cell hty-layout-grid__cell--span-12"><article class="post-card" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/10/%E5%88%86%E6%94%AF%E5%BE%AA%E7%8E%AF%EF%BC%8C%E6%95%88%E7%8E%87%E5%8A%A0%E9%80%9F%E5%99%A8-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E5%85%AB%EF%BC%89/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="雨落诗山山亦奇"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="南极Python"></span><div class="post-card-header"><header class="post-header"><h2 class="post-title" itemprop="name headline"><a class="post-title-link" itemprop="url" href="/2020/07/10/%E5%88%86%E6%94%AF%E5%BE%AA%E7%8E%AF%EF%BC%8C%E6%95%88%E7%8E%87%E5%8A%A0%E9%80%9F%E5%99%A8-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E5%85%AB%EF%BC%89/">分支循环，效率加速器-Python基础连载（八）</a></h2><div class="post-meta"><div class="post-time" style="display:inline-block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2020-07-10 10:49:21" itemprop="dateCreated datePublished" datetime="2020-07-10T10:49:21+08:00">2020-07-10</time></div></div></header></div><div class="post-card-content text-center"><div class="post-card-excerpt markdown-body"></div></div><div class="hty-card__actions post-card__actions"><div class="post-card-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8Python%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">零基础入门Python系列教程</span></a></span></div><div class="post-card-tag"><a class="tag-item" href="/tags/Python/" style="--text-color:#3776ab"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">Python</span></a></div></div></article></div><div class="hty-layout-grid__cell hty-layout-grid__cell--span-12"><article class="post-card" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/09/%E5%B0%8F%E5%B0%8F%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%8C%E6%9E%84%E7%AD%91%E5%A4%A7%E4%B8%96%E7%95%8C-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E4%B8%83%EF%BC%89/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="雨落诗山山亦奇"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="南极Python"></span><div class="post-card-header"><header class="post-header"><h2 class="post-title" itemprop="name headline"><a class="post-title-link" itemprop="url" href="/2020/07/09/%E5%B0%8F%E5%B0%8F%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%8C%E6%9E%84%E7%AD%91%E5%A4%A7%E4%B8%96%E7%95%8C-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E4%B8%83%EF%BC%89/">小小运算符，构筑大世界-Python基础连载（七）</a></h2><div class="post-meta"><div class="post-time" style="display:inline-block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2020-07-09 17:13:37" itemprop="dateCreated datePublished" datetime="2020-07-09T17:13:37+08:00">2020-07-09</time></div></div></header></div><div class="post-card-content text-center"><div class="post-card-excerpt markdown-body"></div></div><div class="hty-card__actions post-card__actions"><div class="post-card-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8Python%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">零基础入门Python系列教程</span></a></span></div><div class="post-card-tag"><a class="tag-item" href="/tags/Python/" style="--text-color:#3776ab"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">Python</span></a></div></div></article></div><div class="hty-layout-grid__cell hty-layout-grid__cell--span-12"><article class="post-card" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/09/%E8%B7%B3%E5%8A%A8%E7%9A%84%E6%95%B0%E5%AD%97%EF%BC%8C%E7%86%9F%E6%82%89%E5%8F%88%E9%99%8C%E7%94%9F-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E5%85%AD%EF%BC%89/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="雨落诗山山亦奇"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="南极Python"></span><div class="post-card-header"><header class="post-header"><h2 class="post-title" itemprop="name headline"><a class="post-title-link" itemprop="url" href="/2020/07/09/%E8%B7%B3%E5%8A%A8%E7%9A%84%E6%95%B0%E5%AD%97%EF%BC%8C%E7%86%9F%E6%82%89%E5%8F%88%E9%99%8C%E7%94%9F-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E5%85%AD%EF%BC%89/">跳动的数字，熟悉又陌生-Python基础连载（六）</a></h2><div class="post-meta"><div class="post-time" style="display:inline-block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2020-07-09 17:00:29" itemprop="dateCreated datePublished" datetime="2020-07-09T17:00:29+08:00">2020-07-09</time></div></div></header></div><div class="post-card-content text-center"><div class="post-card-excerpt markdown-body"></div></div><div class="hty-card__actions post-card__actions"><div class="post-card-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8Python%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">零基础入门Python系列教程</span></a></span></div><div class="post-card-tag"><a class="tag-item" href="/tags/Python/" style="--text-color:#3776ab"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">Python</span></a></div></div></article></div><div class="hty-layout-grid__cell hty-layout-grid__cell--span-12"><article class="post-card" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/07/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A6%82%E5%BD%B1%E9%9A%8F%E5%BD%A2-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E4%BA%94%EF%BC%89/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="雨落诗山山亦奇"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="南极Python"></span><div class="post-card-header"><header class="post-header"><h2 class="post-title" itemprop="name headline"><a class="post-title-link" itemprop="url" href="/2020/07/07/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A6%82%E5%BD%B1%E9%9A%8F%E5%BD%A2-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E4%BA%94%EF%BC%89/">输入输出，字符串如影随形-Python基础连载（五）</a></h2><div class="post-meta"><div class="post-time" style="display:inline-block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2020-07-07 08:18:00" itemprop="dateCreated datePublished" datetime="2020-07-07T08:18:00+08:00">2020-07-07</time></div></div></header></div><div class="post-card-content text-center"><div class="post-card-excerpt markdown-body"></div></div><div class="hty-card__actions post-card__actions"><div class="post-card-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8Python%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">零基础入门Python系列教程</span></a></span></div><div class="post-card-tag"><a class="tag-item" href="/tags/Python/" style="--text-color:#3776ab"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">Python</span></a></div></div></article></div></section><nav class="pagination"><a class="extend prev" rel="prev" href="/page/12/"><svg class="icon"><use xlink:href="#icon-arrow-left-s-line" aria-label="Prev"></use></svg></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/14/"><svg class="icon"><use xlink:href="#icon-arrow-right-s-line" aria-label="Next"></use></svg></a></nav></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2019 – 2021 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-cloud-line"></use></svg></span><span class="author"> 雨落诗山山亦奇</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v4.2.1</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.6.3</span></div></footer><a class="hty-icon-button" id="back-to-top" aria-label="back-to-top" href="#"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-up-s-line"></use></svg><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#0078E7" stroke-width="2" stroke-linecap="round"></circle></svg></a></div></body></html>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://yoursite.com/page/13/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '南极Python',
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-11-27 15:37:33'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">134</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><hr/></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">南极Python</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">南极Python</h1></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left"><a href="/2020/07/16/%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/" title="反向传播算法推导"><img class="post_bg" src="https://s1.ax1x.com/2020/07/16/UBncp4.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="反向传播算法推导"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/07/16/%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC/" title="反向传播算法推导">反向传播算法推导</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-07-16T00:52:06.000Z" title="发表于 2020-07-16 08:52:06">2020-07-16</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">深度学习笔记</a></span></div><div class="content">每层只有一个神经元
+我们的目标是调整这些参数，使得代价C最小
+这里以后两个神经元为例进行演示
+首先推导代价函数关于权重w的偏导数
+
+其中上标(L)代表第L层
+
+$w^{(L)}$的的微小扰动会影响$z^{(L)}$，同样$z^{(L)}$的微小扰动会影响$a^{(L)}$，从而最终影响到代价值
+它们之间的影响是通过链式法则传递的
+
+现在来求解以上各个偏导数
+
+当样本量不止一个时，则总的代价函数是许多训练样本代价的总和平均值
+
+当然，对于多层的神经网络来说，以上所求仅仅是梯度中的一个分量
+
+对于偏置项同样有以下推导
+
+也可以求出代价函数对于上一层激活值的敏感度
+主要是$z^{(L)}$对上一层的敏感度，其余不动
+
+每层有若干神经元依然用上标括号内的数字代表第几层，同时用下标i和j分别标注第(L-1)层和第(L)层的神经元
+
+在上图中，第L-1层有3个神经元，记连接第k个神经元和第j个神经元的（权重）连线为${w_{jk}}^{(L)}$
+
+与之前的单个神经元相比，此时有3个神经元，因此代价函数是每一个神经元的代价值之和，每一层的权重个数也由一个：$w^{(L)}$变为3个：${w_{j0 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2020/07/16/%E5%85%B3%E4%BA%8E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%93%B2%E5%AD%A6%E3%80%90HuLuan%E3%80%91%E6%80%9D%E8%80%83-%E5%91%93%E8%AF%AD%E7%B3%BB%E5%88%97%E8%BF%9E%E8%BD%BD%EF%BC%88%E4%B8%80%EF%BC%89/" title="关于神经网络的哲学【HuLuan】思考"><img class="post_bg" src="https://s1.ax1x.com/2020/07/16/U0WiVA.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="关于神经网络的哲学【HuLuan】思考"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/07/16/%E5%85%B3%E4%BA%8E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84%E5%93%B2%E5%AD%A6%E3%80%90HuLuan%E3%80%91%E6%80%9D%E8%80%83-%E5%91%93%E8%AF%AD%E7%B3%BB%E5%88%97%E8%BF%9E%E8%BD%BD%EF%BC%88%E4%B8%80%EF%BC%89/" title="关于神经网络的哲学【HuLuan】思考">关于神经网络的哲学【HuLuan】思考</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-07-15T16:49:22.000Z" title="发表于 2020-07-16 00:49:22">2020-07-16</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%91%93%E8%AF%AD%E7%B3%BB%E5%88%97%E8%BF%9E%E8%BD%BD/">呓语系列连载</a></span></div><div class="content">
+神经网络中有许多权重，每一个权重的变化都可能导致最终预测结果产生变动。为了最大可能获得较佳的预测结果，需要考虑合适的损失函数，激活函数以及优化器等，并通过训练，反反复复调整权重，直至得到满意的结果。
+
+万象世间亦如是。
+你所经历的每一件事，你所遇见的每一个人，于你而言都会在心中自动初始化一个权重。时间和事件会训练你的模型，为了最小化损失函数，也就是达成你的目的，你会一遍又一遍的采取措施来调整每一个权重。
+不仅仅是你，每个人，每个生命，所有物质都在无时无刻的更新着自己的权重。于是地球围绕太阳转动，太阳东升西落，东西方产生时差，而现在，你正在阅读这些文字。
+调整吧
+就像歌中唱的那样: 时间会回答成长
+成长的过程中，就在不断的调整权重，以期寻找一个最佳位置，安放自己。
+可是，不同于神经网络的训练会在些许时间后结束，人要训练一生，并且优化目标可能会在不同的时间而各不相同。
+这是一个动态的权重调整过程。
+一次外出，一次游戏，一次对话，一次课程，一场考试，都可能导致优化目标的改变，随之而来的是很久一段时间内对相应优化目标做的权重调整，这段时间，可能是三天，可能是三年，也可能就这样一直下去。
+调整 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2020/07/14/%E5%88%97%E8%A1%A8%EF%BC%8C%E7%AE%80%E5%8D%95%E5%8D%B4%E5%BC%BA%E5%A4%A7-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E4%B9%9D%EF%BC%89/" title="列表，简单却强大-Python基础连载（九）"><img class="post_bg" src="https://s1.ax1x.com/2020/07/14/UU5BSU.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="列表，简单却强大-Python基础连载（九）"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/07/14/%E5%88%97%E8%A1%A8%EF%BC%8C%E7%AE%80%E5%8D%95%E5%8D%B4%E5%BC%BA%E5%A4%A7-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E4%B9%9D%EF%BC%89/" title="列表，简单却强大-Python基础连载（九）">列表，简单却强大-Python基础连载（九）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-07-14T10:02:48.000Z" title="发表于 2020-07-14 18:02:48">2020-07-14</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8Python%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/">零基础入门Python系列教程</a></span></div><div class="content">开篇
+我们已经学习了数字和字符串这两种数据类型，它们都有一个共同的特点，那就是一个变量只能存储一个数字或者字符串，如果有多个数字或者多个字符串，那就必须得用多个变量来存储。
+比如，现在有&#39;abc&#39;，&#39;d&#39;，1，123，那么想要存储这些，必须这样做：
+1234v1=&#x27;abc&#x27;v2=&#x27;d&#x27;v3=1v4=123
+
+当有成百上千甚至更多个待存储的元素时，显然需要的变量个数会非常多，过程会无比繁琐。
+别担心！本期要学习的列表就是填补这一缺憾的，学完之后，你会发现，上面的过程只需写成如下一行代码即可：
+1v=[&#x27;abc&#x27;,&#x27;d&#x27;,1,123]
+
+是不是迫不及待了，那就开始吧！
+初识列表列表用[]来包裹，[]内部可存放元素，这些元素之间用逗号,隔开。
+举个栗子，现在需要统计一下“南极小学”六年级的5个班中，每个班打算今年暑假去南极旅行的人数，假设各班统计上来的人数分别是11,111,1234,2233,666，使用列表可以这样存储：
+1num_go=[11,111,1234,2333,66 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2020/07/10/Tensorflow%E4%B8%AD%E7%9A%84%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/" title="Tensorflow中的高级操作"><img class="post_bg" src="https://s1.ax1x.com/2020/07/10/UKkian.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Tensorflow中的高级操作"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/07/10/Tensorflow%E4%B8%AD%E7%9A%84%E9%AB%98%E7%BA%A7%E6%93%8D%E4%BD%9C/" title="Tensorflow中的高级操作">Tensorflow中的高级操作</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-07-10T14:39:17.000Z" title="发表于 2020-07-10 22:39:17">2020-07-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">深度学习笔记</a></span></div><div class="content">tf.gather可以实现根据索引号收集数据  
+假设有4个班级，每班35人，共8门课程的成绩
+
+举几个栗子
+
+它等价于
+
+但是对于不规则（连续）的索引，还是tf.gather()更强大
+
+
+通过组合多个tf.gather，可以实现复杂一点的功能
+
+
+现在，想要抽查第 2 个班级的第 2 个同学的所有科目， 第 3 个班级的第 3 个同学的所有科目，第 4 个班级的第 4 个同学的所有科目
+这个更复杂了
+
+可以这样
+
+然后用stack()合并
+
+但是还有更好的方法，那就是tf.gather_nd
+tf.gather_nd也是根据索引号收集数据，只不过比tf.gather更灵活些 
+继续上面的例子
+
+变得简洁了，只需传入一个列表
+再举个复杂点的栗子：选取1班的学生1的科目2、2班的学生2的科目3、班级3的学生3的科目4的成绩，共有3个成绩数据
+
+tf.boollean_mask以掩码方式选取数据
+
+
+ 这里的 tf.boolean_mask 的用法其实与 tf.gather 非常类似，只不过一个通过掩码方式采样，一个直接给出索引号采样  
+其实它也可以像tf.gather_nd那样，做多 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2020/07/10/Tensorflow%E8%BF%9B%E9%98%B6/" title="Tensorflow进阶"><img class="post_bg" src="https://s1.ax1x.com/2020/07/10/UKkian.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Tensorflow进阶"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/07/10/Tensorflow%E8%BF%9B%E9%98%B6/" title="Tensorflow进阶">Tensorflow进阶</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-07-10T08:19:56.000Z" title="发表于 2020-07-10 16:19:56">2020-07-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">深度学习笔记</a></span></div><div class="content">张量合并1.拼接
+2.堆叠
+无论哪种方式，相应维度必须一致
+分割合并的逆过程
+将1个张量拆成多个张量
+1. split等份分割
+不等份分割传入列表，表示分割后每一部分的长度
+
+2. unstack
+可以看出，stack是在合并张量时增加了维度，而unstack是在分割张量时减少了维度
+【注意】unstack一定会将原张量按照axis指定的维度方向分割成全部的部分的长度都是1的张量，因为只有这样才能将shape中为1的维度方向去掉
+范数主要使用L1范数、L2范数和无穷范数
+
+常用统计量最值：tf.reduce_max、tf.reduce_min
+均值：tf.reduce_mean
+和：tf.reduce_sum
+
+
+指定axis
+不指定axis此时会对全局求解：
+
+应用场景求解所有样本的平均误差：
+在分类问题中，求解概率最大值所在下标，即label假设有两个样本，做10分类问题
+
+使用tf.reduce_max只能求解最大值，而使用tf.argmax可以求解最大值所在索引号（下标）
+
+所以，这两个样本所属类别分别为8和9
+张量比较还是拿10分类的栗子，假设有100个样本
+
+开始比较
+
+计 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2020/07/10/Tensorflow%E5%9F%BA%E7%A1%80/" title="Tensorflow基础"><img class="post_bg" src="https://s1.ax1x.com/2020/07/10/UKkian.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Tensorflow基础"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/07/10/Tensorflow%E5%9F%BA%E7%A1%80/" title="Tensorflow基础">Tensorflow基础</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-07-10T05:57:44.000Z" title="发表于 2020-07-10 13:57:44">2020-07-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">深度学习笔记</a></span></div><div class="content">Tensor是什么
+张量的维度也称作轴 (Axis)
+  一般把标量、向量、矩阵也统称为张量  
+TF中的数据类型数值，布尔，字符串
+
+1.数值类型
+在tf中创建标量
+
+
+使用.numpy可以返回Numpy.array类型的数据
+
+
+在tf中创建向量
+
+此时，必须使用List容器传值
+
+
+在tf中创建矩阵
+
+
+
+在tf中创建三维张量
+
+
+2.字符串类型
+不怎么用，Python内置的字符串方法已经足够
+3.布尔类型
+tf的布尔类型和Python内置的布尔类型不等价
+
+类型转换numpy ==&gt; tensor
+
+一般的，使用cast函数可完成不同数据类型，数据精度之间的转换
+int ==&gt; bool
+
+bool ==&gt; int
+
+待优化的张量对于一些需要训练优化的参数，可设置tf.Variable类型
+比如神经网络中，输入的X不需要包装成该类型，而w和b需要
+
+name和trainable是Variable特有的属性
+创建张量从数组，列表中创建convert_to_tensor和constant作用一样，都是创建张量
+
+创建全0或全1的张量标量
+
+向量
+
+矩阵
+
+可以使用 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2020/07/10/%E5%88%86%E6%94%AF%E5%BE%AA%E7%8E%AF%EF%BC%8C%E6%95%88%E7%8E%87%E5%8A%A0%E9%80%9F%E5%99%A8-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E5%85%AB%EF%BC%89/" title="分支循环，效率加速器-Python基础连载（八）"><img class="post_bg" src="https://s1.ax1x.com/2020/07/10/UugkVK.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="分支循环，效率加速器-Python基础连载（八）"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/07/10/%E5%88%86%E6%94%AF%E5%BE%AA%E7%8E%AF%EF%BC%8C%E6%95%88%E7%8E%87%E5%8A%A0%E9%80%9F%E5%99%A8-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E5%85%AB%EF%BC%89/" title="分支循环，效率加速器-Python基础连载（八）">分支循环，效率加速器-Python基础连载（八）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-07-10T02:49:21.000Z" title="发表于 2020-07-10 10:49:21">2020-07-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8Python%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/">零基础入门Python系列教程</a></span></div><div class="content">开篇你可能已经发现，前面的七期内容有一个共同的特点，那就是偏向理论基础，似乎学完之后只是了解了一些实用的方法，比如字符串如何进行增删改查，如何交互实现输入输出，Python运算符的种类等等。
+此刻的你，是不是一点也没有感受到程序带来的效率翻倍？
+今天就来填补这个大坑，一起来学习分支和循环吧！
+分支所谓分支，可以形象的理解为一棵树的分叉：
+
+满足哪个条件，就往哪个分叉方向前进。
+写成Python伪代码的格式如下：
+
+这便是最简单的分支结构：if...else...
+还记得之前讲的缩进吗？在这里，:之后按回车键就会自动缩进了，一个缩进相当于按一次Tab键
+缩进的存在，使得Python代码的可读性更强。
+再举两个栗子来练习一下，建议小白同学手动敲一遍：
+【栗子1】数字比较
+123456x=1y=2if x&gt;y:	print(&#x27;x比y大！&#x27;)else:    	print(&#x27;x比y小！&#x27;)
+
+输出：
+1x比y小！
+
+【栗子2】年龄验证
+1234567age=input(&#x27;请输入你的年龄：&#x27;)age=int(age)#input输 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2020/07/09/%E5%B0%8F%E5%B0%8F%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%8C%E6%9E%84%E7%AD%91%E5%A4%A7%E4%B8%96%E7%95%8C-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E4%B8%83%EF%BC%89/" title="小小运算符，构筑大世界-Python基础连载（七）"><img class="post_bg" src="https://s1.ax1x.com/2020/07/09/Um7728.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="小小运算符，构筑大世界-Python基础连载（七）"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/07/09/%E5%B0%8F%E5%B0%8F%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%8C%E6%9E%84%E7%AD%91%E5%A4%A7%E4%B8%96%E7%95%8C-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E4%B8%83%EF%BC%89/" title="小小运算符，构筑大世界-Python基础连载（七）">小小运算符，构筑大世界-Python基础连载（七）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-07-09T09:13:37.000Z" title="发表于 2020-07-09 17:13:37">2020-07-09</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8Python%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/">零基础入门Python系列教程</a></span></div><div class="content">开篇本期将介绍Python的运算符。
+
+在正式开始之前，应该给运算符下个教科书式定义：
+1运算符用于执行程序代码运算，会针对一个以上操作数项目来进行运算(百度百科)
+
+好吧，这定义越看越晕。不管他了，咱们直接开始，在实际操作中理解运算符！
+需要注意的是，你如果见到x=x+1这种操作，千万不要把这与数学上的操作混为一谈。
+前面也提起过，在数学上，x=x+1中的=是等于的意思，而在编程语言中，=是赋值的意思，将=右边的值赋值给=左边。
+所以，x=x+1在数学上是不成立的，但是在编程语言中，是将变量x做了加1的操作。
+算数运算符1. + ：加法运算
+2. -：减法运算
+3. *：乘法运算
+4. / ：普通除法运算
+5. // ：整数除法（整除）运算
+6. ** ：平方运算，a**b代表求a的b次方
+7. % ：取余运算
+上个栗子：
+12345678&gt;&gt;&gt; 1+12&gt;&gt;&gt; 1-10&gt;&gt;&gt; 1*22&gt;&gt;&gt; 3/21.5&gt;&gt;&gt; 3//21&gt;&gt;&gt; 2**3#求2的3次方8&gt;&gt;&gt ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2020/07/09/%E8%B7%B3%E5%8A%A8%E7%9A%84%E6%95%B0%E5%AD%97%EF%BC%8C%E7%86%9F%E6%82%89%E5%8F%88%E9%99%8C%E7%94%9F-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E5%85%AD%EF%BC%89/" title="跳动的数字，熟悉又陌生-Python基础连载（六）"><img class="post_bg" src="https://s1.ax1x.com/2020/07/09/UmIcvQ.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="跳动的数字，熟悉又陌生-Python基础连载（六）"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/07/09/%E8%B7%B3%E5%8A%A8%E7%9A%84%E6%95%B0%E5%AD%97%EF%BC%8C%E7%86%9F%E6%82%89%E5%8F%88%E9%99%8C%E7%94%9F-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E5%85%AD%EF%BC%89/" title="跳动的数字，熟悉又陌生-Python基础连载（六）">跳动的数字，熟悉又陌生-Python基础连载（六）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-07-09T09:00:29.000Z" title="发表于 2020-07-09 17:00:29">2020-07-09</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8Python%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/">零基础入门Python系列教程</a></span></div><div class="content">开篇经过前面与字符串的相爱相杀，相信你已经初步掌握了字符串的基本用法。本期将开始学习一个新的数据类型：数字。
+
+在初高中，你已经学习了整数，小数，复数，这些包含在今天要讲的Python的数字类型中，正如上图所示（注：在这里你可以先把浮点数理解成小数，这对于之后的编程几乎没有影响，但随着学习的深入，你可能会发现这种理解是片面的）。
+下面来逐个击破~
+int &amp; float这两种类型不用多说，你已经与它们打了多年的交道了。
+
+还记得之前讲过的type()函数吗？它可以用来查看一个变量所属的数据类型。
+嗯，意料之中。
+在一些其他编程语言，如C语言中，\代表的是整除，比如3/2=1而不是1.5。
+以前的Python2也这样干过，但是在Python3中(本系列教程一直在用的Python版本是Python3，还记得第一期的环境搭建内容吗？)，这一规则被更改了，更改后的规则也许更符合大众的逻辑：
+\代表我们所认知的普通除法，\\代表整除。
+上个栗子：
+
+bool布尔类型(bool)只有两种取值，True和False
+你可能产生疑惑，这是哪门子数字类型啊？这不是英文单词吗！
+首先用一个栗子反驳 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2020/07/07/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A6%82%E5%BD%B1%E9%9A%8F%E5%BD%A2-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E4%BA%94%EF%BC%89/" title="输入输出，字符串如影随形-Python基础连载（五）"><img class="post_bg" src="https://s1.ax1x.com/2020/07/07/UFY9a9.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="输入输出，字符串如影随形-Python基础连载（五）"></a></div><div class="recent-post-info"><a class="article-title" href="/2020/07/07/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%EF%BC%8C%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A6%82%E5%BD%B1%E9%9A%8F%E5%BD%A2-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E4%BA%94%EF%BC%89/" title="输入输出，字符串如影随形-Python基础连载（五）">输入输出，字符串如影随形-Python基础连载（五）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2020-07-07T00:18:00.000Z" title="发表于 2020-07-07 08:18:00">2020-07-07</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8Python%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B/">零基础入门Python系列教程</a></span></div><div class="content">开篇前面两期详细的介绍了字符串及其相关操作，在今后的编程中，你将经常和字符串打交道。一个比较常见的场景就是输入输出，所以本期将结合字符串，讲述最基本同时也是最常用的输入输出语法（input和print），并且会在文章最后补充一些之前没有讲到的字符串的内容。
+input()用于接收用户的输入input()用于接受用户的输入。
+1&gt;&gt;&gt; input()
+
+当你写入以上代码，并按下回车键后，你会发现光标在闪动，这是在提示你要输入一些东西。
+当输入完成后，再按一次回车，你所输入的东西便会打印出来显示在屏幕上，就像下面这样：
+
+图中，黑色的字是我输入的，蓝色的字是打印输出在屏幕上的。
+那如果不想打印输出在屏幕上，而是想将输入的内容保存起来，又应该怎么做呢？
+简单！只要用一个变量接收input()的输入内容就搞定啦！
+
+这样，输入的内容就被保存在变量x中了。
+
+细心的你或许已经发现了，蓝色的字被一对&#39;&#39;包裹着，这不正是之前学习的字符串类型吗？
+没错！事实上，你输入input()中的任何类型的数据，都会变成字符串类型。
+你可能不太信，因为上面的栗子中，我输入的内容我 ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/12/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/#content-inner">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/#content-inner">14</a><a class="extend next" rel="next" href="/page/14/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">雨落诗山山亦奇</div><div class="author-info__description">昨夜星辰昨夜风</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">134</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">13</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/11/23/%E7%BB%8F%E5%85%B8%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B-NFM/" title="经典推荐模型:NFM"><img src="https://www.cdnjson.com/images/2021/11/23/2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="经典推荐模型:NFM"/></a><div class="content"><a class="title" href="/2021/11/23/%E7%BB%8F%E5%85%B8%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B-NFM/" title="经典推荐模型:NFM">经典推荐模型:NFM</a><time datetime="2021-11-23T13:34:19.000Z" title="发表于 2021-11-23 21:34:19">2021-11-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/19/%E7%94%A8Python%E5%AE%9E%E7%8E%B0%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E7%AE%97%E6%B3%95/" title="用Python实现协同过滤算法"><img src="https://www.cdnjson.com/images/2021/11/19/122.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="用Python实现协同过滤算法"/></a><div class="content"><a class="title" href="/2021/11/19/%E7%94%A8Python%E5%AE%9E%E7%8E%B0%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E7%AE%97%E6%B3%95/" title="用Python实现协同过滤算法">用Python实现协同过滤算法</a><time datetime="2021-11-19T06:39:33.000Z" title="发表于 2021-11-19 14:39:33">2021-11-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/18/%E7%BB%8F%E5%85%B8%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B-FNN/" title="经典推荐模型:FNN，DeepFM"><img src="https://www.cdnjson.com/images/2021/11/21/marc-olivier-jodoin-NqOInJ-ttqM-unsplash.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="经典推荐模型:FNN，DeepFM"/></a><div class="content"><a class="title" href="/2021/11/18/%E7%BB%8F%E5%85%B8%E6%8E%A8%E8%8D%90%E6%A8%A1%E5%9E%8B-FNN/" title="经典推荐模型:FNN，DeepFM">经典推荐模型:FNN，DeepFM</a><time datetime="2021-11-18T05:54:19.000Z" title="发表于 2021-11-18 13:54:19">2021-11-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/17/%E5%9F%BA%E4%BA%8ENeuralCF%E7%9A%84%E5%9B%BE%E4%B9%A6%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" title="基于NeuralCF的图书推荐系统"><img src="https://www.cdnjson.com/images/2021/11/02/7.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基于NeuralCF的图书推荐系统"/></a><div class="content"><a class="title" href="/2021/11/17/%E5%9F%BA%E4%BA%8ENeuralCF%E7%9A%84%E5%9B%BE%E4%B9%A6%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" title="基于NeuralCF的图书推荐系统">基于NeuralCF的图书推荐系统</a><time datetime="2021-11-17T07:40:50.000Z" title="发表于 2021-11-17 15:40:50">2021-11-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/11/16/%E7%AE%97%E6%B3%95(%E4%B8%8A)/%E7%AE%97%E6%B3%95(%E4%B8%8A)/" title="无题"><img src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2021/11/16/%E7%AE%97%E6%B3%95(%E4%B8%8A)/%E7%AE%97%E6%B3%95(%E4%B8%8A)/" title="无题">无题</a><time datetime="2021-11-16T08:34:08.248Z" title="发表于 2021-11-16 16:34:08">2021-11-16</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            <a class="card-more-btn" href="/categories/" title="查看更多">
+    <i class="fas fa-angle-right"></i></a>
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%91%93%E8%AF%AD%E7%B3%BB%E5%88%97%E8%BF%9E%E8%BD%BD/"><span class="card-category-list-name">呓语系列连载</span><span class="card-category-list-count">8</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"><span class="card-category-list-name">大数据</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/"><span class="card-category-list-name">推荐系统</span><span class="card-category-list-count">17</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%AB%9E%E8%B5%9B/"><span class="card-category-list-name">数据竞赛</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95/"><span class="card-category-list-name">机器学习算法</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><span class="card-category-list-name">深度学习笔记</span><span class="card-category-list-count">70</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%A5%9E%E5%A5%87%E7%9A%84Python/"><span class="card-category-list-name">神奇的Python</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E8%B7%A8%E8%80%83%E5%B0%8F%E7%99%BD%E5%AD%A6%E5%88%B7%E9%A2%98/"><span class="card-category-list-name">跨考小白学刷题</span><span class="card-category-list-count">3</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/6D%E5%A7%BF%E6%80%81%E4%BC%B0%E8%AE%A1/" style="font-size: 1.19em; color: #999da1">6D姿态估计</a> <a href="/tags/CV/" style="font-size: 1.14em; color: #999b9d">CV</a> <a href="/tags/DL/" style="font-size: 1.5em; color: #99a9bf">DL</a> <a href="/tags/GAN/" style="font-size: 1.37em; color: #99a4b2">GAN</a> <a href="/tags/ML/" style="font-size: 1.23em; color: #999ea6">ML</a> <a href="/tags/Python/" style="font-size: 1.46em; color: #99a7bb">Python</a> <a href="/tags/RL/" style="font-size: 1.1em; color: #999">RL</a> <a href="/tags/Spark/" style="font-size: 1.1em; color: #999">Spark</a> <a href="/tags/Tensorflow/" style="font-size: 1.32em; color: #99a2ae">Tensorflow</a> <a href="/tags/%E5%91%93%E8%AF%AD/" style="font-size: 1.28em; color: #99a0aa">呓语</a> <a href="/tags/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/" style="font-size: 1.41em; color: #99a5b7">推荐算法</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%AB%9E%E8%B5%9B/" style="font-size: 1.14em; color: #999b9d">数据竞赛</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" style="font-size: 1.1em; color: #999">计算机基础</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
+    <i class="fas fa-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/11/"><span class="card-archive-list-date">十一月 2021</span><span class="card-archive-list-count">14</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/10/"><span class="card-archive-list-date">十月 2021</span><span class="card-archive-list-count">7</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/09/"><span class="card-archive-list-date">九月 2021</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/08/"><span class="card-archive-list-date">八月 2021</span><span class="card-archive-list-count">7</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/07/"><span class="card-archive-list-date">七月 2021</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/06/"><span class="card-archive-list-date">六月 2021</span><span class="card-archive-list-count">6</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/05/"><span class="card-archive-list-date">五月 2021</span><span class="card-archive-list-count">15</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/04/"><span class="card-archive-list-date">四月 2021</span><span class="card-archive-list-count">5</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">134</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2021-11-27T07:37:31.377Z"></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By 雨落诗山山亦奇</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

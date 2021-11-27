@@ -1,279 +1,291 @@
 <hr>
-<p>title: ‘跨考小白学刷题(下)’<br>date: 2021-11-12 13:56:19<br>categories: 跨考小白学刷题<br>mathjax: True<br>cover: <a href="https://www.cdnjson.com/images/2021/11/21/1_VJNqt2qR5keOZ_ukx8fmwA.jpg" target="_blank" rel="noopener">https://www.cdnjson.com/images/2021/11/21/1_VJNqt2qR5keOZ_ukx8fmwA.jpg</a></p>
+<p>title: ‘跨考小白学刷题(下)’<br>date: 2021-11-12 13:56:19<br>categories: 跨考小白学刷题<br>mathjax: True<br>cover: <a href="https://www.cdnjson.com/images/2021/11/21/1_VJNqt2qR5keOZ_ukx8fmwA.jpg">https://www.cdnjson.com/images/2021/11/21/1_VJNqt2qR5keOZ_ukx8fmwA.jpg</a></p>
 <hr>
 <h1 id="第八章：回溯"><a href="#第八章：回溯" class="headerlink" title="第八章：回溯"></a>第八章：回溯</h1><h2 id="8-3"><a href="#8-3" class="headerlink" title="8-3"></a>8-3</h2><p>排列问题<br><img src="./1.png" alt="Alt text"></p>
 <p><img src="./2.png" alt="Alt text"></p>
 <p><img src="./3.png" alt="Alt text"></p>
 <p><img src="./5.png" alt="Alt text"></p>
 <p>我自己(在看了答案后默)写的AC代码：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">permute</span><span class="params">(self, nums: List[int])</span> -&gt; List[List[int]]:</span>
-        <span class="keyword">if</span> <span class="keyword">not</span> nums:
-            <span class="keyword">return</span> []
-
-        <span class="function"><span class="keyword">def</span> <span class="title">back_track</span><span class="params">(nums,index)</span>:</span>
-            <span class="keyword">if</span> index==len(nums):
-                res.append(p[:])<span class="comment">#必须加这个:，因为path之后还会变</span>
-                <span class="keyword">return</span>
-            <span class="keyword">for</span> num <span class="keyword">in</span> nums:
-                <span class="keyword">if</span> num <span class="keyword">not</span> <span class="keyword">in</span> p:
+<pre><code class="python">class Solution:
+    def permute(self, nums: List[int]) -&gt; List[List[int]]:
+        if not nums:
+            return []
+        
+        def back_track(nums,index):
+            if index==len(nums):
+                res.append(p[:])#必须加这个:，因为path之后还会变
+                return
+            for num in nums:
+                if num not in p:
                     p.append(num)
-                    back_track(nums,index+<span class="number">1</span>)
+                    back_track(nums,index+1)
                     p.pop()
 
         res=[]
-        p=[]<span class="comment">#存储临时结果</span>
-        back_track(nums,<span class="number">0</span>)
-        <span class="keyword">return</span> res</code></pre>
+        p=[]#存储临时结果
+        back_track(nums,0)
+        return res
+</code></pre>
 <p>课后习题：<br><img src="./4.png" alt="Alt text"></p>
 <p><img src="./6.png" alt="Alt text"></p>
 <p>有些难理解，就先记住对数层去重的代码吧。</p>
 <p>记住先排序，方便去重。</p>
-<p><a href="https://leetcode-cn.com/problems/permutations-ii/solution/dai-ma-sui-xiang-lu-dai-ni-xue-tou-hui-s-ki1h/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/permutations-ii/solution/dai-ma-sui-xiang-lu-dai-ni-xue-tou-hui-s-ki1h/</a></p>
+<p><a href="https://leetcode-cn.com/problems/permutations-ii/solution/dai-ma-sui-xiang-lu-dai-ni-xue-tou-hui-s-ki1h/">https://leetcode-cn.com/problems/permutations-ii/solution/dai-ma-sui-xiang-lu-dai-ni-xue-tou-hui-s-ki1h/</a></p>
 <p>用used：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">permuteUnique</span><span class="params">(self, nums: List[int])</span> -&gt; List[List[int]]:</span>
-        <span class="comment"># res用来存放结果</span>
-        <span class="keyword">if</span> <span class="keyword">not</span> nums:
-            <span class="keyword">return</span> []
+<pre><code class="python">class Solution:
+    def permuteUnique(self, nums: List[int]) -&gt; List[List[int]]:
+        # res用来存放结果
+        if not nums:
+            return []
         res = []
-        used = [<span class="number">0</span>] * len(nums)
-        <span class="function"><span class="keyword">def</span> <span class="title">backtracking</span><span class="params">(nums, used, path)</span>:</span>
-            <span class="comment"># 终止条件</span>
-            <span class="keyword">if</span> len(path) == len(nums):
+        used = [0] * len(nums)
+        def backtracking(nums, used, path):
+            # 终止条件
+            if len(path) == len(nums):
                 res.append(path.copy())
-                <span class="keyword">return</span>
-            <span class="keyword">for</span> i <span class="keyword">in</span> range(len(nums)):
-                <span class="keyword">if</span> <span class="keyword">not</span> used[i]:
-                    <span class="keyword">if</span> i&gt;<span class="number">0</span> <span class="keyword">and</span> nums[i] == nums[i<span class="number">-1</span>] <span class="keyword">and</span> <span class="keyword">not</span> used[i<span class="number">-1</span>]:
-                        <span class="keyword">continue</span>
-                    used[i] = <span class="number">1</span>
+                return
+            for i in range(len(nums)):
+                if not used[i]:
+                    if i&gt;0 and nums[i] == nums[i-1] and not used[i-1]:
+                        continue
+                    used[i] = 1
                     path.append(nums[i])
                     backtracking(nums, used, path)
                     path.pop()
-                    used[i] = <span class="number">0</span>
-        <span class="comment"># 记得给nums排序</span>
+                    used[i] = 0
+        # 记得给nums排序
         backtracking(sorted(nums),used,[])
-        <span class="keyword">return</span> res</code></pre>
+        return res
+</code></pre>
 <h2 id="8-4-amp-8-5"><a href="#8-4-amp-8-5" class="headerlink" title="8-4 &amp; 8-5"></a>8-4 &amp; 8-5</h2><p>组合问题<br><img src="./7.png" alt="Alt text"></p>
 <p><img src="./8.png" alt="Alt text"></p>
 <p>我在排列问题代码上改了下：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">combine</span><span class="params">(self, n: int, k: int)</span> -&gt; List[List[int]]:</span>
-        <span class="keyword">if</span> n&lt;k <span class="keyword">or</span> k&lt;=<span class="number">0</span> <span class="keyword">or</span> n&lt;=<span class="number">0</span>:
-            <span class="keyword">return</span> []
-
-        <span class="function"><span class="keyword">def</span> <span class="title">back_track</span><span class="params">(n,k,index)</span>:</span>
-            <span class="keyword">if</span> len(p)==k:
-                res.append(p[:])<span class="comment">#必须加这个:，因为path之后还会变</span>
-                <span class="keyword">return</span>
-            <span class="keyword">for</span> i <span class="keyword">in</span> range(index,n+<span class="number">1</span>):
+<pre><code class="python">class Solution:
+    def combine(self, n: int, k: int) -&gt; List[List[int]]:
+        if n&lt;k or k&lt;=0 or n&lt;=0:
+            return []
+       
+        def back_track(n,k,index):
+            if len(p)==k:
+                res.append(p[:])#必须加这个:，因为path之后还会变
+                return
+            for i in range(index,n+1):
                 p.append(i)
-                back_track(n,k,i+<span class="number">1</span>)
+                back_track(n,k,i+1)
                 p.pop()
 
         res=[]
-        p=[]<span class="comment">#存储临时结果</span>
-        back_track(n,k,<span class="number">1</span>)
-        <span class="keyword">return</span> res</code></pre>
+        p=[]#存储临时结果
+        back_track(n,k,1)
+        return res
+</code></pre>
 <p>以上代码可以剪枝，具体地，可供选择的数字个数应该不小于k-len(p)+1个，否则无法再凑成k个数字，所以只需改一下for即可：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">combine</span><span class="params">(self, n: int, k: int)</span> -&gt; List[List[int]]:</span>
-        <span class="keyword">if</span> n&lt;k <span class="keyword">or</span> k&lt;=<span class="number">0</span> <span class="keyword">or</span> n&lt;=<span class="number">0</span>:
-            <span class="keyword">return</span> []
-
-        <span class="function"><span class="keyword">def</span> <span class="title">back_track</span><span class="params">(n,k,index)</span>:</span>
-            <span class="keyword">if</span> len(p)==k:
-                res.append(p[:])<span class="comment">#必须加这个:，因为path之后还会变</span>
-                <span class="keyword">return</span>
-            <span class="keyword">for</span> i <span class="keyword">in</span> range(index,n-(k-len(p))+<span class="number">1</span>+<span class="number">1</span>):
+<pre><code class="python">class Solution:
+    def combine(self, n: int, k: int) -&gt; List[List[int]]:
+        if n&lt;k or k&lt;=0 or n&lt;=0:
+            return []
+       
+        def back_track(n,k,index):
+            if len(p)==k:
+                res.append(p[:])#必须加这个:，因为path之后还会变
+                return
+            for i in range(index,n-(k-len(p))+1+1):
                 p.append(i)
-                back_track(n,k,i+<span class="number">1</span>)
+                back_track(n,k,i+1)
                 p.pop()
 
         res=[]
-        p=[]<span class="comment">#存储临时结果</span>
-        back_track(n,k,<span class="number">1</span>)
-        <span class="keyword">return</span> res</code></pre>
+        p=[]#存储临时结果
+        back_track(n,k,1)
+        return res
+</code></pre>
 <p>剪枝后，用时肉眼可见的下降<br><img src="./9.png" alt="Alt text"></p>
 <p>课后习题<br><img src="./10.png" alt="Alt text"><br>先画出递归树：<br><img src="./16.png" alt="Alt text"></p>
 <p>修修改改，还是有些错误，没有加index排除重复项，如[2,2,3]和[2,3,2]，修改后代码如下：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">combinationSum</span><span class="params">(self, candidates: List[int], target: int)</span> -&gt; List[List[int]]:</span>
-        <span class="keyword">if</span> <span class="keyword">not</span> candidates <span class="keyword">or</span> target&lt;=<span class="number">0</span>:
-            <span class="keyword">return</span> []
-
-        <span class="function"><span class="keyword">def</span> <span class="title">back_track</span><span class="params">(candidates,index)</span>:</span>
-            <span class="keyword">if</span> sum(p)==target:
-                res.append(p[:])<span class="comment">#必须加这个:，因为path之后还会变</span>
-                <span class="keyword">return</span>
-            <span class="keyword">for</span> i <span class="keyword">in</span> range(index,len(candidates)):
+<pre><code class="python">class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -&gt; List[List[int]]:
+        if not candidates or target&lt;=0:
+            return []
+        
+        def back_track(candidates,index):
+            if sum(p)==target:
+                res.append(p[:])#必须加这个:，因为path之后还会变
+                return
+            for i in range(index,len(candidates)):
                 p.append(candidates[i])
                 print(p)
-                <span class="comment">#剪枝</span>
-                <span class="keyword">if</span> sum(p)&lt;=target:
+                #剪枝
+                if sum(p)&lt;=target:
                     back_track(candidates,i)
                 p.pop()
-
+                
         res=[]
-        p=[]<span class="comment">#存储临时结果</span>
-        back_track(candidates,<span class="number">0</span>)
-        <span class="keyword">return</span> res</code></pre>
+        p=[]#存储临时结果
+        back_track(candidates,0)
+        return res
+</code></pre>
 <p><img src="./11.png" alt="Alt text"><br>这题要求不重复使用，也就是要去重的是同一树层上的“使用过”，同一树枝上的都是一个组合里的元素，不用去重。</p>
 <p>强调一下，树层去重的话，需要对数组排序！</p>
 <p><img src="./17.png" alt="Alt text"><br><img src="./18.png" alt="Alt text"></p>
 <p>直接用startIndex判断简洁些：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">combinationSum2</span><span class="params">(self, candidates: List[int], target: int)</span> -&gt; List[List[int]]:</span>
-        <span class="keyword">if</span> <span class="keyword">not</span> candidates <span class="keyword">or</span> target&lt;=<span class="number">0</span>:
-            <span class="keyword">return</span> []
-
-        <span class="function"><span class="keyword">def</span> <span class="title">back_track</span><span class="params">(candidates,index)</span>:</span>
-            <span class="keyword">if</span> sum(p)==target:
-                res.append(p[:])<span class="comment">#必须加这个:，因为path之后还会变</span>
-                <span class="keyword">return</span>
-            <span class="keyword">for</span> i <span class="keyword">in</span> range(index,len(candidates)):
-                <span class="keyword">if</span> i &gt; index <span class="keyword">and</span> candidates[i] == candidates[i<span class="number">-1</span>]:
-                    <span class="keyword">continue</span>  <span class="comment">#直接用startIndex来去重,要对同一树层使用过的元素进行跳过</span>
+<pre><code class="python">class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -&gt; List[List[int]]:
+        if not candidates or target&lt;=0:
+            return []
+        
+        def back_track(candidates,index):
+            if sum(p)==target:
+                res.append(p[:])#必须加这个:，因为path之后还会变
+                return
+            for i in range(index,len(candidates)):
+                if i &gt; index and candidates[i] == candidates[i-1]:
+                    continue  #直接用startIndex来去重,要对同一树层使用过的元素进行跳过
                 p.append(candidates[i])
                 print(p)
-                <span class="comment">#剪枝</span>
-                <span class="keyword">if</span> sum(p)&lt;=target:
-                    back_track(candidates,i+<span class="number">1</span>)<span class="comment">#i+1:每个数字在每个组合中只能使用一次</span>
+                #剪枝
+                if sum(p)&lt;=target:
+                    back_track(candidates,i+1)#i+1:每个数字在每个组合中只能使用一次
                 p.pop()
-
+                
         res=[]
-        p=[]<span class="comment">#存储临时结果</span>
-        candidates = sorted(candidates)<span class="comment">#需要排序！</span>
-        back_track(candidates,<span class="number">0</span>)
-        <span class="keyword">return</span> res</code></pre>
+        p=[]#存储临时结果
+        candidates = sorted(candidates)#需要排序！
+        back_track(candidates,0)
+        return res
+</code></pre>
 <p>用used的：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">combinationSum2</span><span class="params">(self, candidates: List[int], target: int)</span> -&gt; List[List[int]]:</span>
-        <span class="keyword">if</span> <span class="keyword">not</span> candidates <span class="keyword">or</span> target&lt;=<span class="number">0</span>:
-            <span class="keyword">return</span> []
-        used = [<span class="number">0</span>] * len(candidates)
+<pre><code class="python">class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -&gt; List[List[int]]:
+        if not candidates or target&lt;=0:
+            return []
+        used = [0] * len(candidates)
 
-        <span class="function"><span class="keyword">def</span> <span class="title">back_track</span><span class="params">(candidates,index)</span>:</span>
-            <span class="keyword">if</span> sum(p)==target:
-                res.append(p[:])<span class="comment">#必须加这个:，因为path之后还会变</span>
-                <span class="keyword">return</span>
-            <span class="keyword">for</span> i <span class="keyword">in</span> range(index,len(candidates)):
-                <span class="keyword">if</span> <span class="keyword">not</span> used[i]:
-                    <span class="keyword">if</span> i&gt;<span class="number">0</span> <span class="keyword">and</span> candidates[i] == candidates[i<span class="number">-1</span>] <span class="keyword">and</span> <span class="keyword">not</span> used[i<span class="number">-1</span>]:
-                        <span class="keyword">continue</span>
-                    used[i]=<span class="number">1</span>
+        def back_track(candidates,index):
+            if sum(p)==target:
+                res.append(p[:])#必须加这个:，因为path之后还会变
+                return
+            for i in range(index,len(candidates)):
+                if not used[i]:
+                    if i&gt;0 and candidates[i] == candidates[i-1] and not used[i-1]:
+                        continue
+                    used[i]=1
                     p.append(candidates[i])
-                    <span class="comment"># 剪枝</span>
-                    <span class="keyword">if</span> sum(p)&lt;=target:
-                        back_track(candidates,i+<span class="number">1</span>)<span class="comment">#i+1:每个数字在每个组合中只能使用一次</span>
+                    # 剪枝
+                    if sum(p)&lt;=target:
+                        back_track(candidates,i+1)#i+1:每个数字在每个组合中只能使用一次
                     p.pop()
-                    used[i]=<span class="number">0</span>
-
+                    used[i]=0
+                    
         res=[]
-        p=[]<span class="comment">#存储临时结果</span>
-        candidates = sorted(candidates)<span class="comment">#需要排序！</span>
-        back_track(candidates,<span class="number">0</span>)
-        <span class="keyword">return</span> res</code></pre>
+        p=[]#存储临时结果
+        candidates = sorted(candidates)#需要排序！
+        back_track(candidates,0)
+        return res
+</code></pre>
 <p><img src="./12.png" alt="Alt text"></p>
 <p>在经历了前面那些题后，终于自己写出来一道：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">combinationSum3</span><span class="params">(self, k: int, n: int)</span> -&gt; List[List[int]]:</span>
-        nums=[i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">10</span>)]
-        <span class="function"><span class="keyword">def</span> <span class="title">back_track</span><span class="params">(index)</span>:</span>
-            <span class="keyword">if</span> len(p)==k <span class="keyword">and</span> sum(p)==n:
+<pre><code class="python">class Solution:
+    def combinationSum3(self, k: int, n: int) -&gt; List[List[int]]:
+        nums=[i for i in range(1,10)]
+        def back_track(index):
+            if len(p)==k and sum(p)==n:
                 res.append(p[:])
-                <span class="keyword">return</span>
-            <span class="keyword">for</span> i <span class="keyword">in</span> range(index,len(nums)):
+                return
+            for i in range(index,len(nums)):
                 p.append(nums[i])
-                <span class="keyword">if</span> len(p)&lt;=k <span class="keyword">and</span> sum(p)&lt;=n: 
-                    back_track(i+<span class="number">1</span>)
+                if len(p)&lt;=k and sum(p)&lt;=n: 
+                    back_track(i+1)
                 p.pop()
         res=[]
         p=[]
-        back_track(<span class="number">0</span>)
-        <span class="keyword">return</span> res</code></pre>
+        back_track(0)
+        return res
+</code></pre>
 <p>感觉和前面的很像，只是加了个判断len(p)是否等于k的条件。</p>
 <p><img src="./13.png" alt="Alt text"></p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">subsets</span><span class="params">(self, nums: List[int])</span> -&gt; List[List[int]]:</span>
-        <span class="keyword">if</span> <span class="keyword">not</span> nums:
-            <span class="keyword">return</span> []
-        <span class="comment">#排列和组合问题的结果在叶子结点，而子集的在每个结点</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">back_track</span><span class="params">(index)</span>:</span>
+<pre><code class="python">class Solution:
+    def subsets(self, nums: List[int]) -&gt; List[List[int]]:
+        if not nums:
+            return []
+        #排列和组合问题的结果在叶子结点，而子集的在每个结点
+        def back_track(index):
 
-            <span class="keyword">for</span> i <span class="keyword">in</span> range(index,len(nums)):
+            for i in range(index,len(nums)):
                 p.append(nums[i])
                 res.append(p[:])
-                back_track(i+<span class="number">1</span>)
+                back_track(i+1)
                 p.pop()
-
+        
         res=[]
         p=[]
-        back_track(<span class="number">0</span>)
-        <span class="keyword">return</span> res+[[]]</code></pre>
+        back_track(0)
+        return res+[[]]
+</code></pre>
 <p>还是写成和之前统一的格式比较好：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">subsets</span><span class="params">(self, nums: List[int])</span> -&gt; List[List[int]]:</span>
-        <span class="keyword">if</span> <span class="keyword">not</span> nums:
-            <span class="keyword">return</span> []
-        <span class="comment">#排列和组合问题的结果在叶子结点，而子集的在每个结点</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">back_track</span><span class="params">(index)</span>:</span>
-            <span class="keyword">if</span> <span class="number">0</span>&lt;len(p)&lt;=len(nums):
+<pre><code class="python">class Solution:
+    def subsets(self, nums: List[int]) -&gt; List[List[int]]:
+        if not nums:
+            return []
+        #排列和组合问题的结果在叶子结点，而子集的在每个结点
+        def back_track(index):
+            if 0&lt;len(p)&lt;=len(nums):
                 res.append(p[:])
-                <span class="comment">#不用return，因为还要向下处理，并没有到叶子结点</span>
-            <span class="keyword">for</span> i <span class="keyword">in</span> range(index,len(nums)):
+                #不用return，因为还要向下处理，并没有到叶子结点
+            for i in range(index,len(nums)):
                 p.append(nums[i])
-                back_track(i+<span class="number">1</span>)
+                back_track(i+1)
                 p.pop()
-
+        
         res=[]
         p=[]
-        back_track(<span class="number">0</span>)
-        <span class="keyword">return</span> res+[[]]</code></pre>
+        back_track(0)
+        return res+[[]]
+</code></pre>
 <p>也可以不单独处理[]，更统一了: </p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">subsets</span><span class="params">(self, nums: List[int])</span> -&gt; List[List[int]]:</span>
-        <span class="keyword">if</span> <span class="keyword">not</span> nums:
-            <span class="keyword">return</span> []
-        <span class="comment">#排列和组合问题的结果在叶子结点，而子集的在每个结点</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">back_track</span><span class="params">(index)</span>:</span>
-            <span class="keyword">if</span> len(p)&lt;=len(nums):
+<pre><code class="python">class Solution:
+    def subsets(self, nums: List[int]) -&gt; List[List[int]]:
+        if not nums:
+            return []
+        #排列和组合问题的结果在叶子结点，而子集的在每个结点
+        def back_track(index):
+            if len(p)&lt;=len(nums):
                 res.append(p[:])
-            <span class="keyword">for</span> i <span class="keyword">in</span> range(index,len(nums)):
+            for i in range(index,len(nums)):
                 p.append(nums[i])
-                back_track(i+<span class="number">1</span>)
+                back_track(i+1)
                 p.pop()
-
+        
         res=[]
         p=[]
-        back_track(<span class="number">0</span>)
-        <span class="keyword">return</span> res</code></pre>
+        back_track(0)
+        return res
+</code></pre>
 <p><img src="./14.png" alt="Alt text"><br>加个used数组判断是否重复，注意先排序。</p>
 <p>这和之前一样，套着模板就写出来了：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">subsetsWithDup</span><span class="params">(self, nums: List[int])</span> -&gt; List[List[int]]:</span>
-        <span class="keyword">if</span> <span class="keyword">not</span> nums:
-            <span class="keyword">return</span> []
-        used=[<span class="number">0</span>]*len(nums)
-        <span class="comment">#排列和组合问题的结果在叶子结点，而子集的在每个结点</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">back_track</span><span class="params">(nums,index)</span>:</span>
-            <span class="keyword">if</span> len(p)&lt;=len(nums):
+<pre><code class="python">class Solution:
+    def subsetsWithDup(self, nums: List[int]) -&gt; List[List[int]]:
+        if not nums:
+            return []
+        used=[0]*len(nums)
+        #排列和组合问题的结果在叶子结点，而子集的在每个结点
+        def back_track(nums,index):
+            if len(p)&lt;=len(nums):
                 res.append(p[:])
-            <span class="keyword">for</span> i <span class="keyword">in</span> range(index,len(nums)):
-                <span class="keyword">if</span> used[i]==<span class="number">0</span>:
-                    <span class="keyword">if</span> i&gt;<span class="number">0</span> <span class="keyword">and</span> nums[i]==nums[i<span class="number">-1</span>] <span class="keyword">and</span> <span class="keyword">not</span> used[i<span class="number">-1</span>]:
-                        <span class="keyword">continue</span>
-                    used[i]=<span class="number">1</span>
+            for i in range(index,len(nums)):
+                if used[i]==0:
+                    if i&gt;0 and nums[i]==nums[i-1] and not used[i-1]:
+                        continue
+                    used[i]=1
                     p.append(nums[i])
-                    back_track(nums,i+<span class="number">1</span>)
+                    back_track(nums,i+1)
                     p.pop()
-                    used[i]=<span class="number">0</span>
-
+                    used[i]=0
+        
         res=[]
         p=[]
-        back_track(sorted(nums),<span class="number">0</span>)
-        <span class="keyword">return</span> res</code></pre>
+        back_track(sorted(nums),0)
+        return res
+</code></pre>
 <p><img src="./15.png" alt="Alt text"></p>
 <h2 id="8-6"><a href="#8-6" class="headerlink" title="8-6"></a>8-6</h2><p>二维平面上的回溯法。<br><img src="./19.png" alt="Alt text"></p>
 <p><img src="./20.png" alt="Alt text"></p>
@@ -281,197 +293,205 @@
 <p><img src="./22.png" alt="Alt text"><br><img src="./23.png" alt="Alt text"><br><img src="./24.png" alt="Alt text"></p>
 <p>改写成Python版本：</p>
 <p>注意x向下，y向右</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="comment">#入口</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">exist</span><span class="params">(self, board: List[List[str]], word: str)</span> -&gt; bool:</span>
-        <span class="comment">#从board[startx][starty]开始，寻找word[index...len(word)]</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">searchWord</span><span class="params">(board,word,index,startx,starty)</span>:</span>
-            <span class="keyword">if</span> index==len(word)<span class="number">-1</span>:
-                <span class="keyword">return</span> board[startx][starty]==word[index]
-            <span class="keyword">if</span> board[startx][starty]==word[index]:
-                visited[startx][starty]=<span class="literal">True</span>
-                <span class="comment">#从startx,starty出发，向四个方向寻找</span>
-                <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>):
-                    newx=startx+d[i][<span class="number">0</span>]
-                    newy=starty+d[i][<span class="number">1</span>]
-                    <span class="keyword">if</span> self.inArea(newx,newy,n,m) <span class="keyword">and</span> <span class="keyword">not</span> visited[newx][newy]:
-                        <span class="keyword">if</span> searchWord(board,word,index+<span class="number">1</span>,newx,newy):
-                            <span class="keyword">return</span> <span class="literal">True</span>
-                visited[startx][starty]=<span class="literal">False</span>
+<pre><code class="python">class Solution:
+    #入口
+    def exist(self, board: List[List[str]], word: str) -&gt; bool:
+        #从board[startx][starty]开始，寻找word[index...len(word)]
+        def searchWord(board,word,index,startx,starty):
+            if index==len(word)-1:
+                return board[startx][starty]==word[index]
+            if board[startx][starty]==word[index]:
+                visited[startx][starty]=True
+                #从startx,starty出发，向四个方向寻找
+                for i in range(4):
+                    newx=startx+d[i][0]
+                    newy=starty+d[i][1]
+                    if self.inArea(newx,newy,n,m) and not visited[newx][newy]:
+                        if searchWord(board,word,index+1,newx,newy):
+                            return True
+                visited[startx][starty]=False
+                
+            else:
+                return False
 
-            <span class="keyword">else</span>:
-                <span class="keyword">return</span> <span class="literal">False</span>
-
-        d=[[<span class="number">-1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">-1</span>]]
-        n,m=len(board),len(board[<span class="number">0</span>])
-        visited = [[<span class="literal">False</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(m)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)]
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(m):
-                <span class="keyword">if</span> searchWord(board,word,<span class="number">0</span>,i,j):
-                    <span class="keyword">return</span> <span class="literal">True</span>
-        <span class="keyword">return</span> <span class="literal">False</span>
-
-    <span class="comment">#判断来到的新位置是否越界</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">inArea</span><span class="params">(self,x,y,n,m)</span>:</span>
-        <span class="keyword">return</span> <span class="number">0</span>&lt;=x&lt;n <span class="keyword">and</span> <span class="number">0</span>&lt;=y&lt;m</code></pre>
+        d=[[-1,0],[0,1],[1,0],[0,-1]]
+        n,m=len(board),len(board[0])
+        visited = [[False for _ in range(m)] for _ in range(n)]
+        for i in range(n):
+            for j in range(m):
+                if searchWord(board,word,0,i,j):
+                    return True
+        return False
+    
+    #判断来到的新位置是否越界
+    def inArea(self,x,y,n,m):
+        return 0&lt;=x&lt;n and 0&lt;=y&lt;m
+</code></pre>
 <p>改一点点：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="comment">#入口</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">exist</span><span class="params">(self, board: List[List[str]], word: str)</span> -&gt; bool:</span>
-        <span class="comment">#从board[startx][starty]开始，寻找word[index...len(word)]</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">searchWord</span><span class="params">(board,word,index,startx,starty)</span>:</span>
-            <span class="keyword">if</span> index==len(word)<span class="number">-1</span>:
-                <span class="keyword">return</span> board[startx][starty]==word[index]
-            <span class="keyword">if</span> board[startx][starty]==word[index]:
-                visited[startx][starty]=<span class="number">1</span>
-                <span class="comment">#从startx,starty出发，向四个方向寻找</span>
-                <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>):
-                    newx=startx+d[i][<span class="number">0</span>]
-                    newy=starty+d[i][<span class="number">1</span>]
-                    <span class="keyword">if</span> <span class="number">0</span>&lt;=newx&lt;m <span class="keyword">and</span> <span class="number">0</span>&lt;=newy&lt;n <span class="keyword">and</span> <span class="keyword">not</span> visited[newx][newy]:
-                        <span class="keyword">if</span> searchWord(board,word,index+<span class="number">1</span>,newx,newy):
-                            <span class="keyword">return</span> <span class="literal">True</span>
-                visited[startx][starty]=<span class="number">0</span>
+<pre><code class="python">class Solution:
+    #入口
+    def exist(self, board: List[List[str]], word: str) -&gt; bool:
+        #从board[startx][starty]开始，寻找word[index...len(word)]
+        def searchWord(board,word,index,startx,starty):
+            if index==len(word)-1:
+                return board[startx][starty]==word[index]
+            if board[startx][starty]==word[index]:
+                visited[startx][starty]=1
+                #从startx,starty出发，向四个方向寻找
+                for i in range(4):
+                    newx=startx+d[i][0]
+                    newy=starty+d[i][1]
+                    if 0&lt;=newx&lt;m and 0&lt;=newy&lt;n and not visited[newx][newy]:
+                        if searchWord(board,word,index+1,newx,newy):
+                            return True
+                visited[startx][starty]=0
+                
+            else:
+                return False
 
-            <span class="keyword">else</span>:
-                <span class="keyword">return</span> <span class="literal">False</span>
-
-        d=[[<span class="number">-1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">-1</span>]]
-        m,n=len(board),len(board[<span class="number">0</span>])
-        visited = [[<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(m)]
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(m):
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):
-                <span class="keyword">if</span> searchWord(board,word,<span class="number">0</span>,i,j):
-                    <span class="keyword">return</span> <span class="literal">True</span>
-        <span class="keyword">return</span> <span class="literal">False</span></code></pre>
+        d=[[-1,0],[0,1],[1,0],[0,-1]]
+        m,n=len(board),len(board[0])
+        visited = [[0 for _ in range(n)] for _ in range(m)]
+        for i in range(m):
+            for j in range(n):
+                if searchWord(board,word,0,i,j):
+                    return True
+        return False
+</code></pre>
 <p>如果没有要求不能修改原数组，那么不需要visited：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="comment">#入口</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">exist</span><span class="params">(self, board: List[List[str]], word: str)</span> -&gt; bool:</span>
-        <span class="comment">#从board[startx][starty]开始，寻找word[index...len(word)]</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">searchWord</span><span class="params">(board,word,index,startx,starty)</span>:</span>
-            <span class="keyword">if</span> index==len(word)<span class="number">-1</span>:
-                <span class="keyword">return</span> board[startx][starty]==word[index]
-            <span class="keyword">if</span> board[startx][starty]==word[index]:
-                <span class="comment">#visited[startx][starty]=1</span>
-                board[startx][starty]=<span class="string">''</span>
-                <span class="comment">#从startx,starty出发，向四个方向寻找</span>
-                <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>):
-                    newx=startx+d[i][<span class="number">0</span>]
-                    newy=starty+d[i][<span class="number">1</span>]
-                    <span class="keyword">if</span> self.inArea(newx,newy,m,n):
-                        <span class="keyword">if</span> searchWord(board,word,index+<span class="number">1</span>,newx,newy):
-                            <span class="keyword">return</span> <span class="literal">True</span>
-                <span class="comment">#visited[startx][starty]=0</span>
+<pre><code class="python">class Solution:
+    #入口
+    def exist(self, board: List[List[str]], word: str) -&gt; bool:
+        #从board[startx][starty]开始，寻找word[index...len(word)]
+        def searchWord(board,word,index,startx,starty):
+            if index==len(word)-1:
+                return board[startx][starty]==word[index]
+            if board[startx][starty]==word[index]:
+                #visited[startx][starty]=1
+                board[startx][starty]=&#39;&#39;
+                #从startx,starty出发，向四个方向寻找
+                for i in range(4):
+                    newx=startx+d[i][0]
+                    newy=starty+d[i][1]
+                    if self.inArea(newx,newy,m,n):
+                        if searchWord(board,word,index+1,newx,newy):
+                            return True
+                #visited[startx][starty]=0
                 board[startx][starty]=word[index]
-            <span class="keyword">else</span>:
-                <span class="keyword">return</span> <span class="literal">False</span>
+            else:
+                return False
 
-        d=[[<span class="number">-1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">-1</span>]]
-        m,n=len(board),len(board[<span class="number">0</span>])
-        visited=[[<span class="number">0</span>]*n]*m
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(m):
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):
-                <span class="keyword">if</span> searchWord(board,word,<span class="number">0</span>,i,j):
-                    <span class="keyword">return</span> <span class="literal">True</span>
-        <span class="keyword">return</span> <span class="literal">False</span>
-
-    <span class="comment">#判断来到的新位置是否越界</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">inArea</span><span class="params">(self,x,y,m,n)</span>:</span>
-        <span class="keyword">return</span> x&gt;=<span class="number">0</span> <span class="keyword">and</span> x&lt;m <span class="keyword">and</span> y&gt;=<span class="number">0</span> <span class="keyword">and</span> y&lt;n</code></pre>
+        d=[[-1,0],[0,1],[1,0],[0,-1]]
+        m,n=len(board),len(board[0])
+        visited=[[0]*n]*m
+        for i in range(m):
+            for j in range(n):
+                if searchWord(board,word,0,i,j):
+                    return True
+        return False
+    
+    #判断来到的新位置是否越界
+    def inArea(self,x,y,m,n):
+        return x&gt;=0 and x&lt;m and y&gt;=0 and y&lt;n
+</code></pre>
 <h2 id="8-7"><a href="#8-7" class="headerlink" title="8-7"></a>8-7</h2><p>floodfill算法<br><img src="./25.png" alt="Alt text"></p>
 <p><img src="./26.png" alt="Alt text"></p>
 <p><img src="./27.png" alt="Alt text"><br><img src="./28.png" alt="Alt text"><br><img src="./29.png" alt="Alt text"></p>
 <p>不需要重置visited状态，因为最终目标就是将所有与grid[i][j]连通的岛屿全部置为True(已访问)状态。</p>
 <p>改写成Python版本：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">numIslands</span><span class="params">(self, grid: List[List[str]])</span> -&gt; int:</span>
+<pre><code class="python">class Solution:
+    def numIslands(self, grid: List[List[str]]) -&gt; int:
         m=len(grid)
-        <span class="keyword">if</span> m==<span class="number">0</span>:
-            <span class="keyword">return</span> <span class="number">0</span>
-        n=len(grid[<span class="number">0</span>])
-        visited=[[<span class="literal">False</span>]*n <span class="keyword">for</span> _ <span class="keyword">in</span> range(m)]
+        if m==0:
+            return 0
+        n=len(grid[0])
+        visited=[[False]*n for _ in range(m)]
 
-        <span class="function"><span class="keyword">def</span> <span class="title">dfs</span><span class="params">(grid,x,y)</span>:</span>
-            visited[x][y]=<span class="literal">True</span>
-            <span class="keyword">for</span> d <span class="keyword">in</span> [[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">-1</span>],[<span class="number">-1</span>,<span class="number">0</span>]]:
-                newx=x+d[<span class="number">0</span>]
-                newy=y+d[<span class="number">1</span>]
-                <span class="keyword">if</span> <span class="number">0</span>&lt;=newx&lt;m <span class="keyword">and</span> <span class="number">0</span>&lt;=newy&lt;n <span class="keyword">and</span> <span class="keyword">not</span> visited[newx][newy] <span class="keyword">and</span> grid[newx][newy]==<span class="string">'1'</span> :
+        def dfs(grid,x,y):
+            visited[x][y]=True
+            for d in [[0,1],[1,0],[0,-1],[-1,0]]:
+                newx=x+d[0]
+                newy=y+d[1]
+                if 0&lt;=newx&lt;m and 0&lt;=newy&lt;n and not visited[newx][newy] and grid[newx][newy]==&#39;1&#39; :
                     dfs(grid,newx,newy)
-            <span class="keyword">return</span>
+            return
 
-        res=<span class="number">0</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(m):
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):
-                <span class="keyword">if</span> grid[i][j]==<span class="string">'1'</span> <span class="keyword">and</span> <span class="keyword">not</span> visited[i][j]:
-                    res+=<span class="number">1</span>
+        res=0
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j]==&#39;1&#39; and not visited[i][j]:
+                    res+=1
                     dfs(grid,i,j)
-        <span class="keyword">return</span> res</code></pre>
+        return res
+</code></pre>
 <p>题目没要求不能修改grid，所以可以不用visited：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">numIslands</span><span class="params">(self, grid: List[List[str]])</span> -&gt; int:</span>
+<pre><code class="python">class Solution:
+    def numIslands(self, grid: List[List[str]]) -&gt; int:
         m=len(grid)
-        <span class="keyword">if</span> m==<span class="number">0</span>:
-            <span class="keyword">return</span> <span class="number">0</span>
-        n=len(grid[<span class="number">0</span>])
+        if m==0:
+            return 0
+        n=len(grid[0])
 
-        <span class="function"><span class="keyword">def</span> <span class="title">dfs</span><span class="params">(grid,x,y)</span>:</span>
-            grid[x][y]=<span class="string">'0'</span>
-            <span class="keyword">for</span> d <span class="keyword">in</span> [[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">-1</span>],[<span class="number">-1</span>,<span class="number">0</span>]]:
-                newx=x+d[<span class="number">0</span>]
-                newy=y+d[<span class="number">1</span>]
-                <span class="keyword">if</span> <span class="number">0</span>&lt;=newx&lt;m <span class="keyword">and</span> <span class="number">0</span>&lt;=newy&lt;n <span class="keyword">and</span> grid[newx][newy]==<span class="string">'1'</span>:
-
+        def dfs(grid,x,y):
+            grid[x][y]=&#39;0&#39;
+            for d in [[0,1],[1,0],[0,-1],[-1,0]]:
+                newx=x+d[0]
+                newy=y+d[1]
+                if 0&lt;=newx&lt;m and 0&lt;=newy&lt;n and grid[newx][newy]==&#39;1&#39;:
+                    
                     dfs(grid,newx,newy)
-            <span class="keyword">return</span>
+            return
 
-        res=<span class="number">0</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(m):
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):
-                <span class="keyword">if</span> grid[i][j]==<span class="string">'1'</span>:
-                    res+=<span class="number">1</span>
+        res=0
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j]==&#39;1&#39;:
+                    res+=1
                     dfs(grid,i,j)
-        <span class="keyword">return</span> res</code></pre>
+        return res
+</code></pre>
 <p>课后习题<br><img src="./30.png" alt="Alt text"></p>
 <p>看评论区大佬的解法</p>
 <p>这道题的突破口就在于：</p>
-<pre><code>任何不在边界上，或不与边界上的 &apos;O&apos; 相连的 &apos;O&apos; 最终都会被填充为 &apos;X&apos;。</code></pre><p>那么，我们只要找到四周边界上存在O且与这些O连接着的O，在搜索时先修改成其他字母，比如“#”。<br>然后遍历二维矩阵，将为O修改为X，将#修改为O即可。</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">solve</span><span class="params">(self, board: List[List[str]])</span> -&gt; <span class="keyword">None</span>:</span>
-        <span class="string">"""</span>
-<span class="string">        Do not return anything, modify board in-place instead.</span>
-<span class="string">        """</span>
+<pre><code>任何不在边界上，或不与边界上的 &#39;O&#39; 相连的 &#39;O&#39; 最终都会被填充为 &#39;X&#39;。
+</code></pre>
+<p>那么，我们只要找到四周边界上存在O且与这些O连接着的O，在搜索时先修改成其他字母，比如“#”。<br>然后遍历二维矩阵，将为O修改为X，将#修改为O即可。</p>
+<pre><code class="python">class Solution:
+    def solve(self, board: List[List[str]]) -&gt; None:
+        &quot;&quot;&quot;
+        Do not return anything, modify board in-place instead.
+        &quot;&quot;&quot;
         m=len(board)
-        n=len(board[<span class="number">0</span>])
+        n=len(board[0])
 
-        <span class="comment">#递归函数：找到四周边界上存在O且与这些O连接着的O,将其改为'#'</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">dfs</span><span class="params">(board,x,y)</span>:</span>
-            <span class="keyword">if</span> board[x][y]!=<span class="string">'O'</span>:
-                <span class="keyword">return</span>
-            <span class="keyword">else</span>:
-                board[x][y]=<span class="string">'#'</span>
-            <span class="keyword">for</span> d <span class="keyword">in</span> [[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">-1</span>],[<span class="number">-1</span>,<span class="number">0</span>]]:
-                newx=x+d[<span class="number">0</span>]
-                newy=y+d[<span class="number">1</span>]
-                <span class="keyword">if</span> <span class="number">0</span>&lt;=newx&lt;m <span class="keyword">and</span> <span class="number">0</span>&lt;=newy&lt;n:
+        #递归函数：找到四周边界上存在O且与这些O连接着的O,将其改为&#39;#&#39;
+        def dfs(board,x,y):
+            if board[x][y]!=&#39;O&#39;:
+                return
+            else:
+                board[x][y]=&#39;#&#39;
+            for d in [[0,1],[1,0],[0,-1],[-1,0]]:
+                newx=x+d[0]
+                newy=y+d[1]
+                if 0&lt;=newx&lt;m and 0&lt;=newy&lt;n:
                     dfs(board,newx,newy)
-        <span class="comment">#开始行动：找到四周边界上存在O且与这些O连接着的O,将其改为'#'</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(m):
-            dfs(board,i,<span class="number">0</span>)
-            dfs(board,i,n<span class="number">-1</span>)
-        <span class="keyword">for</span> j <span class="keyword">in</span> range(n):
-            dfs(board,<span class="number">0</span>,j)
-            dfs(board,m<span class="number">-1</span>,j)
+        #开始行动：找到四周边界上存在O且与这些O连接着的O,将其改为&#39;#&#39;
+        for i in range(m):
+            dfs(board,i,0)
+            dfs(board,i,n-1)
+        for j in range(n):
+            dfs(board,0,j)
+            dfs(board,m-1,j)
 
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(m):
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):
-                <span class="comment">#把'#'改回'O'</span>
-                <span class="keyword">if</span> board[i][j]==<span class="string">'#'</span>:
-                    board[i][j]=<span class="string">'O'</span>
-                <span class="comment">#把'X'或'O'（这些'O'全被'X'包围了）改成'X'</span>
-                <span class="keyword">else</span>:
-                    board[i][j]=<span class="string">'X'</span></code></pre>
+        for i in range(m):
+            for j in range(n):
+                #把&#39;#&#39;改回&#39;O&#39;
+                if board[i][j]==&#39;#&#39;:
+                    board[i][j]=&#39;O&#39;
+                #把&#39;X&#39;或&#39;O&#39;（这些&#39;O&#39;全被&#39;X&#39;包围了）改成&#39;X&#39;
+                else:
+                    board[i][j]=&#39;X&#39;
+</code></pre>
 <p><img src="./31.png" alt="Alt text"></p>
 <p>评论区大佬：水往高处流。</p>
 <p>对于一个点它能流动两边的大洋，那么反过来，两边大洋的水反着流就能达到这个点。<br>既然水开始倒流了，那么逻辑也需要反过来，因此只有将下一个点比当前的点大时或者等于当前点的高度时，水才能流过去。</p>
@@ -486,441 +506,469 @@
 <li>这些重合的点便是我们要找的点<br><img src="./34.png" alt="Alt text"></li>
 </ol>
 <p>Python代码如下，根据大佬的代码，我改成了熟悉的格式：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">pacificAtlantic</span><span class="params">(self, heights: List[List[int]])</span> -&gt; List[List[int]]:</span>
+<pre><code class="python">class Solution:
+    def pacificAtlantic(self, heights: List[List[int]]) -&gt; List[List[int]]:
         m=len(heights)
-        n=len(heights[<span class="number">0</span>])
-        pac=[[<span class="number">0</span>]*n <span class="keyword">for</span> _ <span class="keyword">in</span> range(m)]
-        atl=[[<span class="number">0</span>]*n <span class="keyword">for</span> _ <span class="keyword">in</span> range(m)]
+        n=len(heights[0])
+        pac=[[0]*n for _ in range(m)]
+        atl=[[0]*n for _ in range(m)]
         res=[]
 
-        <span class="function"><span class="keyword">def</span> <span class="title">dfs</span><span class="params">(heights, visited, row, col)</span>:</span>
-            <span class="keyword">if</span> visited[row][col]:
-                <span class="keyword">return</span>
-            visited[row][col]=<span class="number">1</span>
+        def dfs(heights, visited, row, col):
+            if visited[row][col]:
+                return
+            visited[row][col]=1
 
-            <span class="comment">#从太平洋或大西洋都能到达,是解</span>
-            <span class="keyword">if</span> (pac[row][col] <span class="keyword">and</span> atl[row][col]):
+            #从太平洋或大西洋都能到达,是解
+            if (pac[row][col] and atl[row][col]):
                 res.append([row,col])
-
-            <span class="keyword">for</span> d <span class="keyword">in</span> [[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">-1</span>],[<span class="number">-1</span>,<span class="number">0</span>]]:
-                newx=row+d[<span class="number">0</span>]
-                newy=col+d[<span class="number">1</span>]
-                <span class="keyword">if</span> <span class="number">0</span>&lt;=newx&lt;m <span class="keyword">and</span> <span class="number">0</span>&lt;=newy&lt;n <span class="keyword">and</span> heights[newx][newy]&gt;=heights[row][col]:
+            
+            for d in [[0,1],[1,0],[0,-1],[-1,0]]:
+                newx=row+d[0]
+                newy=col+d[1]
+                if 0&lt;=newx&lt;m and 0&lt;=newy&lt;n and heights[newx][newy]&gt;=heights[row][col]:
                     dfs(heights,visited,newx,newy)
-            <span class="keyword">return</span>
-
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(m):
-            dfs(heights, pac, i, <span class="number">0</span>)
-            dfs(heights, atl, i, n<span class="number">-1</span>)
-        <span class="keyword">for</span> j <span class="keyword">in</span> range(n):
-            dfs(heights, pac, <span class="number">0</span>, j)
-            dfs(heights, atl, m<span class="number">-1</span>, j)
-        <span class="keyword">return</span> res</code></pre>
+            return
+            
+        for i in range(m):
+            dfs(heights, pac, i, 0)
+            dfs(heights, atl, i, n-1)
+        for j in range(n):
+            dfs(heights, pac, 0, j)
+            dfs(heights, atl, m-1, j)
+        return res
+</code></pre>
 <h2 id="8-8"><a href="#8-8" class="headerlink" title="8-8"></a>8-8</h2><p><img src="./35.png" alt="Alt text"><br><img src="./36.png" alt="Alt text"></p>
 <h1 id="第九章、动态规划"><a href="#第九章、动态规划" class="headerlink" title="第九章、动态规划"></a>第九章、动态规划</h1><h2 id="9-1"><a href="#9-1" class="headerlink" title="9-1"></a>9-1</h2><p>以斐波那契为例，<br><img src="./37.png" alt="Alt text"></p>
 <p><img src="./38.png" alt="Alt text"></p>
 <p><img src="./39.png" alt="Alt text"></p>
 <h2 id="9-2"><a href="#9-2" class="headerlink" title="9-2"></a>9-2</h2><p><img src="./40.png" alt="Alt text"><br>递归树：<br><img src="./41.png" alt="Alt text"></p>
 <p>记忆化搜索：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">climbStairs</span><span class="params">(self, n: int)</span> -&gt; int:</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(n)</span>:</span>
-            <span class="keyword">if</span> n==<span class="number">1</span>:
-                <span class="keyword">return</span> <span class="number">1</span>
-            <span class="keyword">if</span> n==<span class="number">2</span>:
-                <span class="keyword">return</span> <span class="number">2</span>
-            <span class="keyword">if</span> memo[n]==<span class="number">-1</span>:
-                memo[n]=search(n<span class="number">-1</span>)+search(n<span class="number">-2</span>)
-            <span class="keyword">return</span> memo[n]
+<pre><code class="python">class Solution:
+    def climbStairs(self, n: int) -&gt; int:
+        def search(n):
+            if n==1:
+                return 1
+            if n==2:
+                return 2
+            if memo[n]==-1:
+                memo[n]=search(n-1)+search(n-2)
+            return memo[n]
 
-        memo=[<span class="number">-1</span>]*(n+<span class="number">1</span>)
+        memo=[-1]*(n+1)
         res=search(n)
-        <span class="keyword">return</span> res</code></pre>
+        return res
+</code></pre>
 <p>or</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">climbStairs</span><span class="params">(self, n: int)</span> -&gt; int:</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(n)</span>:</span>
-            <span class="keyword">if</span> n==<span class="number">1</span>:
-                <span class="keyword">return</span> <span class="number">1</span>
-            <span class="keyword">if</span> n==<span class="number">2</span>:
-                <span class="keyword">return</span> <span class="number">2</span>
-            <span class="keyword">if</span> memo[n<span class="number">-1</span>]==<span class="number">-1</span>:
-                memo[n<span class="number">-1</span>]=search(n<span class="number">-1</span>)+search(n<span class="number">-2</span>)
-            <span class="keyword">return</span> memo[n<span class="number">-1</span>]
+<pre><code class="python">class Solution:
+    def climbStairs(self, n: int) -&gt; int:
+        def search(n):
+            if n==1:
+                return 1
+            if n==2:
+                return 2
+            if memo[n-1]==-1:
+                memo[n-1]=search(n-1)+search(n-2)
+            return memo[n-1]
 
-        memo=[<span class="number">-1</span>]*n
+        memo=[-1]*n
         res=search(n)
-        <span class="keyword">return</span> res</code></pre>
+        return res
+</code></pre>
 <p>动态规划：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">climbStairs</span><span class="params">(self, n: int)</span> -&gt; int:</span>
-        memo=[<span class="number">-1</span>]*(n+<span class="number">1</span>)
-        memo[<span class="number">0</span>]=<span class="number">1</span>
-        memo[<span class="number">1</span>]=<span class="number">1</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>,n+<span class="number">1</span>):
-            memo[i]=memo[i<span class="number">-1</span>]+memo[i<span class="number">-2</span>]
-        <span class="keyword">return</span> memo[n]</code></pre>
+<pre><code class="python">class Solution:
+    def climbStairs(self, n: int) -&gt; int:
+        memo=[-1]*(n+1)
+        memo[0]=1
+        memo[1]=1
+        for i in range(2,n+1):
+            memo[i]=memo[i-1]+memo[i-2]
+        return memo[n]
+</code></pre>
 <p>课后习题<br><img src="./42.png" alt="Alt text"><br>每一步只能移动到下一行中相邻的结点上。相邻的结点 在这里指的是 下标 与 上一层结点下标 相同或者等于 上一层结点下标 + 1 的两个结点。也就是说，如果正位于当前行的下标 i ，那么下一步可以移动到下一行的下标 i 或 i + 1 。</p>
 <p>我直接暴力递归，结果超时了：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">minimumTotal</span><span class="params">(self, triangle: List[List[int]])</span> -&gt; int:</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(triangle,row,col)</span>:</span>
-            <span class="keyword">if</span> row&gt;=len(triangle):
-                <span class="keyword">return</span> <span class="number">0</span>
-            <span class="keyword">return</span> triangle[row][col]+min(search(triangle,row+<span class="number">1</span>,col),search(triangle,row+<span class="number">1</span>,col+<span class="number">1</span>))
-        res=search(triangle,<span class="number">0</span>,<span class="number">0</span>)
-        <span class="keyword">return</span> res</code></pre>
+<pre><code class="python">class Solution:
+    def minimumTotal(self, triangle: List[List[int]]) -&gt; int:
+        def search(triangle,row,col):
+            if row&gt;=len(triangle):
+                return 0
+            return triangle[row][col]+min(search(triangle,row+1,col),search(triangle,row+1,col+1))
+        res=search(triangle,0,0)
+        return res
+</code></pre>
 <p>改成自顶向下的记忆化搜索，过了：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">minimumTotal</span><span class="params">(self, triangle: List[List[int]])</span> -&gt; int:</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(triangle,row,col)</span>:</span>
-            <span class="keyword">if</span> row&gt;=len(triangle):
-                <span class="keyword">return</span> <span class="number">0</span>
-            <span class="keyword">if</span> memo[row][col]==<span class="string">'#'</span>:
-                memo[row][col]=triangle[row][col]+min(search(triangle,row+<span class="number">1</span>,col),search(triangle,row+<span class="number">1</span>,col+<span class="number">1</span>))
-            <span class="keyword">return</span> memo[row][col]
+<pre><code class="python">class Solution:
+    def minimumTotal(self, triangle: List[List[int]]) -&gt; int:
+        def search(triangle,row,col):
+            if row&gt;=len(triangle):
+                return 0
+            if memo[row][col]==&#39;#&#39;:
+                memo[row][col]=triangle[row][col]+min(search(triangle,row+1,col),search(triangle,row+1,col+1))
+            return memo[row][col]
 
-        memo=[[<span class="string">'#'</span>]*len(triangle)<span class="keyword">for</span> i <span class="keyword">in</span> range(len(triangle))]
-        res=search(triangle,<span class="number">0</span>,<span class="number">0</span>)
-        <span class="keyword">return</span> res</code></pre>
+        memo=[[&#39;#&#39;]*len(triangle)for i in range(len(triangle))]
+        res=search(triangle,0,0)
+        return res
+</code></pre>
 <p>下面是动态规划解法：<br><img src="./44.png" alt="Alt text"></p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">minimumTotal</span><span class="params">(self, triangle: List[List[int]])</span> -&gt; int:</span>
-        <span class="comment">#dp[i][j] 表示从点 (i, j) 到底边的最小路径和。</span>
-        <span class="comment"># 多定义一行一列（默认初始值 0），就不用判断边界了，动态规划常用方法</span>
-        dp=[[<span class="number">0</span>]*(len(triangle)+<span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> range(len(triangle)+<span class="number">1</span>)]
-        <span class="comment">#自下而上，从左往右，遍历三角形所有位置</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(triangle)<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>):<span class="comment">#行</span>
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>,i+<span class="number">1</span>,<span class="number">1</span>):<span class="comment">#列</span>
-                dp[i][j]=triangle[i][j]+min(dp[i+<span class="number">1</span>][j],dp[i+<span class="number">1</span>][j+<span class="number">1</span>])
-        <span class="keyword">return</span> dp[<span class="number">0</span>][<span class="number">0</span>]</code></pre>
+<pre><code class="python">class Solution:
+    def minimumTotal(self, triangle: List[List[int]]) -&gt; int:
+        #dp[i][j] 表示从点 (i, j) 到底边的最小路径和。
+        # 多定义一行一列（默认初始值 0），就不用判断边界了，动态规划常用方法
+        dp=[[0]*(len(triangle)+1) for _ in range(len(triangle)+1)]
+        #自下而上，从左往右，遍历三角形所有位置
+        for i in range(len(triangle)-1,-1,-1):#行
+            for j in range(0,i+1,1):#列
+                dp[i][j]=triangle[i][j]+min(dp[i+1][j],dp[i+1][j+1])
+        return dp[0][0]
+</code></pre>
 <p>上述动态规划空间还可以优化：</p>
 <p><img src="./45.png" alt="Alt text"></p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">minimumTotal</span><span class="params">(self, triangle: List[List[int]])</span> -&gt; int:</span>
-        <span class="comment">##空间优化后，dp[j] 表示从当前层第 j-1 个元素到最底层的最小路径和。</span>
-        dp=[<span class="number">0</span>]*(len(triangle)+<span class="number">1</span>)
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(triangle)<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>):<span class="comment">#行</span>
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>,i+<span class="number">1</span>,<span class="number">1</span>):<span class="comment">#列</span>
-                dp[j]=triangle[i][j]+min(dp[j],dp[j+<span class="number">1</span>])
-        <span class="keyword">return</span> dp[<span class="number">0</span>]</code></pre>
+<pre><code class="python">class Solution:
+    def minimumTotal(self, triangle: List[List[int]]) -&gt; int:
+        ##空间优化后，dp[j] 表示从当前层第 j-1 个元素到最底层的最小路径和。
+        dp=[0]*(len(triangle)+1)
+        for i in range(len(triangle)-1,-1,-1):#行
+            for j in range(0,i+1,1):#列
+                dp[j]=triangle[i][j]+min(dp[j],dp[j+1])
+        return dp[0]
+</code></pre>
 <p><img src="./43.png" alt="Alt text"><br>说明：每次只能向下或者向右移动一步。</p>
 <p>我写的回溯，小样例通过，维度稍微大些就超时了：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">minPathSum</span><span class="params">(self, grid: List[List[int]])</span> -&gt; int:</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">move</span><span class="params">(grid,x,y)</span>:</span>
-            <span class="keyword">if</span> x==m<span class="number">-1</span> <span class="keyword">and</span> y==n<span class="number">-1</span>:
+<pre><code class="python">class Solution:
+    def minPathSum(self, grid: List[List[int]]) -&gt; int:
+        def move(grid,x,y):
+            if x==m-1 and y==n-1:
                 path.append(grid[x][y])
                 res.append(path[:])
-                <span class="keyword">return</span>
+                return
 
             path.append(grid[x][y])
-            <span class="keyword">for</span> d <span class="keyword">in</span> [[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>]]:<span class="comment">#向右/下,原点在左上方</span>
-
-                newx=x+d[<span class="number">0</span>]
-                newy=y+d[<span class="number">1</span>]
-                <span class="keyword">if</span> <span class="number">0</span>&lt;=newx&lt;m <span class="keyword">and</span> <span class="number">0</span>&lt;=newy&lt;n:
+            for d in [[0,1],[1,0]]:#向右/下,原点在左上方
+                
+                newx=x+d[0]
+                newy=y+d[1]
+                if 0&lt;=newx&lt;m and 0&lt;=newy&lt;n:
                     move(grid,newx,newy)
             path.pop()
 
-        m,n=len(grid),len(grid[<span class="number">0</span>])
+        m,n=len(grid),len(grid[0])
         path=[]
         res=[]
-        move(grid,<span class="number">0</span>,<span class="number">0</span>)
+        move(grid,0,0)
         print(res)
 
-        <span class="keyword">return</span> min([sum(c) <span class="keyword">for</span> c <span class="keyword">in</span> res])</code></pre>
+        return min([sum(c) for c in res])
+</code></pre>
 <p>动态规划：</p>
 <p><strong>状态定义</strong>：<br>设 dp 为大小 m×n 矩阵，dp[i][j] 表示从左上角出发到 (i,j) 位置的最小路径和。</p>
 <p><strong>转移方程</strong>：<br><img src="./46.png" alt="Alt text"></p>
 <p>官方：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">minPathSum</span><span class="params">(self, grid: List[List[int]])</span> -&gt; int:</span>
-        <span class="keyword">if</span> <span class="keyword">not</span> grid <span class="keyword">or</span> <span class="keyword">not</span> grid[<span class="number">0</span>]:
-            <span class="keyword">return</span> <span class="number">0</span>
-
-        rows, columns = len(grid), len(grid[<span class="number">0</span>])
-        dp = [[<span class="number">0</span>] * columns <span class="keyword">for</span> _ <span class="keyword">in</span> range(rows)]
-        dp[<span class="number">0</span>][<span class="number">0</span>] = grid[<span class="number">0</span>][<span class="number">0</span>]
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, rows):
-            dp[i][<span class="number">0</span>] = dp[i - <span class="number">1</span>][<span class="number">0</span>] + grid[i][<span class="number">0</span>]
-        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, columns):
-            dp[<span class="number">0</span>][j] = dp[<span class="number">0</span>][j - <span class="number">1</span>] + grid[<span class="number">0</span>][j]
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, rows):
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, columns):
-                dp[i][j] = min(dp[i - <span class="number">1</span>][j], dp[i][j - <span class="number">1</span>]) + grid[i][j]
-
-        <span class="keyword">return</span> dp[rows - <span class="number">1</span>][columns - <span class="number">1</span>]</code></pre>
+<pre><code class="python">class Solution:
+    def minPathSum(self, grid: List[List[int]]) -&gt; int:
+        if not grid or not grid[0]:
+            return 0
+        
+        rows, columns = len(grid), len(grid[0])
+        dp = [[0] * columns for _ in range(rows)]
+        dp[0][0] = grid[0][0]
+        for i in range(1, rows):
+            dp[i][0] = dp[i - 1][0] + grid[i][0]
+        for j in range(1, columns):
+            dp[0][j] = dp[0][j - 1] + grid[0][j]
+        for i in range(1, rows):
+            for j in range(1, columns):
+                dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j]
+        
+        return dp[rows - 1][columns - 1]
+</code></pre>
 <p>更简洁：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">minPathSum</span><span class="params">(self, grid: [[int]])</span> -&gt; int:</span>
-        m,n=len(grid),len(grid[<span class="number">0</span>])
-        <span class="comment">#dp[i][j]的值代表从左上角直到走到 (i,j)位置的最小路径和</span>
-        dp=[[<span class="number">0</span>]*n]*m
-        dp[<span class="number">0</span>][<span class="number">0</span>]=grid[<span class="number">0</span>][<span class="number">0</span>]
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(m):
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):
-                <span class="keyword">if</span> i == j == <span class="number">0</span>: 
-                    <span class="keyword">continue</span>
-                <span class="keyword">elif</span> i == <span class="number">0</span>:  
-                    dp[i][j] = dp[i][j - <span class="number">1</span>] + grid[i][j]
-                <span class="keyword">elif</span> j == <span class="number">0</span>:  
-                    dp[i][j] = dp[i - <span class="number">1</span>][j] + grid[i][j]
-                <span class="keyword">else</span>: 
-                    dp[i][j] = min(dp[i - <span class="number">1</span>][j], dp[i][j - <span class="number">1</span>]) + grid[i][j]
-        <span class="keyword">return</span> dp[m<span class="number">-1</span>][n<span class="number">-1</span>]</code></pre>
+<pre><code class="python">class Solution:
+    def minPathSum(self, grid: [[int]]) -&gt; int:
+        m,n=len(grid),len(grid[0])
+        #dp[i][j]的值代表从左上角直到走到 (i,j)位置的最小路径和
+        dp=[[0]*n]*m
+        dp[0][0]=grid[0][0]
+        for i in range(m):
+            for j in range(n):
+                if i == j == 0: 
+                    continue
+                elif i == 0:  
+                    dp[i][j] = dp[i][j - 1] + grid[i][j]
+                elif j == 0:  
+                    dp[i][j] = dp[i - 1][j] + grid[i][j]
+                else: 
+                    dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j]
+        return dp[m-1][n-1]
+</code></pre>
 <p>其实我们完全不需要建立 dp 矩阵浪费额外空间，直接遍历 grid[i][j]修改即可。这是因为：grid[i][j] = min(grid[i - 1][j], grid[i][j - 1]) + grid[i][j] ；原 grid矩阵元素中被覆盖为 dp元素后（都处于当前遍历点的左上方），不会再被使用到。</p>
 <pre><code class="python">
-<span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">minPathSum</span><span class="params">(self, grid: [[int]])</span> -&gt; int:</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(grid)):
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(len(grid[<span class="number">0</span>])):
-                <span class="keyword">if</span> i == j == <span class="number">0</span>: <span class="keyword">continue</span>
-                <span class="keyword">elif</span> i == <span class="number">0</span>:  grid[i][j] = grid[i][j - <span class="number">1</span>] + grid[i][j]
-                <span class="keyword">elif</span> j == <span class="number">0</span>:  grid[i][j] = grid[i - <span class="number">1</span>][j] + grid[i][j]
-                <span class="keyword">else</span>: grid[i][j] = min(grid[i - <span class="number">1</span>][j], grid[i][j - <span class="number">1</span>]) + grid[i][j]
-        <span class="keyword">return</span> grid[<span class="number">-1</span>][<span class="number">-1</span>]</code></pre>
+class Solution:
+    def minPathSum(self, grid: [[int]]) -&gt; int:
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if i == j == 0: continue
+                elif i == 0:  grid[i][j] = grid[i][j - 1] + grid[i][j]
+                elif j == 0:  grid[i][j] = grid[i - 1][j] + grid[i][j]
+                else: grid[i][j] = min(grid[i - 1][j], grid[i][j - 1]) + grid[i][j]
+        return grid[-1][-1]
+</code></pre>
 <h2 id="9-3"><a href="#9-3" class="headerlink" title="9-3"></a>9-3</h2><p><img src="./47.png" alt="Alt text"><br>暴力解法：回溯遍历将一个数做分割的所有可能性：O(2^n)<br><img src="./48.png" alt="Alt text"></p>
 <p>根据上面的递归树，改写Python代码：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">integerBreak</span><span class="params">(self, n: int)</span> -&gt; int:</span>
-        <span class="comment">#将n进行分割(至少分割成两部分)，可以获得的最大乘积</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">help</span><span class="params">(n)</span>:</span>
-            <span class="keyword">if</span> n==<span class="number">1</span>:
-                <span class="keyword">return</span> <span class="number">1</span>
-            res=<span class="number">-1</span>
-            <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n):
-                <span class="comment">#i*(n-1)：不继续拆分了</span>
-                <span class="comment">#i*help(n-i)：继续拆分</span>
+<pre><code class="python">class Solution:
+    def integerBreak(self, n: int) -&gt; int:
+        #将n进行分割(至少分割成两部分)，可以获得的最大乘积
+        def help(n):
+            if n==1:
+                return 1
+            res=-1
+            for i in range(1,n):
+                #i*(n-1)：不继续拆分了
+                #i*help(n-i)：继续拆分
                 res=max(res,i*(n-i),i*help(n-i))
-            <span class="keyword">return</span> res
-        <span class="keyword">return</span> help(n)</code></pre>
+            return res
+        return help(n)
+</code></pre>
 <p>上面存在大量的重复运算，提交超时。</p>
 <p>开始优化<br><img src="./49.png" alt="Alt text"></p>
 <p>记忆化搜索：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">integerBreak</span><span class="params">(self, n: int)</span> -&gt; int:</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">help</span><span class="params">(n)</span>:</span>
-            <span class="keyword">if</span> n==<span class="number">1</span>:
-                <span class="keyword">return</span> <span class="number">1</span>
-            <span class="keyword">if</span> memo[n]!=<span class="number">-1</span>:
-                <span class="keyword">return</span> memo[n]
-            res=<span class="number">-1</span>
-            <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n):
-                <span class="comment">#i*(n-1)：不继续拆分了</span>
-                <span class="comment">#i*help(n-i)：继续拆分</span>
+<pre><code class="python">class Solution:
+    def integerBreak(self, n: int) -&gt; int:
+        def help(n):
+            if n==1:
+                return 1
+            if memo[n]!=-1:
+                return memo[n]
+            res=-1
+            for i in range(1,n):
+                #i*(n-1)：不继续拆分了
+                #i*help(n-i)：继续拆分
                 res=max(res,i*(n-i),i*help(n-i))
             memo[n]=res
-            <span class="keyword">return</span> res
-        memo=[<span class="number">-1</span>]*(n+<span class="number">1</span>)
-        <span class="keyword">return</span> help(n)</code></pre>
+            return res
+        memo=[-1]*(n+1)
+        return help(n)
+</code></pre>
 <p>这样就能通过了。</p>
 <p>动态规划：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">integerBreak</span><span class="params">(self, n: int)</span> -&gt; int:</span>
-        memo=[<span class="number">-1</span>]*(n+<span class="number">1</span>)
-        memo[<span class="number">1</span>]=<span class="number">1</span>
-        <span class="comment">#memo[i]表示将数字i分割(至少分割成两部分)后得到的最大乘积</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>,n+<span class="number">1</span>):
-            <span class="comment">#求解memo[i]</span>
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>,i):
-                <span class="comment">#把i拆分成j和(i-j)</span>
+<pre><code class="python">class Solution:
+    def integerBreak(self, n: int) -&gt; int:
+        memo=[-1]*(n+1)
+        memo[1]=1
+        #memo[i]表示将数字i分割(至少分割成两部分)后得到的最大乘积
+        for i in range(2,n+1):
+            #求解memo[i]
+            for j in range(1,i):
+                #把i拆分成j和(i-j)
                 memo[i]=max(memo[i],j*(i-j),j*memo[i-j])
-        <span class="keyword">return</span> memo[n]</code></pre>
+        return memo[n]
+</code></pre>
 <p>课后习题<br><img src="./50.png" alt="Alt text"></p>
 <p>之前有BFS：<br><img src="./54.png" alt="Alt text"></p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">numSquares</span><span class="params">(self, n: int)</span> -&gt; int:</span>
-        <span class="keyword">from</span> collections <span class="keyword">import</span> deque
+<pre><code class="python">class Solution:
+    def numSquares(self, n: int) -&gt; int:
+        from collections import deque
         deq=deque()
         visited=set()
-
-        deq.append((n,<span class="number">0</span>))
-        <span class="keyword">while</span> deq:
+        
+        deq.append((n,0))
+        while deq:
             number,step=deq.popleft()
-            targets=[number-i*i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,int(number**<span class="number">0.5</span>)+<span class="number">1</span>)]
-            <span class="keyword">for</span> target <span class="keyword">in</span> targets:
-                <span class="comment">#由于只遍历到(number**0.5)，因此target不可能为负数，因此下面这个判断可省略</span>
-                <span class="comment">#if target&lt;0:</span>
-                <span class="comment">#    break</span>
-                <span class="keyword">if</span> target==<span class="number">0</span>:<span class="keyword">return</span> step+<span class="number">1</span>
-                <span class="comment">#if相当于剪枝</span>
-                <span class="comment">#因为之后的每一层也是从1，4，9这样遍历的，那之前的节点值相同，之后一样的遍历过程结果不也相同嘛。记录访问过的节点就类似于剪枝，保留一个记录就好。</span>
-                <span class="keyword">if</span> target <span class="keyword">not</span> <span class="keyword">in</span> visited:
-                    deq.append((target,step+<span class="number">1</span>))
-                    visited.add(target)</code></pre>
+            targets=[number-i*i for i in range(1,int(number**0.5)+1)]
+            for target in targets:
+                #由于只遍历到(number**0.5)，因此target不可能为负数，因此下面这个判断可省略
+                #if target&lt;0:
+                #    break
+                if target==0:return step+1
+                #if相当于剪枝
+                #因为之后的每一层也是从1，4，9这样遍历的，那之前的节点值相同，之后一样的遍历过程结果不也相同嘛。记录访问过的节点就类似于剪枝，保留一个记录就好。
+                if target not in visited:
+                    deq.append((target,step+1))
+                    visited.add(target)
+</code></pre>
 <p>动态规划</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="keyword">import</span> math
-    <span class="function"><span class="keyword">def</span> <span class="title">numSquares</span><span class="params">(self, n: int)</span> -&gt; int:</span>
-        dp=[<span class="number">0</span>]*(n+<span class="number">1</span>)
-        <span class="comment">#dp[i]表示数字i可以由dp[i]个完全平方数的和来组成</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):
+<pre><code class="python">class Solution:
+    import math
+    def numSquares(self, n: int) -&gt; int:
+        dp=[0]*(n+1)
+        #dp[i]表示数字i可以由dp[i]个完全平方数的和来组成
+        for i in range(1,n+1):
             dp[i]=i
-            j=<span class="number">1</span>
-            <span class="keyword">while</span> i-j*j&gt;=<span class="number">0</span>:
-                dp[i]=min(dp[i],<span class="number">1</span>+dp[i-j**<span class="number">2</span>])
-                j+=<span class="number">1</span>
-        <span class="keyword">return</span> dp[n]</code></pre>
+            j=1
+            while i-j*j&gt;=0:
+                dp[i]=min(dp[i],1+dp[i-j**2])
+                j+=1
+        return dp[n]
+</code></pre>
 <p>上面的代码超时，把j*<em>2换成j</em>j就过了，可能这样效率更高些：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">numSquares</span><span class="params">(self, n: int)</span> -&gt; int:</span>
-        dp = [<span class="number">0</span>]*(n+<span class="number">1</span>)
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):
+<pre><code class="python">class Solution:
+    def numSquares(self, n: int) -&gt; int:
+        dp = [0]*(n+1)
+        for i in range(1,n+1):
             dp[i]=i
-            j = <span class="number">1</span>
-            <span class="keyword">while</span> i - j*j&gt;=<span class="number">0</span>:
-                dp[i] = min(dp[i],dp[i-j*j]+<span class="number">1</span>)
-                j += <span class="number">1</span>
-        <span class="keyword">return</span> dp[n]</code></pre>
+            j = 1
+            while i - j*j&gt;=0:
+                dp[i] = min(dp[i],dp[i-j*j]+1)
+                j += 1
+        return dp[n]
+</code></pre>
 <p><img src="./51.png" alt="Alt text"></p>
 <p><img src="./55.png" alt="Alt text"><br>两种情况是或的关系，互不影响，将其相加，那么226共有3种不同的解码方式，下面来讲解动态规划的做法。<br><img src="./56.png" alt="Alt text"><br><img src="./57.png" alt="Alt text"></p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">numDecodings</span><span class="params">(self, s: str)</span> -&gt; int:</span>
+<pre><code class="python">class Solution:
+    def numDecodings(self, s: str) -&gt; int:
         n = len(s)
-        <span class="comment">#设 fi 表示字符串 s 的前 i 个字符 s[1..i] 的解码方法数</span>
-        f = [<span class="number">1</span>] + [<span class="number">0</span>] * n
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n + <span class="number">1</span>):
-            <span class="keyword">if</span> s[i - <span class="number">1</span>] != <span class="string">'0'</span>:
-                f[i] += f[i - <span class="number">1</span>]
-            <span class="keyword">if</span> i &gt; <span class="number">1</span> <span class="keyword">and</span> s[i - <span class="number">2</span>] != <span class="string">'0'</span> <span class="keyword">and</span> int(s[i<span class="number">-2</span>:i]) &lt;= <span class="number">26</span>:
-                f[i] += f[i - <span class="number">2</span>]
-        <span class="keyword">return</span> f[n]</code></pre>
+        #设 fi 表示字符串 s 的前 i 个字符 s[1..i] 的解码方法数
+        f = [1] + [0] * n
+        for i in range(1, n + 1):
+            if s[i - 1] != &#39;0&#39;:
+                f[i] += f[i - 1]
+            if i &gt; 1 and s[i - 2] != &#39;0&#39; and int(s[i-2:i]) &lt;= 26:
+                f[i] += f[i - 2]
+        return f[n]
+</code></pre>
 <p><img src="./52.png" alt="Alt text"><br>和之前那个有点像，回溯同样超时：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">uniquePaths</span><span class="params">(self, m: int, n: int)</span> -&gt; int:</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">move</span><span class="params">(x,y)</span>:</span>
-            <span class="keyword">if</span> x==m<span class="number">-1</span> <span class="keyword">and</span> y==n<span class="number">-1</span>:
+<pre><code class="python">class Solution:
+    def uniquePaths(self, m: int, n: int) -&gt; int:
+        def move(x,y):
+            if x==m-1 and y==n-1:
                 path.append([x,y])
                 res.append(path[:])
-                <span class="keyword">return</span>
+                return
 
             path.append([x,y])
-            <span class="keyword">for</span> d <span class="keyword">in</span> [[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>]]:<span class="comment">#向右/下,原点在左上方</span>
-                newx=x+d[<span class="number">0</span>]
-                newy=y+d[<span class="number">1</span>]
-                <span class="keyword">if</span> <span class="number">0</span>&lt;=newx&lt;m <span class="keyword">and</span> <span class="number">0</span>&lt;=newy&lt;n:
+            for d in [[0,1],[1,0]]:#向右/下,原点在左上方
+                newx=x+d[0]
+                newy=y+d[1]
+                if 0&lt;=newx&lt;m and 0&lt;=newy&lt;n:
                     move(newx,newy)
             path.pop()
 
-
+        
         path=[]
         res=[]
-        move(<span class="number">0</span>,<span class="number">0</span>)
+        move(0,0)
         print(res)
 
-        <span class="keyword">return</span> len(res)</code></pre>
+        return len(res)
+</code></pre>
 <p>or另一种</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">uniquePaths</span><span class="params">(self, m: int, n: int)</span> -&gt; int:</span>
-        <span class="comment">#计算从[x][y]位置到达终点的不同路径总数</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">move</span><span class="params">(x,y)</span>:</span>
-            <span class="keyword">nonlocal</span> res
-            <span class="comment">#找到了一条路径！</span>
-            <span class="keyword">if</span> x==m<span class="number">-1</span> <span class="keyword">and</span> y==n<span class="number">-1</span>:
-                res+=<span class="number">1</span>
-                <span class="keyword">return</span> 
-            visited[x][y]=<span class="number">1</span>
-            <span class="keyword">for</span> d <span class="keyword">in</span> [[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>]]:<span class="comment">#向右/下,原点在左上方</span>
-                newx=x+d[<span class="number">0</span>]
-                newy=y+d[<span class="number">1</span>]
-                <span class="keyword">if</span> <span class="number">0</span>&lt;=newx&lt;m <span class="keyword">and</span> <span class="number">0</span>&lt;=newy&lt;n <span class="keyword">and</span> <span class="keyword">not</span> visited[newx][newy]:
+<pre><code class="python">class Solution:
+    def uniquePaths(self, m: int, n: int) -&gt; int:
+        #计算从[x][y]位置到达终点的不同路径总数
+        def move(x,y):
+            nonlocal res
+            #找到了一条路径！
+            if x==m-1 and y==n-1:
+                res+=1
+                return 
+            visited[x][y]=1
+            for d in [[0,1],[1,0]]:#向右/下,原点在左上方
+                newx=x+d[0]
+                newy=y+d[1]
+                if 0&lt;=newx&lt;m and 0&lt;=newy&lt;n and not visited[newx][newy]:
                     move(newx,newy)
-            visited[x][y]=<span class="number">0</span>
-        visited=[[<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(m)]
+            visited[x][y]=0
+        visited=[[0 for _ in range(n)] for _ in range(m)]
         print(visited)
-        res=<span class="number">0</span>
-        move(<span class="number">0</span>,<span class="number">0</span>)
-        <span class="keyword">return</span> res</code></pre>
+        res=0
+        move(0,0)
+        return res
+</code></pre>
 <p>个人感觉不加visited也行，因为只能向下或向右走，不会走重复格子。</p>
 <p>改成记忆化搜索能AC了：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">uniquePaths</span><span class="params">(self, m: int, n: int)</span> -&gt; int:</span>
-        <span class="comment">#计算从[x][y]位置到达终点的不同路径总数</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">move</span><span class="params">(x,y)</span>:</span>
-            <span class="comment">#找到了一条路径！</span>
-            <span class="keyword">if</span> x==m<span class="number">-1</span> <span class="keyword">and</span> y==n<span class="number">-1</span>:
-                <span class="keyword">return</span> <span class="number">1</span>
-            visited[x][y]=<span class="number">1</span>
-            s=<span class="number">0</span>
-            <span class="keyword">for</span> d <span class="keyword">in</span> [[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>]]:<span class="comment">#向右/下,原点在左上方</span>
-                newx=x+d[<span class="number">0</span>]
-                newy=y+d[<span class="number">1</span>]
-                <span class="keyword">if</span> <span class="number">0</span>&lt;=newx&lt;m <span class="keyword">and</span> <span class="number">0</span>&lt;=newy&lt;n <span class="keyword">and</span> <span class="keyword">not</span> visited[newx][newy]:
-                    <span class="keyword">if</span> memo[newx][newy]!=<span class="number">0</span>:
+<pre><code class="python">class Solution:
+    def uniquePaths(self, m: int, n: int) -&gt; int:
+        #计算从[x][y]位置到达终点的不同路径总数
+        def move(x,y):
+            #找到了一条路径！
+            if x==m-1 and y==n-1:
+                return 1
+            visited[x][y]=1
+            s=0
+            for d in [[0,1],[1,0]]:#向右/下,原点在左上方
+                newx=x+d[0]
+                newy=y+d[1]
+                if 0&lt;=newx&lt;m and 0&lt;=newy&lt;n and not visited[newx][newy]:
+                    if memo[newx][newy]!=0:
                         s+=memo[newx][newy]
-                    <span class="keyword">else</span>:
+                    else:
                         s+=move(newx,newy)
-            visited[x][y]=<span class="number">0</span>
+            visited[x][y]=0
             memo[x][y]=s
-            <span class="keyword">return</span> memo[x][y]
-        visited=[[<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(m)]
-        memo=[[<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(m)]
-        <span class="keyword">return</span> move(<span class="number">0</span>,<span class="number">0</span>)</code></pre>
+            return memo[x][y]
+        visited=[[0 for _ in range(n)] for _ in range(m)]
+        memo=[[0 for _ in range(n)] for _ in range(m)]
+        return move(0,0)
+</code></pre>
 <p>对于这题，不加visited更快些：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">uniquePaths</span><span class="params">(self, m: int, n: int)</span> -&gt; int:</span>
-        <span class="comment">#计算从[x][y]位置到达终点的不同路径总数</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">move</span><span class="params">(x,y)</span>:</span>
-            <span class="comment">#找到了一条路径！</span>
-            <span class="keyword">if</span> x==m<span class="number">-1</span> <span class="keyword">and</span> y==n<span class="number">-1</span>:
-                <span class="keyword">return</span> <span class="number">1</span>
-            <span class="comment">#visited[x][y]=1</span>
-            s=<span class="number">0</span>
-            <span class="keyword">for</span> d <span class="keyword">in</span> [[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>]]:<span class="comment">#向右/下,原点在左上方</span>
-                newx=x+d[<span class="number">0</span>]
-                newy=y+d[<span class="number">1</span>]
-                <span class="keyword">if</span> <span class="number">0</span>&lt;=newx&lt;m <span class="keyword">and</span> <span class="number">0</span>&lt;=newy&lt;n:
-                    <span class="keyword">if</span> memo[newx][newy]!=<span class="number">0</span>:
+<pre><code class="python">class Solution:
+    def uniquePaths(self, m: int, n: int) -&gt; int:
+        #计算从[x][y]位置到达终点的不同路径总数
+        def move(x,y):
+            #找到了一条路径！
+            if x==m-1 and y==n-1:
+                return 1
+            #visited[x][y]=1
+            s=0
+            for d in [[0,1],[1,0]]:#向右/下,原点在左上方
+                newx=x+d[0]
+                newy=y+d[1]
+                if 0&lt;=newx&lt;m and 0&lt;=newy&lt;n:
+                    if memo[newx][newy]!=0:
                         s+=memo[newx][newy]
-                    <span class="keyword">else</span>:
+                    else:
                         s+=move(newx,newy)
-            <span class="comment">#visited[x][y]=0</span>
+            #visited[x][y]=0
             memo[x][y]=s
-            <span class="keyword">return</span> memo[x][y]
-        <span class="comment">#visited=[[0 for _ in range(n)] for _ in range(m)]</span>
-        memo=[[<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(m)]
-        <span class="keyword">return</span> move(<span class="number">0</span>,<span class="number">0</span>)</code></pre>
+            return memo[x][y]
+        #visited=[[0 for _ in range(n)] for _ in range(m)]
+        memo=[[0 for _ in range(n)] for _ in range(m)]
+        return move(0,0)
+</code></pre>
 <p>动态规划解法：<br><img src="./58.png" alt="Alt text"></p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">uniquePaths</span><span class="params">(self, m: int, n: int)</span> -&gt; int:</span>
-        <span class="comment">#dp[i][j]表示从[0][0]到[i][j]的不同路径数</span>
-        dp=[[<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(m)]
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(m):
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):
-                <span class="keyword">if</span> i==<span class="number">0</span> <span class="keyword">and</span> j==<span class="number">0</span>:
-                    dp[i][j]=<span class="number">1</span>
-                <span class="keyword">else</span>:
-                    <span class="keyword">if</span> i!=<span class="number">0</span>:
-                        dp[i][j]+=dp[i<span class="number">-1</span>][j]<span class="comment">#从上方转移过来</span>
-                    <span class="keyword">if</span> j!=<span class="number">0</span>:
-                        dp[i][j]+=dp[i][j<span class="number">-1</span>]<span class="comment">#从左方过来 </span>
-        <span class="keyword">return</span> dp[m<span class="number">-1</span>][n<span class="number">-1</span>]</code></pre>
+<pre><code class="python">class Solution:
+    def uniquePaths(self, m: int, n: int) -&gt; int:
+        #dp[i][j]表示从[0][0]到[i][j]的不同路径数
+        dp=[[0 for _ in range(n)] for _ in range(m)]
+        for i in range(m):
+            for j in range(n):
+                if i==0 and j==0:
+                    dp[i][j]=1
+                else:
+                    if i!=0:
+                        dp[i][j]+=dp[i-1][j]#从上方转移过来
+                    if j!=0:
+                        dp[i][j]+=dp[i][j-1]#从左方过来 
+        return dp[m-1][n-1]
+</code></pre>
 <p>or</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">uniquePaths</span><span class="params">(self, m: int, n: int)</span> -&gt; int:</span>
-        <span class="comment">#dp[i][j]表示从[0][0]到[i][j]的不同路径数</span>
-        dp=[[<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(m)]
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(m):
-            dp[i][<span class="number">0</span>]=<span class="number">1</span>
-        <span class="keyword">for</span> j <span class="keyword">in</span> range(n):
-            dp[<span class="number">0</span>][j]=<span class="number">1</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,m):
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>,n):
-                dp[i][j]+=dp[i<span class="number">-1</span>][j]<span class="comment">#从上方转移过来</span>
-                dp[i][j]+=dp[i][j<span class="number">-1</span>]<span class="comment">#从左方过来 </span>
-        <span class="keyword">return</span> dp[m<span class="number">-1</span>][n<span class="number">-1</span>]</code></pre>
+<pre><code class="python">class Solution:
+    def uniquePaths(self, m: int, n: int) -&gt; int:
+        #dp[i][j]表示从[0][0]到[i][j]的不同路径数
+        dp=[[0 for _ in range(n)] for _ in range(m)]
+        for i in range(m):
+            dp[i][0]=1
+        for j in range(n):
+            dp[0][j]=1
+        for i in range(1,m):
+            for j in range(1,n):
+                dp[i][j]+=dp[i-1][j]#从上方转移过来
+                dp[i][j]+=dp[i][j-1]#从左方过来 
+        return dp[m-1][n-1]
+</code></pre>
 <pre><code>时间复杂度：O(m * n)
-空间复杂度：O(m * n)</code></pre><p>可以用一维数组优化空间，没看懂，不想看：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">uniquePaths</span><span class="params">(self, m: int, n: int)</span> -&gt; int:</span>
-        cur = [<span class="number">1</span>] * n <span class="comment">#第0行的初始值</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, m): 
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, n): 
-                <span class="comment">#cur[j]原本存着i-1行列的值，现在加上第i行第j-1列的值后，cur[j]现在是当前行第i行第j列的值</span>
-                cur[j] += cur[j<span class="number">-1</span>] 
-        <span class="keyword">return</span> cur[<span class="number">-1</span>]</code></pre>
+空间复杂度：O(m * n)
+</code></pre>
+<p>可以用一维数组优化空间，没看懂，不想看：</p>
+<pre><code class="python">class Solution:
+    def uniquePaths(self, m: int, n: int) -&gt; int:
+        cur = [1] * n #第0行的初始值
+        for i in range(1, m): 
+            for j in range(1, n): 
+                #cur[j]原本存着i-1行列的值，现在加上第i行第j-1列的值后，cur[j]现在是当前行第i行第j列的值
+                cur[j] += cur[j-1] 
+        return cur[-1]
+</code></pre>
 <p><img src="./53.png" alt="Alt text"></p>
 <p>大佬说：有障碍的话，其实就是标记对应的dp table（dp数组）保持初始值(0)就可以了。</p>
 <p>注意代码里for循环的终止条件，一旦遇到obstacleGrid[i][0] == 1的情况就停止dp[i][0]的赋值1的操作，dp[0][j]同理。</p>
@@ -928,288 +976,301 @@
 <p>但就算是做过62.不同路径，在做本题也会有感觉遇到障碍无从下手。</p>
 <p>其实只要考虑到，遇到障碍dp[i][j]保持0就可以了。</p>
 <p>也有一些小细节，例如：初始化的部分，很容易忽略了障碍之后应该都是0的情况。</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">uniquePathsWithObstacles</span><span class="params">(self, obstacleGrid: List[List[int]])</span> -&gt; int:</span>
-        <span class="comment"># 构造一个DP table</span>
+<pre><code class="python">class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -&gt; int:
+        # 构造一个DP table
         row = len(obstacleGrid)
-        col = len(obstacleGrid[<span class="number">0</span>])
-        dp = [[<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(col)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(row)]
+        col = len(obstacleGrid[0])
+        dp = [[0 for _ in range(col)] for _ in range(row)]
 
-        dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">1</span> <span class="keyword">if</span> obstacleGrid[<span class="number">0</span>][<span class="number">0</span>] != <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span>
-        <span class="keyword">if</span> dp[<span class="number">0</span>][<span class="number">0</span>] == <span class="number">0</span>: <span class="keyword">return</span> <span class="number">0</span>  <span class="comment"># 如果第一个格子就是障碍，return 0 （被堵死在起点）</span>
-        <span class="comment"># 第一行</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, col):
-            <span class="keyword">if</span> obstacleGrid[<span class="number">0</span>][i] != <span class="number">1</span>:
-                dp[<span class="number">0</span>][i] = dp[<span class="number">0</span>][i<span class="number">-1</span>]
+        dp[0][0] = 1 if obstacleGrid[0][0] != 1 else 0
+        if dp[0][0] == 0: return 0  # 如果第一个格子就是障碍，return 0 （被堵死在起点）
+        # 第一行
+        for i in range(1, col):
+            if obstacleGrid[0][i] != 1:
+                dp[0][i] = dp[0][i-1]
 
-        <span class="comment"># 第一列</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, row):
-            <span class="keyword">if</span> obstacleGrid[i][<span class="number">0</span>] != <span class="number">1</span>:
-                dp[i][<span class="number">0</span>] = dp[i<span class="number">-1</span>][<span class="number">0</span>]
+        # 第一列
+        for i in range(1, row):
+            if obstacleGrid[i][0] != 1:
+                dp[i][0] = dp[i-1][0]
         print(dp)
 
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, row):
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, col):
-                <span class="keyword">if</span> obstacleGrid[i][j] != <span class="number">1</span>:
-                    dp[i][j] = dp[i<span class="number">-1</span>][j] + dp[i][j<span class="number">-1</span>]
-        <span class="keyword">return</span> dp[<span class="number">-1</span>][<span class="number">-1</span>]</code></pre>
+        for i in range(1, row):
+            for j in range(1, col):
+                if obstacleGrid[i][j] != 1:
+                    dp[i][j] = dp[i-1][j] + dp[i][j-1]
+        return dp[-1][-1]
+</code></pre>
 <p>or</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">uniquePathsWithObstacles</span><span class="params">(self, obstacleGrid)</span>:</span>
+<pre><code class="python">class Solution(object):
+    def uniquePathsWithObstacles(self, obstacleGrid):
         n = len(obstacleGrid)
-        m = len(obstacleGrid[<span class="number">0</span>])
-        dp = [[<span class="number">0</span>] * m <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)]
-        <span class="comment">#(0,0)这个格子可能有障碍物</span>
-        dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span> <span class="keyword">if</span> obstacleGrid[<span class="number">0</span>][<span class="number">0</span>] <span class="keyword">else</span> <span class="number">1</span>
-        <span class="keyword">if</span> dp[<span class="number">0</span>][<span class="number">0</span>]==<span class="number">0</span>:
-            <span class="keyword">return</span> <span class="number">0</span>
+        m = len(obstacleGrid[0])
+        dp = [[0] * m for _ in range(n)]
+        #(0,0)这个格子可能有障碍物
+        dp[0][0] = 0 if obstacleGrid[0][0] else 1
+        if dp[0][0]==0:
+            return 0
 
-        <span class="comment">#处理第一列</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n):
-            <span class="keyword">if</span> obstacleGrid[i][<span class="number">0</span>]!= <span class="number">1</span>:<span class="comment">#不是障碍物</span>
-                <span class="keyword">if</span> dp[i - <span class="number">1</span>][<span class="number">0</span>] != <span class="number">0</span>:<span class="comment">#上面也不是障碍物</span>
-                    dp[i][<span class="number">0</span>] = <span class="number">1</span>
+        #处理第一列
+        for i in range(1, n):
+            if obstacleGrid[i][0]!= 1:#不是障碍物
+                if dp[i - 1][0] != 0:#上面也不是障碍物
+                    dp[i][0] = 1
 
-        <span class="comment">#处理第一行        </span>
-        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, m):
-            <span class="keyword">if</span> obstacleGrid[<span class="number">0</span>][j] != <span class="number">1</span>:<span class="comment">#不是障碍物</span>
-                <span class="keyword">if</span> dp[<span class="number">0</span>][j<span class="number">-1</span>]!=<span class="number">0</span>:<span class="comment">#左侧也不是障碍物</span>
-                    dp[<span class="number">0</span>][j] = <span class="number">1</span>
-
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n):
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, m):
-                <span class="comment">#如果当前格子是障碍物</span>
-                <span class="keyword">if</span> obstacleGrid[i][j] == <span class="number">1</span>:
-                    dp[i][j] = <span class="number">0</span>
-                <span class="comment">#路径总数来自于上方(dp[i-1][j])和左方(dp[i][j-1])     </span>
-                <span class="keyword">else</span>:
-                    dp[i][j] = dp[i - <span class="number">1</span>][j] + dp[i][j - <span class="number">1</span>]
-        <span class="keyword">return</span> dp[<span class="number">-1</span>][<span class="number">-1</span>]</code></pre>
+        #处理第一行        
+        for j in range(1, m):
+            if obstacleGrid[0][j] != 1:#不是障碍物
+                if dp[0][j-1]!=0:#左侧也不是障碍物
+                    dp[0][j] = 1
+            
+        for i in range(1, n):
+            for j in range(1, m):
+                #如果当前格子是障碍物
+                if obstacleGrid[i][j] == 1:
+                    dp[i][j] = 0
+                #路径总数来自于上方(dp[i-1][j])和左方(dp[i][j-1])     
+                else:
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+        return dp[-1][-1]
+</code></pre>
 <h2 id="9-4"><a href="#9-4" class="headerlink" title="9-4"></a>9-4</h2><p><img src="./59.png" alt="Alt text"><br><img src="./60.png" alt="Alt text"><br><img src="./61.png" alt="Alt text"></p>
 <p>递归超时：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="comment">#考虑抢劫nums[index...n]这个范围内的所有房子，index从0开始</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">rob</span><span class="params">(self, nums: List[int])</span> -&gt; int:</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">tryRob</span><span class="params">(index)</span>:</span>
-            <span class="keyword">if</span> index&gt;=len(nums):
-                <span class="keyword">return</span> <span class="number">0</span>
-            res=<span class="number">0</span>
-            <span class="keyword">for</span> i <span class="keyword">in</span> range(index,len(nums)):
-                res=max(res,nums[i]+tryRob(i+<span class="number">2</span>))
-            <span class="keyword">return</span> res
-        <span class="keyword">return</span> tryRob(<span class="number">0</span>)</code></pre>
+<pre><code class="python">class Solution:
+    #考虑抢劫nums[index...n]这个范围内的所有房子，index从0开始
+    def rob(self, nums: List[int]) -&gt; int:
+        def tryRob(index):
+            if index&gt;=len(nums):
+                return 0
+            res=0
+            for i in range(index,len(nums)):
+                res=max(res,nums[i]+tryRob(i+2))
+            return res
+        return tryRob(0)
+</code></pre>
 <p>改成记忆化搜索：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">rob</span><span class="params">(self, nums: List[int])</span> -&gt; int:</span>
-        <span class="comment">#考虑抢劫nums[index...len(nums)]这个范围内的所有房子</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">tryRob</span><span class="params">(index)</span>:</span>
-            <span class="keyword">if</span> index&gt;=n:
-                <span class="keyword">return</span> <span class="number">0</span>
-            <span class="keyword">if</span> memo[index]!=<span class="number">-1</span>:
-                <span class="keyword">return</span> memo[index]
-            res=<span class="number">0</span>
-            <span class="keyword">for</span> i <span class="keyword">in</span> range(index,n):
-                res=max(res,nums[i]+tryRob(i+<span class="number">2</span>))
+<pre><code class="python">class Solution:
+    def rob(self, nums: List[int]) -&gt; int:
+        #考虑抢劫nums[index...len(nums)]这个范围内的所有房子
+        def tryRob(index):
+            if index&gt;=n:
+                return 0
+            if memo[index]!=-1:
+                return memo[index]
+            res=0
+            for i in range(index,n):
+                res=max(res,nums[i]+tryRob(i+2))
             memo[index]=res
-            <span class="keyword">return</span> res
+            return res
 
         n=len(nums)
-        <span class="comment">#memo[i]表示抢劫nums[i..n-1]所能获得的最大收益,i从0开始</span>
-        memo=[<span class="number">-1</span>]*(n)<span class="comment">#不能用0初始化，因为nums是非负数组</span>
-        <span class="keyword">return</span> tryRob(<span class="number">0</span>)</code></pre>
+        #memo[i]表示抢劫nums[i..n-1]所能获得的最大收益,i从0开始
+        memo=[-1]*(n)#不能用0初始化，因为nums是非负数组
+        return tryRob(0)
+</code></pre>
 <p>动态规划：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">rob</span><span class="params">(self, nums: List[int])</span> -&gt; int:</span>
+<pre><code class="python">class Solution:
+    def rob(self, nums: List[int]) -&gt; int:
         n=len(nums)
-        <span class="keyword">if</span> n==<span class="number">0</span>:
-            <span class="keyword">return</span> <span class="number">0</span>
-        <span class="comment">#dp[i]表示抢劫nums[i..n-1]所能获得的最大收益</span>
-        dp=[<span class="number">-1</span>]*(n)<span class="comment">#不能用0初始化，因为nums是非负数组</span>
-        dp[n<span class="number">-1</span>]=nums[n<span class="number">-1</span>]<span class="comment">#从最后一间偷，只能偷最后一间</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(n<span class="number">-2</span>,<span class="number">-1</span>,<span class="number">-1</span>):
-            <span class="comment">#求dp[i]</span>
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(i,n):
-                <span class="keyword">if</span> j+<span class="number">2</span>&gt;=n:
+        if n==0:
+            return 0
+        #dp[i]表示抢劫nums[i..n-1]所能获得的最大收益
+        dp=[-1]*(n)#不能用0初始化，因为nums是非负数组
+        dp[n-1]=nums[n-1]#从最后一间偷，只能偷最后一间
+        for i in range(n-2,-1,-1):
+            #求dp[i]
+            for j in range(i,n):
+                if j+2&gt;=n:
                     dp[i]=max(dp[i],nums[j])
-                <span class="keyword">else</span>:
-                    dp[i]=max(dp[i],nums[j]+dp[j+<span class="number">2</span>])
+                else:
+                    dp[i]=max(dp[i],nums[j]+dp[j+2])
 
-        <span class="keyword">return</span> dp[<span class="number">0</span>]</code></pre>
+        return dp[0]
+</code></pre>
 <p><img src="./62.png" alt="Alt text"></p>
 <p>递归超时：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="comment">#考虑抢劫nums[0...index]这个范围内的所有房子，index从0开始</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">rob</span><span class="params">(self, nums: List[int])</span> -&gt; int:</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">tryRob</span><span class="params">(index)</span>:</span>
-            <span class="keyword">if</span> index&lt;<span class="number">0</span>:
-                <span class="keyword">return</span> <span class="number">0</span>
-            res=<span class="number">0</span>
-            <span class="keyword">for</span> i <span class="keyword">in</span> range(index,<span class="number">-1</span>,<span class="number">-1</span>):
-                res=max(res,nums[i]+tryRob(i<span class="number">-2</span>))
-            <span class="keyword">return</span> res
-        <span class="keyword">return</span> tryRob(len(nums)<span class="number">-1</span>)</code></pre>
+<pre><code class="python">class Solution:
+    #考虑抢劫nums[0...index]这个范围内的所有房子，index从0开始
+    def rob(self, nums: List[int]) -&gt; int:
+        def tryRob(index):
+            if index&lt;0:
+                return 0
+            res=0
+            for i in range(index,-1,-1):
+                res=max(res,nums[i]+tryRob(i-2))
+            return res
+        return tryRob(len(nums)-1)
+</code></pre>
 <p>改成记忆化搜索：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="comment">#考虑抢劫nums[0...index]这个范围内的所有房子，index从0开始</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">rob</span><span class="params">(self, nums: List[int])</span> -&gt; int:</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">tryRob</span><span class="params">(index)</span>:</span>
-            <span class="keyword">if</span> index&lt;<span class="number">0</span>:
-                <span class="keyword">return</span> <span class="number">0</span>
-            <span class="keyword">if</span> memo[index]!=<span class="number">-1</span>:
-                <span class="keyword">return</span> memo[index]
-            res=<span class="number">0</span>
-            <span class="keyword">for</span> i <span class="keyword">in</span> range(index,<span class="number">-1</span>,<span class="number">-1</span>):
-                res=max(res,nums[i]+tryRob(i<span class="number">-2</span>))
+<pre><code class="python">class Solution:
+    #考虑抢劫nums[0...index]这个范围内的所有房子，index从0开始
+    def rob(self, nums: List[int]) -&gt; int:
+        def tryRob(index):
+            if index&lt;0:
+                return 0
+            if memo[index]!=-1:
+                return memo[index]
+            res=0
+            for i in range(index,-1,-1):
+                res=max(res,nums[i]+tryRob(i-2))
             memo[index]=res
-            <span class="keyword">return</span> res
-        memo=[<span class="number">-1</span>]*len(nums)
-        <span class="keyword">return</span> tryRob(len(nums)<span class="number">-1</span>)</code></pre>
+            return res
+        memo=[-1]*len(nums)
+        return tryRob(len(nums)-1)
+</code></pre>
 <p>动态规划：<br><img src="./63.png" alt="Alt text"></p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">rob</span><span class="params">(self, nums: List[int])</span> -&gt; int:</span>
-        <span class="keyword">if</span> <span class="keyword">not</span> nums:
-            <span class="keyword">return</span> <span class="number">0</span>
+<pre><code class="python">class Solution:
+    def rob(self, nums: List[int]) -&gt; int:
+        if not nums:
+            return 0
 
         size = len(nums)
-        <span class="keyword">if</span> size == <span class="number">1</span>:
-            <span class="keyword">return</span> nums[<span class="number">0</span>]
-        <span class="comment">#dp[i]表示抢劫nums[0...i]所能获得的最大收益</span>
-        dp = [<span class="number">0</span>] * size
-        dp[<span class="number">0</span>] = nums[<span class="number">0</span>]
-        dp[<span class="number">1</span>] = max(nums[<span class="number">0</span>], nums[<span class="number">1</span>])
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>, size):
-            dp[i] = max(dp[i - <span class="number">2</span>] + nums[i], dp[i - <span class="number">1</span>])
-        <span class="keyword">return</span> dp[size - <span class="number">1</span>]</code></pre>
+        if size == 1:
+            return nums[0]
+        #dp[i]表示抢劫nums[0...i]所能获得的最大收益
+        dp = [0] * size
+        dp[0] = nums[0]
+        dp[1] = max(nums[0], nums[1])
+        for i in range(2, size):
+            dp[i] = max(dp[i - 2] + nums[i], dp[i - 1])
+        return dp[size - 1]
+</code></pre>
 <p>或者，用习惯的，多开一位数组：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">rob</span><span class="params">(self, nums: List[int])</span> -&gt; int:</span>
-        <span class="keyword">if</span> <span class="keyword">not</span> nums:
-            <span class="keyword">return</span> <span class="number">0</span>
+<pre><code class="python">class Solution:
+    def rob(self, nums: List[int]) -&gt; int:
+        if not nums:
+            return 0
 
         size = len(nums)
-        <span class="keyword">if</span> size == <span class="number">1</span>:
-            <span class="keyword">return</span> nums[<span class="number">0</span>]
-        <span class="comment">#dp[i]表示抢劫nums[0...i]所能获得的最大收益,i从1开始，最大为size，即房屋总数</span>
-        dp = [<span class="number">0</span>] * (size+<span class="number">1</span>)
-        dp[<span class="number">1</span>] = nums[<span class="number">0</span>]
-        dp[<span class="number">2</span>] = max(nums[<span class="number">0</span>], nums[<span class="number">1</span>])
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>, size+<span class="number">1</span>):
-            dp[i] = max(dp[i - <span class="number">2</span>] + nums[i<span class="number">-1</span>], dp[i - <span class="number">1</span>])
-        <span class="keyword">return</span> dp[size]</code></pre>
+        if size == 1:
+            return nums[0]
+        #dp[i]表示抢劫nums[0...i]所能获得的最大收益,i从1开始，最大为size，即房屋总数
+        dp = [0] * (size+1)
+        dp[1] = nums[0]
+        dp[2] = max(nums[0], nums[1])
+        for i in range(3, size+1):
+            dp[i] = max(dp[i - 2] + nums[i-1], dp[i - 1])
+        return dp[size]
+</code></pre>
 <p>课后习题<br><img src="./64.png" alt="Alt text"><br><img src="./68.png" alt="Alt text"><br><img src="./69.png" alt="Alt text"></p>
 <p>看了官方题解＋评论区后自己写的：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">rob</span><span class="params">(self, nums: List[int])</span> -&gt; int:</span>
+<pre><code class="python">class Solution:
+    def rob(self, nums: List[int]) -&gt; int:
         n=len(nums)
-        <span class="keyword">if</span> n==<span class="number">0</span>:
-            <span class="keyword">return</span> <span class="number">0</span>
-        <span class="keyword">if</span> n==<span class="number">1</span>:
-            <span class="keyword">return</span> nums[<span class="number">0</span>]
-        <span class="keyword">if</span> n==<span class="number">2</span>:
-            <span class="keyword">return</span> max(nums[<span class="number">0</span>],nums[<span class="number">1</span>])
+        if n==0:
+            return 0
+        if n==1:
+            return nums[0]
+        if n==2:
+            return max(nums[0],nums[1])
+        
+        #dp[i]:偷前i间所能获得的最大收益,i从1开始
 
-        <span class="comment">#dp[i]:偷前i间所能获得的最大收益,i从1开始</span>
+        #不偷最后一间:[1..n-1]
+        dp1=[0]*(n+1)
+        dp1[1]=nums[0]
+        dp1[2]=max(nums[0],nums[1])
 
-        <span class="comment">#不偷最后一间:[1..n-1]</span>
-        dp1=[<span class="number">0</span>]*(n+<span class="number">1</span>)
-        dp1[<span class="number">1</span>]=nums[<span class="number">0</span>]
-        dp1[<span class="number">2</span>]=max(nums[<span class="number">0</span>],nums[<span class="number">1</span>])
-
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>,n):
-            dp1[i]=max(dp1[i<span class="number">-1</span>],dp1[i<span class="number">-2</span>]+nums[i<span class="number">-1</span>])
-
-        <span class="comment">#不偷第一间:[2...n]</span>
-        dp2=[<span class="number">0</span>]*(n+<span class="number">1</span>)
-        dp2[<span class="number">2</span>]=nums[<span class="number">1</span>]
-        dp2[<span class="number">3</span>]=max(nums[<span class="number">1</span>],nums[<span class="number">2</span>])
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">4</span>,n+<span class="number">1</span>):
-            dp2[i]=max(dp2[i<span class="number">-1</span>],dp2[i<span class="number">-2</span>]+nums[i<span class="number">-1</span>])
-
-        <span class="keyword">return</span> max(dp1[n<span class="number">-1</span>],dp2[n])</code></pre>
+        for i in range(3,n):
+            dp1[i]=max(dp1[i-1],dp1[i-2]+nums[i-1])
+        
+        #不偷第一间:[2...n]
+        dp2=[0]*(n+1)
+        dp2[2]=nums[1]
+        dp2[3]=max(nums[1],nums[2])
+        for i in range(4,n+1):
+            dp2[i]=max(dp2[i-1],dp2[i-2]+nums[i-1])
+        
+        return max(dp1[n-1],dp2[n])
+</code></pre>
 <p>注意dp和nums下标差1。</p>
 <p><img src="./65.png" alt="Alt text"><br><img src="./66.png" alt="Alt text"></p>
 <p>与198.打家劫舍，213.打家劫舍II一样，关键是要讨论当前节点抢还是不抢。</p>
 <p>如果抢了当前节点，两个孩子就不能动，如果没抢当前节点，就可以考虑抢左右孩子（注意这里说的是“考虑”）</p>
 <p>暴力递归，超时：</p>
 <pre><code class="python">
-<span class="comment"># Definition for a binary tree node.</span>
-<span class="comment"># class TreeNode:</span>
-<span class="comment">#     def __init__(self, val=0, left=None, right=None):</span>
-<span class="comment">#         self.val = val</span>
-<span class="comment">#         self.left = left</span>
-<span class="comment">#         self.right = right</span>
-<span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">rob</span><span class="params">(self, root: TreeNode)</span> -&gt; int:</span>
-        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:
-            <span class="keyword">return</span> <span class="number">0</span>
-        <span class="keyword">if</span> root.left <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">and</span> root.right  <span class="keyword">is</span> <span class="literal">None</span>:
-            <span class="keyword">return</span> root.val
-        <span class="comment"># 偷父节点</span>
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def rob(self, root: TreeNode) -&gt; int:
+        if root is None:
+            return 0
+        if root.left is None and root.right  is None:
+            return root.val
+        # 偷父节点
         val1 = root.val
-        <span class="keyword">if</span> root.left:
+        if root.left:
             val1 += self.rob(root.left.left) + self.rob(root.left.right)
-        <span class="keyword">if</span> root.right:
+        if root.right:
             val1 += self.rob(root.right.left) + self.rob(root.right.right)
-        <span class="comment"># 不偷父节点</span>
+        # 不偷父节点
         val2 = self.rob(root.left) + self.rob(root.right)
-        <span class="keyword">return</span> max(val1, val2)</code></pre>
+        return max(val1, val2)
+</code></pre>
 <p>记忆化搜索：</p>
 <pre><code class="python">
-<span class="comment"># Definition for a binary tree node.</span>
-<span class="comment"># class TreeNode:</span>
-<span class="comment">#     def __init__(self, val=0, left=None, right=None):</span>
-<span class="comment">#         self.val = val</span>
-<span class="comment">#         self.left = left</span>
-<span class="comment">#         self.right = right</span>
-<span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    memory = {}<span class="comment">#从key出发能偷到的最大收益</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">rob</span><span class="params">(self, root: TreeNode)</span> -&gt; int:</span>
-        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:
-            <span class="keyword">return</span> <span class="number">0</span>
-        <span class="keyword">if</span> root.left <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">and</span> root.right  <span class="keyword">is</span> <span class="literal">None</span>:
-            <span class="keyword">return</span> root.val
-        <span class="keyword">if</span> self.memory.get(root) <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:
-            <span class="keyword">return</span> self.memory[root]
-        <span class="comment"># 偷父节点</span>
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    memory = {}#从key出发能偷到的最大收益
+    def rob(self, root: TreeNode) -&gt; int:
+        if root is None:
+            return 0
+        if root.left is None and root.right  is None:
+            return root.val
+        if self.memory.get(root) is not None:
+            return self.memory[root]
+        # 偷父节点
         val1 = root.val
-        <span class="keyword">if</span> root.left:
+        if root.left:
             val1 += self.rob(root.left.left) + self.rob(root.left.right)
-        <span class="keyword">if</span> root.right:
+        if root.right:
             val1 += self.rob(root.right.left) + self.rob(root.right.right)
-        <span class="comment"># 不偷父节点</span>
+        # 不偷父节点
         val2 = self.rob(root.left) + self.rob(root.right)
         self.memory[root] = max(val1, val2)
-        <span class="keyword">return</span> max(val1, val2)</code></pre>
+        return max(val1, val2)
+</code></pre>
 <p>动态规划：</p>
 <p>在上面两种方法，其实对一个节点 偷与不偷得到的最大金钱都没有做记录，而是需要实时计算。</p>
 <p>而动态规划其实就是使用状态转移容器来记录状态的变化，这里可以使用一个长度为2的数组，记录当前节点偷与不偷所得到的的最大金钱。</p>
 <p>首先明确的是使用后序遍历。 因为通过递归函数的返回值来做下一步计算。</p>
 <p>通过递归左节点，得到左节点偷与不偷的金钱。</p>
 <p>通过递归右节点，得到右节点偷与不偷的金钱。</p>
-<pre><code class="python"><span class="comment"># Definition for a binary tree node.</span>
-<span class="comment"># class TreeNode:</span>
-<span class="comment">#     def __init__(self, val=0, left=None, right=None):</span>
-<span class="comment">#         self.val = val</span>
-<span class="comment">#         self.left = left</span>
-<span class="comment">#         self.right = right</span>
-<span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">rob</span><span class="params">(self, root: TreeNode)</span> -&gt; int:</span>
+<pre><code class="python"># Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def rob(self, root: TreeNode) -&gt; int:
         result = self.rob_tree(root)
-        <span class="keyword">return</span> max(result)
-
-    <span class="function"><span class="keyword">def</span> <span class="title">rob_tree</span><span class="params">(self, node)</span>:</span>
-        <span class="keyword">if</span> node <span class="keyword">is</span> <span class="literal">None</span>:
-            <span class="keyword">return</span> (<span class="number">0</span>, <span class="number">0</span>) <span class="comment"># (偷当前节点金额，不偷当前节点金额)</span>
+        return max(result)
+    
+    def rob_tree(self, node):
+        if node is None:
+            return (0, 0) # (偷当前节点金额，不偷当前节点金额)
         left = self.rob_tree(node.left)
         right = self.rob_tree(node.right)
-        val1 = node.val + left[<span class="number">1</span>] + right[<span class="number">1</span>] <span class="comment"># 偷当前节点，不能偷子节点</span>
-        val2 = max(left[<span class="number">0</span>], left[<span class="number">1</span>]) + max(right[<span class="number">0</span>], right[<span class="number">1</span>]) <span class="comment"># 不偷当前节点，可偷可不偷子节点</span>
-        <span class="keyword">return</span> (val1, val2)</code></pre>
+        val1 = node.val + left[1] + right[1] # 偷当前节点，不能偷子节点
+        val2 = max(left[0], left[1]) + max(right[0], right[1]) # 不偷当前节点，可偷可不偷子节点
+        return (val1, val2)
+</code></pre>
 <p><img src="./67.png" alt="Alt text"></p>
 <p><img src="./70.png" alt="Alt text"></p>
 <p>从代码上来看确实可以合并，但从逻辑上分析合并之后就很难理解了，所以我下面的讲解是按照这四个状态来的，把每一个状态分析清楚。</p>
 <p>注意这里的每一个状态，例如状态一，是买入股票状态并不是说今天已经就买入股票，而是说保存买入股票的状态即：可能是前几天买入的，之后一直没操作，所以保持买入股票的状态。</p>
-<p><a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/solution/dai-ma-sui-xiang-lu-dai-ni-xue-tou-gu-pi-w1bq/" target="_blank" rel="noopener">https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/solution/dai-ma-sui-xiang-lu-dai-ni-xue-tou-gu-pi-w1bq/</a></p>
+<p><a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/solution/dai-ma-sui-xiang-lu-dai-ni-xue-tou-gu-pi-w1bq/">https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/solution/dai-ma-sui-xiang-lu-dai-ni-xue-tou-gu-pi-w1bq/</a></p>
 <h2 id="9-5"><a href="#9-5" class="headerlink" title="9-5"></a>9-5</h2><p><img src="./71.png" alt="Alt text"></p>
 <p>贪心算法有问题。</p>
 <p><img src="./72.png" alt="Alt text"></p>
@@ -1232,174 +1293,182 @@
 <h2 id="9-7"><a href="#9-7" class="headerlink" title="9-7"></a>9-7</h2><p><img src="./86.png" alt="Alt text"><br><img src="./87.png" alt="Alt text"></p>
 <p>不装入第i个已经满足 or 装入第i个恰好满足。</p>
 <p>暴力递归超时：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">canPartition</span><span class="params">(self, nums: List[int])</span> -&gt; bool:</span>
+<pre><code class="python">class Solution:
+    def canPartition(self, nums: List[int]) -&gt; bool:
         s=sum(nums)
-        <span class="keyword">if</span> s%<span class="number">2</span>!=<span class="number">0</span>:<span class="comment">#此时不能平分</span>
-            <span class="keyword">return</span> <span class="literal">False</span>
-        <span class="comment">#使用nums[0...index]是否可以完全填充一个容量为sum的背包</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">tryPartition</span><span class="params">(nums,index,sum)</span>:</span>
-            <span class="keyword">if</span> sum==<span class="number">0</span>:
-                <span class="keyword">return</span> <span class="literal">True</span>
-            <span class="keyword">if</span> sum&lt;<span class="number">0</span> <span class="keyword">or</span> index&lt;<span class="number">0</span>:<span class="comment">#容量不足or物品装光了，还没装满</span>
-                <span class="keyword">return</span> <span class="literal">False</span>
-            <span class="keyword">return</span> tryPartition(nums,index<span class="number">-1</span>,sum) <span class="keyword">or</span> tryPartition(nums,index<span class="number">-1</span>,sum-nums[index])
-        <span class="keyword">return</span> tryPartition(nums,len(nums)<span class="number">-1</span>,s/<span class="number">2</span>)</code></pre>
+        if s%2!=0:#此时不能平分
+            return False
+        #使用nums[0...index]是否可以完全填充一个容量为sum的背包
+        def tryPartition(nums,index,sum):
+            if sum==0:
+                return True
+            if sum&lt;0 or index&lt;0:#容量不足or物品装光了，还没装满
+                return False
+            return tryPartition(nums,index-1,sum) or tryPartition(nums,index-1,sum-nums[index])
+        return tryPartition(nums,len(nums)-1,s/2)
+</code></pre>
 <p>改成记忆化搜索：<br><img src="./88.png" alt="Alt text"><br>代码不能ac，明明仿着视频写的：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">canPartition</span><span class="params">(self, nums: List[int])</span> -&gt; bool:</span>
+<pre><code class="python">class Solution:
+    def canPartition(self, nums: List[int]) -&gt; bool:
         s=sum(nums)
-        <span class="keyword">if</span> s%<span class="number">2</span>!=<span class="number">0</span>:<span class="comment">#此时不能平分</span>
-            <span class="keyword">return</span> <span class="literal">False</span>
-        <span class="comment">#使用nums[0...index]是否可以完全填充一个容量为s的背包</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">tryPartition</span><span class="params">(nums,index,s)</span>:</span>
-            <span class="keyword">if</span> s==<span class="number">0</span>:
-                <span class="keyword">return</span> <span class="literal">True</span>
-            <span class="keyword">if</span> s&lt;<span class="number">0</span> <span class="keyword">or</span> index&lt;<span class="number">0</span>:<span class="comment">#容量不足or</span>
-                <span class="keyword">return</span> <span class="literal">False</span>
-            <span class="keyword">if</span> memo[index][s]!=<span class="number">-1</span>:
-                <span class="keyword">return</span> memo[index][s]
-            memo[index][s]=(tryPartition(nums,index<span class="number">-1</span>,s) <span class="keyword">or</span> tryPartition(nums,index<span class="number">-1</span>,s-nums[index]))
-            <span class="keyword">return</span> memo[index][s]
-        memo=[[<span class="number">-1</span>]*(s//<span class="number">2</span>+<span class="number">1</span>)]*len(nums)
-        <span class="keyword">return</span> tryPartition(nums,len(nums)<span class="number">-1</span>,s//<span class="number">2</span>)</code></pre>
+        if s%2!=0:#此时不能平分
+            return False
+        #使用nums[0...index]是否可以完全填充一个容量为s的背包
+        def tryPartition(nums,index,s):
+            if s==0:
+                return True
+            if s&lt;0 or index&lt;0:#容量不足or
+                return False
+            if memo[index][s]!=-1:
+                return memo[index][s]
+            memo[index][s]=(tryPartition(nums,index-1,s) or tryPartition(nums,index-1,s-nums[index]))
+            return memo[index][s]
+        memo=[[-1]*(s//2+1)]*len(nums)
+        return tryPartition(nums,len(nums)-1,s//2)
+</code></pre>
 <p>把memo初始化用for _ in range(len(nums))就能过：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">canPartition</span><span class="params">(self, nums: List[int])</span> -&gt; bool:</span>
+<pre><code class="python">class Solution:
+    def canPartition(self, nums: List[int]) -&gt; bool:
         s=sum(nums)
-        <span class="keyword">if</span> s%<span class="number">2</span>!=<span class="number">0</span>:<span class="comment">#此时不能平分</span>
-            <span class="keyword">return</span> <span class="literal">False</span>
-        <span class="comment">#使用nums[0...index]是否可以完全填充一个容量为s的背包</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">tryPartition</span><span class="params">(nums,index,s)</span>:</span>
-            <span class="keyword">if</span> s==<span class="number">0</span>:
-                <span class="keyword">return</span> <span class="literal">True</span>
-            <span class="keyword">if</span> s&lt;<span class="number">0</span> <span class="keyword">or</span> index&lt;<span class="number">0</span>:<span class="comment">#容量不足or</span>
-                <span class="keyword">return</span> <span class="literal">False</span>
-            <span class="keyword">if</span> memo[index][s]!=<span class="number">-1</span>:
-                <span class="keyword">return</span> memo[index][s]
+        if s%2!=0:#此时不能平分
+            return False
+        #使用nums[0...index]是否可以完全填充一个容量为s的背包
+        def tryPartition(nums,index,s):
+            if s==0:
+                return True
+            if s&lt;0 or index&lt;0:#容量不足or
+                return False
+            if memo[index][s]!=-1:
+                return memo[index][s]
 
-            <span class="comment">#不拿or拿第index个物品</span>
-            memo[index][s]=(tryPartition(nums,index<span class="number">-1</span>,s) <span class="keyword">or</span> tryPartition(nums,index<span class="number">-1</span>,s-nums[index]))
-            <span class="keyword">return</span> memo[index][s]
-        memo=[[<span class="number">-1</span>]*(s//<span class="number">2</span>+<span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> range(len(nums))]<span class="comment">#共len(nums)个物品(行)，从0到len(nums)-1，背包容量从0到s//2(列)</span>
-        <span class="keyword">return</span> tryPartition(nums,len(nums)<span class="number">-1</span>,s//<span class="number">2</span>)</code></pre>
+            #不拿or拿第index个物品
+            memo[index][s]=(tryPartition(nums,index-1,s) or tryPartition(nums,index-1,s-nums[index]))
+            return memo[index][s]
+        memo=[[-1]*(s//2+1) for _ in range(len(nums))]#共len(nums)个物品(行)，从0到len(nums)-1，背包容量从0到s//2(列)
+        return tryPartition(nums,len(nums)-1,s//2)
+</code></pre>
 <p>动态规划，评论区答案</p>
 <p>同样初始化dp数组时，不能用dp=[False for _ in range(target+1)] *(n+1)，而是用dp=[[False for _ in range(target+1)] for _ in range(n+1)]</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">canPartition</span><span class="params">(self, nums: List[int])</span> -&gt; bool:</span>
+<pre><code class="python">class Solution:
+    def canPartition(self, nums: List[int]) -&gt; bool:
         n = len(nums)
         sums = sum(nums)
-        <span class="keyword">if</span> sums % <span class="number">2</span> != <span class="number">0</span>:
-            <span class="keyword">return</span> <span class="literal">False</span>
-        target = sums // <span class="number">2</span>
+        if sums % 2 != 0:
+            return False
+        target = sums // 2
+        
+        dp=[[False for _ in range(target+1)] for _ in range(n+1)]
+        dp[0][0]=True
 
-        dp=[[<span class="literal">False</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(target+<span class="number">1</span>)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(n+<span class="number">1</span>)]
-        dp[<span class="number">0</span>][<span class="number">0</span>]=<span class="literal">True</span>
+        
+        for i in range(1, n + 1):
+            for j in range(1, target + 1):
+                num = nums[i - 1]
+                if j &gt;= num:
+                    dp[i][j] = dp[i - 1][j] | dp[i - 1][j - num]
+                else:
+                    dp[i][j] = dp[i - 1][j]
 
-
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n + <span class="number">1</span>):
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, target + <span class="number">1</span>):
-                num = nums[i - <span class="number">1</span>]
-                <span class="keyword">if</span> j &gt;= num:
-                    dp[i][j] = dp[i - <span class="number">1</span>][j] | dp[i - <span class="number">1</span>][j - num]
-                <span class="keyword">else</span>:
-                    dp[i][j] = dp[i - <span class="number">1</span>][j]
-
-        <span class="keyword">return</span> bool(dp[<span class="number">-1</span>][<span class="number">-1</span>])            </code></pre>
+        return bool(dp[-1][-1])            
+</code></pre>
 <p>我也不知道为什么那样初始化就不能过，先记着吧，以后都用能过的那种初始化.</p>
 <p>动态规划更清晰的答案：n*(target+1)的矩阵，先初始化了第0行和第0列 </p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">canPartition</span><span class="params">(self, nums: List[int])</span> -&gt; bool:</span>
+<pre><code class="python">class Solution:
+    def canPartition(self, nums: List[int]) -&gt; bool:
         n = len(nums)
         sums = sum(nums)
-        <span class="keyword">if</span> sums % <span class="number">2</span> != <span class="number">0</span>:
-            <span class="keyword">return</span> <span class="literal">False</span>
-        target = sums // <span class="number">2</span>
-        <span class="comment">#dp[i][j]: 从前i个物品中选择一些物品，背包容量为j能不能恰好装满背包</span>
-        dp=[[<span class="literal">False</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(target+<span class="number">1</span>)] <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)]
+        if sums % 2 != 0:
+            return False
+        target = sums // 2
+        #dp[i][j]: 从前i个物品中选择一些物品，背包容量为j能不能恰好装满背包
+        dp=[[False for _ in range(target+1)] for _ in range(n)]
 
-        <span class="comment">#当背包容量为0时，全为True（初始化第0列）</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):
-            dp[i][<span class="number">0</span>] = <span class="literal">True</span>
+        #当背包容量为0时，全为True（初始化第0列）
+        for i in range(n):
+            dp[i][0] = True
 
-        <span class="comment">#初始化第0行，此时仅仅考虑第0个物品能不能装的下(初始化第0行)</span>
-        <span class="keyword">for</span> j <span class="keyword">in</span> range(target+<span class="number">1</span>):
-            <span class="keyword">if</span> j==nums[<span class="number">0</span>]:
-                dp[<span class="number">0</span>][j]=<span class="literal">True</span>
+        #初始化第0行，此时仅仅考虑第0个物品能不能装的下(初始化第0行)
+        for j in range(target+1):
+            if j==nums[0]:
+                dp[0][j]=True
 
-
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n ):
+        
+        for i in range(1, n ):
             num = nums[i]
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>,target + <span class="number">1</span>):
-                <span class="comment">#当前背包容量能够装入物品i，有两种选择：装or不装</span>
-                <span class="keyword">if</span> j &gt;= num:
-                    dp[i][j] = dp[i - <span class="number">1</span>][j] | dp[i - <span class="number">1</span>][j - num]
-                <span class="keyword">else</span>:
-                    dp[i][j] = dp[i - <span class="number">1</span>][j]
+            for j in range(1,target + 1):
+                #当前背包容量能够装入物品i，有两种选择：装or不装
+                if j &gt;= num:
+                    dp[i][j] = dp[i - 1][j] | dp[i - 1][j - num]
+                else:
+                    dp[i][j] = dp[i - 1][j]
 
-        <span class="keyword">return</span> bool(dp[<span class="number">-1</span>][<span class="number">-1</span>])  </code></pre>
+        return bool(dp[-1][-1])  
+</code></pre>
 <p>总结 ：</p>
-<p><a href="https://www.bilibili.com/video/BV15v411y7Qz/?spm_id_from=trigger_reload" target="_blank" rel="noopener">https://www.bilibili.com/video/BV15v411y7Qz/?spm_id_from=trigger_reload</a></p>
+<p><a href="https://www.bilibili.com/video/BV15v411y7Qz/?spm_id_from=trigger_reload">https://www.bilibili.com/video/BV15v411y7Qz/?spm_id_from=trigger_reload</a></p>
 <p>0-1背包：<br><img src="./95.png" alt="Alt text"></p>
 <p>完全背包：<br><img src="./96.png" alt="Alt text"></p>
 <p>对比：<br><img src="./97.png" alt="Alt text"></p>
 <p>在完全背包中，如果拿第i个物品，那么第i个物品之前也可能已经被拿过，因为物品可以无限次拿嘛。</p>
 <p>课后习题<br><img src="./89.png" alt="Alt text"></p>
 <p>题目中说每种硬币的数量是无限的，可以看出是典型的完全背包问题。</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">coinChange</span><span class="params">(self, coins: List[int], amount: int)</span> -&gt; int:</span>
+<pre><code class="python">class Solution:
+    def coinChange(self, coins: List[int], amount: int) -&gt; int:
         n = len(coins)
-        <span class="comment">#dp[i][j] 表示从[0,i]个硬币中需要选取硬币总和为j的个数</span>
-        <span class="comment"># 默认值 改为10001，则如果不能凑成硬币的时候，一定不会从该状态获取</span>
-        dp = [[<span class="number">10001</span>] * (amount + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> range(n + <span class="number">1</span>)] 
-
-        <span class="comment"># 初始化：当amount = 0 时，硬币个数为0</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(n + <span class="number">1</span>):
-            dp[i][<span class="number">0</span>] = <span class="number">0</span>
-
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n + <span class="number">1</span>):<span class="comment">#物品(硬币)</span>
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, amount + <span class="number">1</span>):<span class="comment">#背包(amount)</span>
-                coin = coins[i - <span class="number">1</span>]
-                <span class="comment"># 如果硬币面值大于amount，或者是当前amount不能由上一个j - coin得到，则从上一个状态转移</span>
-                <span class="keyword">if</span> coin &gt; j:
-                    dp[i][j] = dp[i - <span class="number">1</span>][j]   
-                <span class="keyword">else</span>:
-                    dp[i][j] = min(dp[i][j - coin] + <span class="number">1</span>, dp[i - <span class="number">1</span>][j])<span class="comment">#拿or不拿</span>
-
-        <span class="keyword">return</span> dp[n][amount] <span class="keyword">if</span> dp[n][amount] != <span class="number">10001</span> <span class="keyword">else</span> <span class="number">-1</span></code></pre>
+        #dp[i][j] 表示从[0,i]个硬币中需要选取硬币总和为j的个数
+        # 默认值 改为10001，则如果不能凑成硬币的时候，一定不会从该状态获取
+        dp = [[10001] * (amount + 1) for _ in range(n + 1)] 
+        
+        # 初始化：当amount = 0 时，硬币个数为0
+        for i in range(n + 1):
+            dp[i][0] = 0
+        
+        for i in range(1, n + 1):#物品(硬币)
+            for j in range(1, amount + 1):#背包(amount)
+                coin = coins[i - 1]
+                # 如果硬币面值大于amount，或者是当前amount不能由上一个j - coin得到，则从上一个状态转移
+                if coin &gt; j:
+                    dp[i][j] = dp[i - 1][j]   
+                else:
+                    dp[i][j] = min(dp[i][j - coin] + 1, dp[i - 1][j])#拿or不拿
+                    
+        return dp[n][amount] if dp[n][amount] != 10001 else -1
+</code></pre>
 <p>空间优化：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">coinChange</span><span class="params">(self, coins: List[int], amount: int)</span> -&gt; int:</span>
+<pre><code class="python">class Solution:
+    def coinChange(self, coins: List[int], amount: int) -&gt; int:
         n = len(coins)
-        <span class="comment">#dp[j] 表示从[0,i]个硬币中需要选取硬币总和为j的个数</span>
-        dp = [<span class="number">10001</span>] * (amount + <span class="number">1</span>)
-
-        <span class="comment"># 初始化：当amount = 0 时，硬币个数为0</span>
-        dp[<span class="number">0</span>] = <span class="number">0</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n + <span class="number">1</span>):
-            coin = coins[i - <span class="number">1</span>]
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>,amount + <span class="number">1</span>):  
-                <span class="keyword">if</span> j&lt;coin:<span class="comment">#背包满了</span>
+        #dp[j] 表示从[0,i]个硬币中需要选取硬币总和为j的个数
+        dp = [10001] * (amount + 1)
+        
+        # 初始化：当amount = 0 时，硬币个数为0
+        dp[0] = 0
+        for i in range(1, n + 1):
+            coin = coins[i - 1]
+            for j in range(1,amount + 1):  
+                if j&lt;coin:#背包满了
                     dp[j]=dp[j]
-                <span class="keyword">else</span>:
-                    dp[j] = min(dp[j - coin] + <span class="number">1</span>, dp[j])<span class="comment">#拿or不拿</span>
-
-        <span class="keyword">return</span> dp[amount] <span class="keyword">if</span> dp[amount] != <span class="number">10001</span> <span class="keyword">else</span> <span class="number">-1</span></code></pre>
+                else:
+                    dp[j] = min(dp[j - coin] + 1, dp[j])#拿or不拿
+                    
+        return dp[amount] if dp[amount] != 10001 else -1
+</code></pre>
 <p>再优化：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">coinChange</span><span class="params">(self, coins: List[int], amount: int)</span> -&gt; int:</span>
+<pre><code class="python">class Solution:
+    def coinChange(self, coins: List[int], amount: int) -&gt; int:
         n = len(coins)
-        <span class="comment">#dp[j] 表示从[0,i]个硬币中需要选取硬币总和为j的个数</span>
-        dp = [<span class="number">10001</span>] * (amount + <span class="number">1</span>)
-
-        <span class="comment"># 初始化：当amount = 0 时，硬币个数为0就ok了</span>
-        dp[<span class="number">0</span>] = <span class="number">0</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n + <span class="number">1</span>):
-            coin = coins[i - <span class="number">1</span>]
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(coin,amount + <span class="number">1</span>):  
-                dp[j] = min(dp[j - coin] + <span class="number">1</span>, dp[j])<span class="comment">#拿or不拿</span>
-
-        <span class="keyword">return</span> dp[amount] <span class="keyword">if</span> dp[amount] != <span class="number">10001</span> <span class="keyword">else</span> <span class="number">-1</span></code></pre>
+        #dp[j] 表示从[0,i]个硬币中需要选取硬币总和为j的个数
+        dp = [10001] * (amount + 1)
+        
+        # 初始化：当amount = 0 时，硬币个数为0就ok了
+        dp[0] = 0
+        for i in range(1, n + 1):
+            coin = coins[i - 1]
+            for j in range(coin,amount + 1):  
+                dp[j] = min(dp[j - coin] + 1, dp[j])#拿or不拿
+                    
+        return dp[amount] if dp[amount] != 10001 else -1
+</code></pre>
 <p>相似的题目是518题，凑零钱2：</p>
 <p>给你一个整数数组 coins 表示不同面额的硬币，另给一个整数 amount 表示总金额。</p>
 <p>请你计算并返回可以凑成总金额的硬币组合数。如果任何硬币组合都无法凑出总金额，返回 0 。</p>
@@ -1415,60 +1484,63 @@
 <p>初始化为全0，第一列，当背包容量为0时，也就是amount为0时，有且只有一种方案，那就是用0个硬币，因此第一列初始化为1.</p>
 <p>当背包容量够时，拿第i个硬币与不拿第i个硬币的方案数之和才是最终的dp[i][j]: </p>
 <p>dp[i][j] = dp[i][j - coin] + dp[i - 1][j]</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">change</span><span class="params">(self, amount: int, coins: List[int])</span> -&gt; int:</span>
+<pre><code class="python">class Solution:
+    def change(self, amount: int, coins: List[int]) -&gt; int:
         n = len(coins)
 
-        <span class="comment">#dp[i][j]表示使用前i种硬币凑出j的方案数</span>
-        dp = [[<span class="number">0</span>] * (amount + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> range(n + <span class="number">1</span>)] 
+        #dp[i][j]表示使用前i种硬币凑出j的方案数
+        dp = [[0] * (amount + 1) for _ in range(n + 1)] 
 
-        <span class="comment">#amount为0时，不需要凑，算一种方案，且只有这一种方案</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(n + <span class="number">1</span>):
-            dp[i][<span class="number">0</span>] = <span class="number">1</span>
+        #amount为0时，不需要凑，算一种方案，且只有这一种方案
+        for i in range(n + 1):
+            dp[i][0] = 1
 
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n + <span class="number">1</span>):<span class="comment">#物品(硬币)</span>
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, amount + <span class="number">1</span>):<span class="comment">#背包(amount)</span>
-                coin = coins[i - <span class="number">1</span>]
-                <span class="comment"># 如果硬币面值大于amount，或者是当前amount不能由上一个j - coin得到，则从上一个状态转移</span>
-                <span class="keyword">if</span> coin &gt; j:
-                    dp[i][j] = dp[i - <span class="number">1</span>][j]   
-                <span class="keyword">else</span>:
-                    dp[i][j] = dp[i][j - coin] + dp[i - <span class="number">1</span>][j] <span class="comment">#拿or不拿硬币i的方案数之和</span>
+        for i in range(1, n + 1):#物品(硬币)
+            for j in range(1, amount + 1):#背包(amount)
+                coin = coins[i - 1]
+                # 如果硬币面值大于amount，或者是当前amount不能由上一个j - coin得到，则从上一个状态转移
+                if coin &gt; j:
+                    dp[i][j] = dp[i - 1][j]   
+                else:
+                    dp[i][j] = dp[i][j - coin] + dp[i - 1][j] #拿or不拿硬币i的方案数之和
 
-        <span class="keyword">return</span> dp[n][amount]</code></pre>
+        return dp[n][amount]
+</code></pre>
 <p>空间优化：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">change</span><span class="params">(self, amount: int, coins: List[int])</span> -&gt; int:</span>
+<pre><code class="python">class Solution:
+    def change(self, amount: int, coins: List[int]) -&gt; int:
         n = len(coins)
-        <span class="comment">#dp[j] 表示从[0,i]个硬币中需要选取硬币总和为j的方案数</span>
-        dp = [<span class="number">0</span>] * (amount + <span class="number">1</span>)
+        #dp[j] 表示从[0,i]个硬币中需要选取硬币总和为j的方案数
+        dp = [0] * (amount + 1)
 
-        <span class="comment"># 初始化：当amount = 0 时，硬币个数为0，算一种方案</span>
-        dp[<span class="number">0</span>] = <span class="number">1</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n + <span class="number">1</span>):
-            coin = coins[i - <span class="number">1</span>]
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>,amount + <span class="number">1</span>):  
-                <span class="keyword">if</span> j&lt;coin:<span class="comment">#背包满了</span>
+        # 初始化：当amount = 0 时，硬币个数为0，算一种方案
+        dp[0] = 1
+        for i in range(1, n + 1):
+            coin = coins[i - 1]
+            for j in range(1,amount + 1):  
+                if j&lt;coin:#背包满了
                     dp[j]=dp[j]
-                <span class="keyword">else</span>:
-                    dp[j] = dp[j - coin] + dp[j]<span class="comment">#拿or不拿</span>
+                else:
+                    dp[j] = dp[j - coin] + dp[j]#拿or不拿
 
-        <span class="keyword">return</span> dp[amount] </code></pre>
+        return dp[amount] 
+</code></pre>
 <p>再优化：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">change</span><span class="params">(self, amount: int, coins: List[int])</span> -&gt; int:</span>
+<pre><code class="python">class Solution:
+    def change(self, amount: int, coins: List[int]) -&gt; int:
         n = len(coins)
-        <span class="comment">#dp[j] 表示从[0,i]个硬币中需要选取硬币总和为j的方案数</span>
-        dp = [<span class="number">0</span>] * (amount + <span class="number">1</span>)
+        #dp[j] 表示从[0,i]个硬币中需要选取硬币总和为j的方案数
+        dp = [0] * (amount + 1)
 
-        <span class="comment"># 初始化：当amount = 0 时，硬币个数为0，算一种方案</span>
-        dp[<span class="number">0</span>] = <span class="number">1</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n + <span class="number">1</span>):
-            coin = coins[i - <span class="number">1</span>]
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(coin,amount + <span class="number">1</span>):  
-                dp[j] = dp[j - coin] + dp[j]<span class="comment">#拿or不拿</span>
+        # 初始化：当amount = 0 时，硬币个数为0，算一种方案
+        dp[0] = 1
+        for i in range(1, n + 1):
+            coin = coins[i - 1]
+            for j in range(coin,amount + 1):  
+                dp[j] = dp[j - coin] + dp[j]#拿or不拿
 
-        <span class="keyword">return</span> dp[amount] </code></pre>
+        return dp[amount] 
+</code></pre>
 <p>以上两题都是行遍历物品（硬币），第0行表示考虑前0个物品，因此不需要处理。这是动态规划的一个trick.</p>
 <p><img src="./90.png" alt="Alt text"><br>这题之前的版本(1,2,3,4)都是用回溯法做的。</p>
 <p>本题题目描述说是求组合，但又说是可以元素相同顺序不同的组合算两个组合，其实就是求排列！</p>
@@ -1478,178 +1550,188 @@
 <p>但不完全是</p>
 <p>。。。太难了。。。</p>
 <p>不懂，官方答案：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">combinationSum4</span><span class="params">(self, nums: List[int], target: int)</span> -&gt; int:</span>
-        <span class="comment">#用 dp[i]表示选取的元素之和等于i的方案数，目标是求 dp[target]，初始化dp[0]=1</span>
-        dp = [<span class="number">1</span>] + [<span class="number">0</span>] * target
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, target + <span class="number">1</span>):
-            <span class="keyword">for</span> num <span class="keyword">in</span> nums:
-                <span class="keyword">if</span> num &lt;= i:
+<pre><code class="python">class Solution:
+    def combinationSum4(self, nums: List[int], target: int) -&gt; int:
+        #用 dp[i]表示选取的元素之和等于i的方案数，目标是求 dp[target]，初始化dp[0]=1
+        dp = [1] + [0] * target
+        for i in range(1, target + 1):
+            for num in nums:
+                if num &lt;= i:
                     dp[i] += dp[i - num]
-
-        <span class="keyword">return</span> dp[target]</code></pre>
+        
+        return dp[target]
+</code></pre>
 <p><img src="./91.png" alt="Alt text"><br><img src="./92.png" alt="Alt text"></p>
 <p>不会</p>
 <p><img src="./93.png" alt="Alt text"><br><img src="./94.png" alt="Alt text"></p>
 <p>不会，不会，不会</p>
 <h2 id="9-8"><a href="#9-8" class="headerlink" title="9-8"></a>9-8</h2><p><img src="./98.png" alt="Alt text"><br><img src="./101.png" alt="Alt text"><br><img src="./99.png" alt="Alt text"><br><img src="./100.png" alt="Alt text"></p>
 <p>这题还好：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">lengthOfLIS</span><span class="params">(self, nums: List[int])</span> -&gt; int:</span>
+<pre><code class="python">class Solution:
+    def lengthOfLIS(self, nums: List[int]) -&gt; int:
         n=len(nums)
-        <span class="comment">#dp[i]表示包含nums[i]在内可以得到的最长递增子序列长度为dp[i]</span>
-        dp=[<span class="number">1</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)]<span class="comment">#一个数字对应结果为1</span>
+        #dp[i]表示包含nums[i]在内可以得到的最长递增子序列长度为dp[i]
+        dp=[1 for _ in range(n)]#一个数字对应结果为1
 
-        <span class="comment">#初始化dp[0]</span>
-        dp[<span class="number">0</span>]=<span class="number">1</span>
+        #初始化dp[0]
+        dp[0]=1
 
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n):
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>,i):
-                <span class="keyword">if</span> nums[j] &lt; nums[i]:
-                    dp[i]=max(dp[i],dp[j]+<span class="number">1</span>)
-        <span class="keyword">return</span> max(dp)</code></pre>
+        for i in range(1,n):
+            for j in range(0,i):
+                if nums[j] &lt; nums[i]:
+                    dp[i]=max(dp[i],dp[j]+1)
+        return max(dp)
+</code></pre>
 <p>课后习题：<br><img src="./102.png" alt="Alt text"></p>
 <p>评论区大佬的解法，很清晰，我加了注释：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">wiggleMaxLength</span><span class="params">(self, nums: List[int])</span> -&gt; int:</span>
+<pre><code class="python">class Solution:
+    def wiggleMaxLength(self, nums: List[int]) -&gt; int:
         n=len(nums)
-        <span class="keyword">if</span> n==<span class="number">1</span> <span class="keyword">or</span> (n==<span class="number">2</span> <span class="keyword">and</span> nums[<span class="number">0</span>]!=nums[<span class="number">1</span>]):
-            <span class="keyword">return</span> n
-
-        <span class="comment">#dp[i][0]表示以nums[i]结尾且当前位置为降序的最长摆动序列的长度,dp[i][1]表示以nums[i]结尾且当前位置为升序的最长摆动序列的长度</span>
-        dp = [[<span class="number">1</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>)] <span class="keyword">for</span> j <span class="keyword">in</span> range(n)]
+        if n==1 or (n==2 and nums[0]!=nums[1]):
+            return n
+        
+        #dp[i][0]表示以nums[i]结尾且当前位置为降序的最长摆动序列的长度,dp[i][1]表示以nums[i]结尾且当前位置为升序的最长摆动序列的长度
+        dp = [[1 for i in range(2)] for j in range(n)]
 
         res=[]
-        res.append(dp[<span class="number">0</span>][<span class="number">0</span>])
-        res.append(dp[<span class="number">0</span>][<span class="number">1</span>])
+        res.append(dp[0][0])
+        res.append(dp[0][1])
 
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n):
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>,i):
-                <span class="comment">#以nums[i]结尾且当前位置为升序</span>
-                <span class="keyword">if</span> nums[i] &gt; nums[j]:
-                    <span class="comment">#到nums[i]是升序了，那么前面必然得是降序的，因此考虑的是dp[j][0]</span>
-                    dp[i][<span class="number">1</span>] = max(dp[i][<span class="number">1</span>],dp[j][<span class="number">0</span>]+<span class="number">1</span>)
-                <span class="comment">#以nums[i]结尾且当前位置为降序</span>
-                <span class="keyword">elif</span> nums[i] &lt; nums[j]:
-                    <span class="comment">#到nums[i]是升序了，那么前面必然得是降序的，因此考虑的是dp[j][1]</span>
-                    dp[i][<span class="number">0</span>] = max(dp[i][<span class="number">0</span>],dp[j][<span class="number">1</span>]+<span class="number">1</span>)
-                <span class="comment">#nums[i]=nums[j]，此时nums[i]不可能加在nums[j]后面</span>
-                <span class="keyword">else</span>:               
-                    <span class="keyword">continue</span>
-            res.append(dp[i][<span class="number">0</span>])
-            res.append(dp[i][<span class="number">1</span>])
+        for i in range(1,n):
+            for j in range(0,i):
+                #以nums[i]结尾且当前位置为升序
+                if nums[i] &gt; nums[j]:
+                    #到nums[i]是升序了，那么前面必然得是降序的，因此考虑的是dp[j][0]
+                    dp[i][1] = max(dp[i][1],dp[j][0]+1)
+                #以nums[i]结尾且当前位置为降序
+                elif nums[i] &lt; nums[j]:
+                    #到nums[i]是升序了，那么前面必然得是降序的，因此考虑的是dp[j][1]
+                    dp[i][0] = max(dp[i][0],dp[j][1]+1)
+                #nums[i]=nums[j]，此时nums[i]不可能加在nums[j]后面
+                else:               
+                    continue
+            res.append(dp[i][0])
+            res.append(dp[i][1])
 
-        <span class="keyword">return</span> max(res)</code></pre>
+        return max(res)
+</code></pre>
 <p>优化</p>
 <p>up结尾的摆动序列是由最长的以down结尾的序列转化过来</p>
 <p>down结尾的摆动序列是由最长的以up结尾的序列转化过来</p>
 <p>下面这种方法up和down分别记录了末尾up结尾的最长摆动序列和down结尾的最长摆动序列</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">wiggleMaxLength</span><span class="params">(self, nums: List[int])</span> -&gt; int:</span>
+<pre><code class="python">class Solution:
+    def wiggleMaxLength(self, nums: List[int]) -&gt; int:
         n=len(nums)
-        <span class="keyword">if</span> n&lt;<span class="number">2</span>:
-            <span class="keyword">return</span> n
-        up=[nums[<span class="number">0</span>]]
-        down=[nums[<span class="number">0</span>]]
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n):
-            <span class="keyword">if</span> nums[i]&gt;nums[i<span class="number">-1</span>]:
+        if n&lt;2:
+            return n
+        up=[nums[0]]
+        down=[nums[0]]
+        for i in range(1,n):
+            if nums[i]&gt;nums[i-1]:
                 up=down+[nums[i]]
-            <span class="keyword">elif</span> nums[i]&lt;nums[i<span class="number">-1</span>]:
+            elif nums[i]&lt;nums[i-1]:
                 down=up+[nums[i]]
-            <span class="keyword">else</span>:
-                <span class="keyword">continue</span>
-        <span class="keyword">return</span> max(len(up),len(down))</code></pre>
+            else:
+                continue
+        return max(len(up),len(down))
+</code></pre>
 <h2 id="9-9"><a href="#9-9" class="headerlink" title="9-9"></a>9-9</h2><p>更多动态规划的问题。</p>
 <p>最长公共子序列(LCS)<br><img src="./103.png" alt="Alt text"><br><img src="./104.png" alt="Alt text"><br><img src="./105.png" alt="Alt text"></p>
 <p>dijkstra 单源最短路径算法也是动态规划<br><img src="./106.png" alt="Alt text"></p>
 <h1 id="第十章：贪心算法"><a href="#第十章：贪心算法" class="headerlink" title="第十章：贪心算法"></a>第十章：贪心算法</h1><h2 id="10-1"><a href="#10-1" class="headerlink" title="10-1"></a>10-1</h2><p><img src="./107.png" alt="Alt text"><br><img src="./108.png" alt="Alt text"></p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">findContentChildren</span><span class="params">(self, g: List[int], s: List[int])</span> -&gt; int:</span>
-        g=sorted(g,reverse=<span class="literal">True</span>)
-        s=sorted(s,reverse=<span class="literal">True</span>)
-        res=<span class="number">0</span>
-        si,gi=<span class="number">0</span>,<span class="number">0</span><span class="comment">#si初始指向最大的饼干，gi初始指向最贪心的小朋友</span>
-        <span class="keyword">while</span> gi &lt;len(g) <span class="keyword">and</span> si&lt;len(s):
-            <span class="keyword">if</span> s[si]&gt;=g[gi]:
-                res+=<span class="number">1</span>
-                si+=<span class="number">1</span>
-                gi+=<span class="number">1</span>
-            <span class="keyword">else</span>:<span class="comment">#无法满足当前最贪心的小朋友，于是尝试满足次贪心小朋友</span>
-                gi+=<span class="number">1</span>
-        <span class="keyword">return</span> res</code></pre>
+<pre><code class="python">class Solution:
+    def findContentChildren(self, g: List[int], s: List[int]) -&gt; int:
+        g=sorted(g,reverse=True)
+        s=sorted(s,reverse=True)
+        res=0
+        si,gi=0,0#si初始指向最大的饼干，gi初始指向最贪心的小朋友
+        while gi &lt;len(g) and si&lt;len(s):
+            if s[si]&gt;=g[gi]:
+                res+=1
+                si+=1
+                gi+=1
+            else:#无法满足当前最贪心的小朋友，于是尝试满足次贪心小朋友
+                gi+=1
+        return res
+</code></pre>
 <p>课后习题<br><img src="./392.png" alt="Alt text"></p>
 <p>这解法有双指针那味了。。。</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">isSubsequence</span><span class="params">(self, s: str, t: str)</span> -&gt; bool:</span>
-        si,ti=<span class="number">0</span>,<span class="number">0</span>
-        <span class="keyword">while</span> si&lt;len(s) <span class="keyword">and</span> ti&lt;len(t):
-            <span class="keyword">if</span> s[si]==t[ti]:
-                si+=<span class="number">1</span>
-                ti+=<span class="number">1</span>
-            <span class="keyword">else</span>:
-                ti+=<span class="number">1</span>
-        <span class="keyword">return</span> si==len(s)</code></pre>
+<pre><code class="python">class Solution:
+    def isSubsequence(self, s: str, t: str) -&gt; bool:
+        si,ti=0,0
+        while si&lt;len(s) and ti&lt;len(t):
+            if s[si]==t[ti]:
+                si+=1
+                ti+=1
+            else:
+                ti+=1
+        return si==len(s)
+</code></pre>
 <h2 id="10-2"><a href="#10-2" class="headerlink" title="10-2"></a>10-2</h2><p>贪心算法和动态规划的关系。<br><img src="./393.png" alt="Alt text"></p>
 <p>使用动态规划，类似最长上升子序列：<br><img src="./394.png" alt="Alt text"></p>
 <p>超时：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">eraseOverlapIntervals</span><span class="params">(self, intervals: List[List[int]])</span> -&gt; int:</span>
+<pre><code class="python">class Solution:
+    def eraseOverlapIntervals(self, intervals: List[List[int]]) -&gt; int:
         intervals=sorted(intervals)
-        <span class="comment">#print(intervals)</span>
+        #print(intervals)
         n=len(intervals)
-        dp=[<span class="number">1</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)]
-        <span class="comment">#dp[0]=1#单个是1</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n):
-            <span class="comment">#求dp[i]</span>
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>,i):
-                <span class="keyword">if</span> intervals[j][<span class="number">1</span>]&lt;=intervals[i][<span class="number">0</span>]:
-                    dp[i]=max(dp[i],<span class="number">1</span>+dp[j])
-        <span class="keyword">return</span> n-max(dp)</code></pre>
+        dp=[1 for _ in range(n)]
+        #dp[0]=1#单个是1
+        for i in range(1,n):
+            #求dp[i]
+            for j in range(0,i):
+                if intervals[j][1]&lt;=intervals[i][0]:
+                    dp[i]=max(dp[i],1+dp[j])
+        return n-max(dp)
+</code></pre>
 <p>AC：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">eraseOverlapIntervals</span><span class="params">(self, intervals: List[List[int]])</span> -&gt; int:</span>
-        intervals.sort(key=<span class="keyword">lambda</span> x:x[<span class="number">0</span>])
+<pre><code class="python">class Solution:
+    def eraseOverlapIntervals(self, intervals: List[List[int]]) -&gt; int:
+        intervals.sort(key=lambda x:x[0])
         print(intervals)
         n=len(intervals)
-        dp=[<span class="number">1</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(n)]
-        <span class="comment">#dp[0]=1#单个是1</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n):
-            <span class="comment">#求dp[i]</span>
-            <span class="keyword">for</span> j <span class="keyword">in</span> range(i<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>):
-                <span class="keyword">if</span> intervals[j][<span class="number">1</span>]&lt;=intervals[i][<span class="number">0</span>]:
-                    dp[i]=max(dp[i],<span class="number">1</span>+dp[j])
-                    <span class="keyword">break</span>
-        <span class="keyword">return</span> n-max(dp)</code></pre>
+        dp=[1 for _ in range(n)]
+        #dp[0]=1#单个是1
+        for i in range(1,n):
+            #求dp[i]
+            for j in range(i-1,-1,-1):
+                if intervals[j][1]&lt;=intervals[i][0]:
+                    dp[i]=max(dp[i],1+dp[j])
+                    break
+        return n-max(dp)
+</code></pre>
 <p>官方也超时：</p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">eraseOverlapIntervals</span><span class="params">(self, intervals: List[List[int]])</span> -&gt; int:</span>
-        <span class="keyword">if</span> <span class="keyword">not</span> intervals:
-            <span class="keyword">return</span> <span class="number">0</span>
-
+<pre><code class="python">class Solution:
+    def eraseOverlapIntervals(self, intervals: List[List[int]]) -&gt; int:
+        if not intervals:
+            return 0
+        
         intervals.sort()
         n = len(intervals)
-        f = [<span class="number">1</span>]
+        f = [1]
 
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n):
-            f.append(max((f[j] <span class="keyword">for</span> j <span class="keyword">in</span> range(i) <span class="keyword">if</span> intervals[j][<span class="number">1</span>] &lt;= intervals[i][<span class="number">0</span>]), default=<span class="number">0</span>) + <span class="number">1</span>)
+        for i in range(1, n):
+            f.append(max((f[j] for j in range(i) if intervals[j][1] &lt;= intervals[i][0]), default=0) + 1)
 
-        <span class="keyword">return</span> n - max(f)</code></pre>
+        return n - max(f)
+</code></pre>
 <p>使用贪心算法<br><img src="./395.png" alt="Alt text"><br><img src="./396.png" alt="Alt text"></p>
-<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">eraseOverlapIntervals</span><span class="params">(self, intervals: List[List[int]])</span> -&gt; int:</span>
-        <span class="keyword">if</span> <span class="keyword">not</span> intervals:
-            <span class="keyword">return</span> <span class="number">0</span>
-
-        intervals.sort(key=<span class="keyword">lambda</span> x:x[<span class="number">1</span>])
+<pre><code class="python">class Solution:
+    def eraseOverlapIntervals(self, intervals: List[List[int]]) -&gt; int:
+        if not intervals:
+            return 0
+        
+        intervals.sort(key=lambda x:x[1])
         print(intervals)
         n=len(intervals)
-        res=<span class="number">1</span>
-        pre=<span class="number">0</span>
-        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n):
-            <span class="keyword">if</span> intervals[pre][<span class="number">1</span>]&lt;=intervals[i][<span class="number">0</span>]:
-                res+=<span class="number">1</span>
+        res=1
+        pre=0
+        for i in range(1,n):
+            if intervals[pre][1]&lt;=intervals[i][0]:
+                res+=1
                 pre=i
-        <span class="keyword">return</span> n-res</code></pre>
+        return n-res
+</code></pre>
 <p>参考：</p>
 <ul>
 <li>[1] bobo老师《玩转算法面试》</li>
