@@ -1,0 +1,433 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>RNN在TF中的实现 | 南极Python</title><meta name="keywords" content="DL"><meta name="author" content="雨落诗山山亦奇"><meta name="copyright" content="雨落诗山山亦奇"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Embedding层在 TensorFlow 中，可以通过 layers.Embedding(𝑁_vocab,𝑛)来定义一个 Word Embedding层，其中𝑁_vocab参数指定词汇数量， 𝑛指定embedding后的单词向量的长度 1import tensorflow as tf   1234567#这里应该是对一个句子而言x&#x3D;tf.range(10)#生成10个单词的数字编码:[">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RNN在TF中的实现">
+<meta property="og:url" content="http://yoursite.com/2020/08/16/RNN%E5%9C%A8TF%E4%B8%AD%E7%9A%84%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="南极Python">
+<meta property="og:description" content="Embedding层在 TensorFlow 中，可以通过 layers.Embedding(𝑁_vocab,𝑛)来定义一个 Word Embedding层，其中𝑁_vocab参数指定词汇数量， 𝑛指定embedding后的单词向量的长度 1import tensorflow as tf   1234567#这里应该是对一个句子而言x&#x3D;tf.range(10)#生成10个单词的数字编码:[">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2020/08/16/dVBEsU.png">
+<meta property="article:published_time" content="2020-08-16T13:21:23.000Z">
+<meta property="article:modified_time" content="2024-04-19T16:39:46.000Z">
+<meta property="article:author" content="雨落诗山山亦奇">
+<meta property="article:tag" content="DL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/08/16/dVBEsU.png"><link rel="shortcut icon" href="https://www.cdnjson.com/images/2021/11/27/_20210211193948.png"><link rel="canonical" href="http://yoursite.com/2020/08/16/RNN%E5%9C%A8TF%E4%B8%AD%E7%9A%84%E5%AE%9E%E7%8E%B0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'RNN在TF中的实现',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-04-20 00:39:46'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/macblack.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://www.cdnjson.com/images/2021/11/27/_20210211193948.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">160</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s1.ax1x.com/2020/08/16/dVBEsU.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">南极Python</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">RNN在TF中的实现</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-08-16T13:21:23.000Z" title="发表于 2020-08-16 21:21:23">2020-08-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-04-19T16:39:46.000Z" title="更新于 2024-04-20 00:39:46">2024-04-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">深度学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>13分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="RNN在TF中的实现"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="Embedding层"><a href="#Embedding层" class="headerlink" title="Embedding层"></a>Embedding层</h3><p>在 <code>TensorFlow </code>中，可以通过 <code>layers.Embedding(𝑁_vocab,𝑛)</code>来定义一个 <code>Word Embedding</code><br>层，其中<code>𝑁_vocab</code>参数指定词汇数量， <code>𝑛</code>指定<code>embedding</code>后的单词向量的长度</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#这里应该是对一个句子而言</span></span><br><span class="line">x=tf.<span class="built_in">range</span>(<span class="number">10</span>)<span class="comment">#生成10个单词的数字编码:[0,9]</span></span><br><span class="line">x=tf.random.shuffle(x)</span><br><span class="line"><span class="built_in">print</span>(x)</span><br><span class="line"><span class="comment">#创建10个单词，每个单词用长度为4的向量表示</span></span><br><span class="line">net=tf.keras.layers.Embedding(<span class="number">10</span>,<span class="number">4</span>)<span class="comment">#10是单词个数，4是embedding后的向量长度</span></span><br><span class="line">out=net(x)</span><br></pre></td></tr></table></figure>
+
+<pre><code>tf.Tensor([1 0 8 9 3 4 5 6 2 7], shape=(10,), dtype=int32)
+</code></pre>
+<p><del><code>（10，4）</code>是一个句子的单词个数和<code>embedding</code>后的向量长度，若有<code>NUM</code>个句子，则<code>shape</code>变为<code>(NUM,10,4)</code></del></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Embedding层内部的查询表table</span></span><br><span class="line">net.embeddings</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>&lt;tf.Variable &#39;embedding_10/embeddings:0&#39; shape=(10, 4) dtype=float32, numpy=
+array([[-0.04157337,  0.00370337, -0.04709859, -0.02110542],
+       [-0.012863  , -0.0340884 ,  0.01296239, -0.02337525],
+       [-0.017204  ,  0.02752179,  0.03275616,  0.04036881],
+       [ 0.01910862,  0.02488795,  0.04844334, -0.00992166],
+       [ 0.04279174, -0.01695721,  0.04229338, -0.01208165],
+       [ 0.04743797, -0.04877844,  0.03140882, -0.0335933 ],
+       [-0.03579624,  0.03655416, -0.0206341 ,  0.00822543],
+       [ 0.0418619 ,  0.00207099, -0.04340398, -0.00929434],
+       [ 0.00421256, -0.00119591,  0.04572577,  0.02811921],
+       [-0.01074129, -0.02198823,  0.00441085, -0.0223695 ]],
+      dtype=float32)&gt;
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">out</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>&lt;tf.Tensor: shape=(10, 4), dtype=float32, numpy=
+array([[-0.012863  , -0.0340884 ,  0.01296239, -0.02337525],
+       [-0.04157337,  0.00370337, -0.04709859, -0.02110542],
+       [ 0.00421256, -0.00119591,  0.04572577,  0.02811921],
+       [-0.01074129, -0.02198823,  0.00441085, -0.0223695 ],
+       [ 0.01910862,  0.02488795,  0.04844334, -0.00992166],
+       [ 0.04279174, -0.01695721,  0.04229338, -0.01208165],
+       [ 0.04743797, -0.04877844,  0.03140882, -0.0335933 ],
+       [-0.03579624,  0.03655416, -0.0206341 ,  0.00822543],
+       [-0.017204  ,  0.02752179,  0.03275616,  0.04036881],
+       [ 0.0418619 ,  0.00207099, -0.04340398, -0.00929434]],
+      dtype=float32)&gt;
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net.embeddings.trainable<span class="comment">#可学习</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>True
+</code></pre>
+<h3 id="SimpleRNNCell"><a href="#SimpleRNNCell" class="headerlink" title="SimpleRNNCell"></a>SimpleRNNCell</h3><h4 id="一层SimpleRNNCell网络"><a href="#一层SimpleRNNCell网络" class="headerlink" title="一层SimpleRNNCell网络"></a>一层SimpleRNNCell网络</h4><p>仅仅是完成了一个时间戳的前向运算</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#创建RNN Cell，内存向量长度为3</span></span><br><span class="line">cell=tf.keras.layers.SimpleRNNCell(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#输出特征长度n=4，即embedding后的每个单词向量长度为4</span></span><br><span class="line">cell.build(input_shape=(<span class="literal">None</span>,<span class="number">4</span>))<span class="comment">#None格式可能是[句子个数，每个句子的单词个数]?</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cell.trainable_variables <span class="comment"># 打印 wxh, whh, b 张量</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>[&lt;tf.Variable &#39;kernel:0&#39; shape=(4, 3) dtype=float32, numpy=
+ array([[-0.12730736,  0.49879634, -0.12697208],
+        [ 0.62330437,  0.8244791 , -0.45662448],
+        [ 0.89570665, -0.20918423, -0.8737987 ],
+        [-0.54977036, -0.05649453, -0.00607061]], dtype=float32)&gt;,
+ &lt;tf.Variable &#39;recurrent_kernel:0&#39; shape=(3, 3) dtype=float32, numpy=
+ array([[-0.22971189,  0.9539083 ,  0.19310963],
+        [-0.36177534,  0.10050881, -0.9268314 ],
+        [-0.90352154, -0.2827664 ,  0.32201245]], dtype=float32)&gt;,
+ &lt;tf.Variable &#39;bias:0&#39; shape=(3,) dtype=float32, numpy=array([0., 0., 0.], dtype=float32)&gt;]
+</code></pre>
+<p><code>kernel </code>变量即<code>𝑾 _xh</code>张量， <code>recurrent_kernel</code><br>变量即<code>𝑾 _hh</code>张量， <code>bias </code>变量即偏置<code>𝒃</code>向量</p>
+<p>但是 <code>RNN </code>的 <code>Memory </code>向量 <code>h</code>并不由<code>SimpleRNNCell</code> 维护，需要用户自行初始化向量<code>h0</code>并记录每个时间戳上的 𝒕。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 初始化状态向量，用列表包裹，统一格式</span></span><br><span class="line">h0 = [tf.zeros([<span class="number">4</span>, <span class="number">64</span>])]</span><br><span class="line">x = tf.random.normal([<span class="number">4</span>, <span class="number">80</span>, <span class="number">100</span>]) <span class="comment"># 生成输入张量， 4 个 80 单词的句子,embedding后的单词向量长度 n=100</span></span><br><span class="line">xt = x[:,<span class="number">0</span>,:] <span class="comment"># 所有句子的第 1 个单词</span></span><br><span class="line"><span class="comment"># 构建输入特征即embedding后的单词向量长度 n=100,序列长度 s=80,状态长度=64 的 Cell</span></span><br><span class="line">cell = tf.keras.layers.SimpleRNNCell(<span class="number">64</span>)</span><br><span class="line">out, h1 = cell(xt, h0) <span class="comment"># 前向计算</span></span><br><span class="line"><span class="built_in">print</span>(out.shape,h1[<span class="number">0</span>].shape)</span><br></pre></td></tr></table></figure>
+
+<pre><code>(4, 64) (4, 64)
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#对于 SimpleRNNCell 来说， 𝒐𝑡 = ht，并没有经过额外的线性层转换， 是同一个对象</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(out),<span class="built_in">id</span>(h1[<span class="number">0</span>]))</span><br></pre></td></tr></table></figure>
+
+<pre><code>3078969475672 3078969475672
+</code></pre>
+<p>以上仅仅做了一个时间戳的前向运算，对于长度为s的序列来说，需要循环通过<br><code>Cell </code>类<code>𝑠</code>次才算完成一次网络层的前向运算</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">h = h0 <span class="comment"># h 保存每个时间戳上的状态向量列表</span></span><br><span class="line"><span class="comment"># 在序列长度的维度解开输入，得到 xt:[b,n]</span></span><br><span class="line"><span class="keyword">for</span> xt <span class="keyword">in</span> tf.unstack(x, axis=<span class="number">1</span>):</span><br><span class="line">    out,h = cell(xt, h) <span class="comment"># 前向计算,out 和 h 均被覆盖</span></span><br><span class="line"><span class="comment"># 最终输出可以聚合每个时间戳上的输出，也可以只取最后时间戳的输出</span></span><br><span class="line">out = out</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">out[-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>&lt;tf.Tensor: shape=(64,), dtype=float32, numpy=
+array([-0.25621325,  0.51310164, -0.8620935 , -0.91738695,  0.23226644,
+       -0.66992235, -0.63344294, -0.9089617 ,  0.72135305, -0.7318457 ,
+       -0.99582106, -0.9522287 , -0.6830161 , -0.7123331 ,  0.95459735,
+       -0.5337273 ,  0.2837275 ,  0.972833  ,  0.99199206,  0.9326225 ,
+        0.92419845,  0.9897123 ,  0.98730296, -0.8111788 ,  0.18107522,
+        0.6471946 ,  0.95291704,  0.9300036 , -0.69558764,  0.758556  ,
+        0.21924002, -0.86336696, -0.2925538 , -0.53042555,  0.61276007,
+        0.31824008,  0.50052625, -0.609673  ,  0.91918457,  0.31857985,
+        0.4469507 ,  0.13685822, -0.03755331,  0.4636307 ,  0.9822013 ,
+       -0.71981126, -0.9569911 ,  0.9512179 ,  0.86438775,  0.01853882,
+       -0.86230564,  0.86030304, -0.19372608, -0.99768096,  0.9988538 ,
+        0.77483326,  0.9892455 ,  0.01369001,  0.9266391 , -0.9306773 ,
+        0.00980736,  0.29978752,  0.24117659, -0.45769033], dtype=float32)&gt;
+</code></pre>
+<h4 id="多层-SimpleRNNCell-网络"><a href="#多层-SimpleRNNCell-网络" class="headerlink" title="多层 SimpleRNNCell 网络"></a>多层 SimpleRNNCell 网络</h4><p>和卷积神经网络一样，循环神经网络虽然在时间轴上面展开了多次， 但只能算一个网络层</p>
+<p>以两层的循环神经网络为例，介绍利用<code>Cell</code>方式构建多层 <code>RNN </code>网络。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#生成输入张量，4个句子，每个句子80个单词，embedding后的单词向量长度为100</span></span><br><span class="line">x = tf.random.normal([<span class="number">4</span>,<span class="number">80</span>,<span class="number">100</span>])</span><br><span class="line">xt = x[:,<span class="number">0</span>,:] <span class="comment"># 取第一个时间戳的输入 x0</span></span><br><span class="line"><span class="comment"># 构建 2 个 Cell,先 cell0,后 cell1，内存状态向量长度都为 64</span></span><br><span class="line">cell0 = tf.keras.layers.SimpleRNNCell(<span class="number">64</span>)</span><br><span class="line">cell1 = tf.keras.layers.SimpleRNNCell(<span class="number">64</span>)</span><br><span class="line">h0 = [tf.zeros([<span class="number">4</span>,<span class="number">64</span>])] <span class="comment"># cell0 的初始状态向量</span></span><br><span class="line">h1 = [tf.zeros([<span class="number">4</span>,<span class="number">64</span>])] <span class="comment"># cell1 的初始状态向量</span></span><br></pre></td></tr></table></figure>
+
+<p>前向计算有两种方式：</p>
+<p><strong>方法1</strong>：在时间轴上面循环计算多次来实现整个网络的前向运算，每个时间戳上的输入<code> xt</code> 首先通过第一层，得到输出<code> out0</code>，再通过第二层，得到输出 <code>out1</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> xt <span class="keyword">in</span> tf.unstack(x, axis=<span class="number">1</span>):</span><br><span class="line">    <span class="comment"># xt 作为输入，输出为 out0</span></span><br><span class="line">    out0,h0 = cell0(xt,h0)</span><br><span class="line">    <span class="comment"># 上一个 cell 的输出 out0 作为本 cell 的输入</span></span><br><span class="line">    out1,h1 = cell1(out0,h1)</span><br></pre></td></tr></table></figure>
+
+<p>上述方式先完成一个时间戳上的输入在所有层上的传播， 再循环计算完所有时间戳上的输<br>入</p>
+<p><strong>方法2</strong>：先完成输入在第一层上所有时间戳的计算， 并保存第一层在所有时间戳上的输出列表，再计算第二层、第三层等的传播。代码如</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 保存上一层的所有时间戳上面的输出</span></span><br><span class="line">middle_sequences = []</span><br><span class="line"><span class="comment"># 计算第一层的所有时间戳上的输出，并保存</span></span><br><span class="line"><span class="keyword">for</span> xt <span class="keyword">in</span> tf.unstack(x, axis=<span class="number">1</span>):</span><br><span class="line">    out0, h0 = cell0(xt, h0)</span><br><span class="line">    middle_sequences.append(out0)</span><br><span class="line"><span class="comment">#计算第二层的所有时间戳上的输出</span></span><br><span class="line"><span class="keyword">for</span> xt <span class="keyword">in</span> middle_sequences:</span><br><span class="line">    out1,h1=cell1(xt,h1)</span><br></pre></td></tr></table></figure>
+
+<p>一般来说，最末层<code>Cell</code>的状态有可能保存了高层的全局语义特征， 因此一般使用最末层的输出作为后续任务网络的输入。 </p>
+<h3 id="SimpleRNN-层"><a href="#SimpleRNN-层" class="headerlink" title="SimpleRNN 层"></a>SimpleRNN 层</h3><p>更高层的接口，可以省略之前手动参与的内部计算过程，比如每一层的 状态向量的初始化，以及每一层在时间轴上展开的运算</p>
+<h4 id="单层SimpleRNN-网络的前向运算"><a href="#单层SimpleRNN-网络的前向运算" class="headerlink" title="单层SimpleRNN 网络的前向运算"></a>单层SimpleRNN 网络的前向运算</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">layer=tf.keras.layers.SimpleRNN(<span class="number">64</span>)<span class="comment"># 创建状态向量长度为 64 的 SimpleRNN 层</span></span><br><span class="line">x = tf.random.normal([<span class="number">4</span>, <span class="number">80</span>, <span class="number">100</span>])<span class="comment">#4句话，每句含80个单词，embedding后的单词向量长度为100</span></span><br><span class="line">out=layer(x)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">out.shape</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>TensorShape([4, 64])
+</code></pre>
+<p>通过<code>SimpleRNN</code>可以仅需一行代码即可完成整个前向运算过程， 它默认返回最<br>后一个时间戳上的输出。</p>
+<p>如果希望返回所有时间戳上的输出列表，可以设置 <code>return_sequences=True</code> 参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建 RNN 层时，设置返回所有时间戳上的输出</span></span><br><span class="line">layer = tf.keras.layers.SimpleRNN(<span class="number">64</span>,return_sequences=<span class="literal">True</span>)</span><br><span class="line">out = layer(x) <span class="comment"># 前向计算</span></span><br><span class="line">out <span class="comment"># 输出，自动进行了 concat 操作</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>&lt;tf.Tensor: shape=(4, 80, 64), dtype=float32, numpy=
+array([[[ 0.7579574 ,  0.5203536 , -0.13247532, ..., -0.97075224,
+         -0.5602517 ,  0.1896142 ],
+        [ 0.70799   ,  0.8877379 ,  0.8039977 , ..., -0.9796105 ,
+         -0.90698063,  0.92094153],
+        [-0.98230916,  0.38763395, -0.24368586, ..., -0.23982975,
+         -0.5587594 ,  0.8005439 ],
+        ...,
+        [ 0.9696948 , -0.56924766,  0.99460095, ...,  0.86883426,
+          0.7421469 , -0.16692714],
+        [ 0.98573875, -0.866003  , -0.8699877 , ..., -0.70909184,
+          0.79517734,  0.21344577],
+        [-0.4993558 ,  0.9063643 ,  0.90756595, ...,  0.63874185,
+          0.3061087 ,  0.94876754]],
+
+       [[-0.953717  ,  0.5357896 , -0.24438739, ..., -0.9902813 ,
+          0.65611756,  0.52405304],
+        [-0.945761  ,  0.92643136,  0.93036115, ..., -0.9637114 ,
+          0.86534184, -0.19020523],
+        [-0.11487287, -0.8078128 ,  0.95136124, ...,  0.79756886,
+          0.7799482 ,  0.208571  ],
+        ...,
+        [-0.92995924, -0.49086258, -0.49593148, ..., -0.50804   ,
+          0.5525898 , -0.92352575],
+        [ 0.87116635, -0.3758928 ,  0.2159305 , ..., -0.6538404 ,
+          0.0528454 ,  0.971082  ],
+        [-0.37672698, -0.9683858 , -0.9913551 , ...,  0.8241966 ,
+          0.99546564, -0.9172934 ]],
+
+       [[ 0.44561443, -0.72680014, -0.98325783, ..., -0.30991045,
+          0.7665605 ,  0.0668956 ],
+        [ 0.9603438 ,  0.9961231 ,  0.43043685, ..., -0.3882459 ,
+         -0.53074616,  0.04012485],
+        [ 0.6547422 ,  0.001742  , -0.18013465, ...,  0.72801995,
+          0.5303095 , -0.3371497 ],
+        ...,
+        [ 0.71766   , -0.52994007, -0.03237867, ...,  0.2299321 ,
+          0.9955149 ,  0.9458545 ],
+        [ 0.9850791 ,  0.90992504, -0.44711468, ..., -0.9919823 ,
+         -0.16220197,  0.5074431 ],
+        [ 0.0717535 ,  0.8818335 , -0.6376899 , ..., -0.86398774,
+          0.91119236,  0.99637604]],
+
+       [[-0.6396239 , -0.9482835 ,  0.48356768, ...,  0.1447552 ,
+          0.24843507,  0.85139376],
+        [-0.9784054 , -0.60325694, -0.54072136, ...,  0.5444716 ,
+         -0.20786293, -0.9302095 ],
+        [ 0.92882097,  0.24866687, -0.02795087, ..., -0.8263675 ,
+         -0.23303777,  0.55453205],
+        ...,
+        [ 0.6856851 ,  0.18871786,  0.11841806, ..., -0.9009302 ,
+          0.9300211 ,  0.311716  ],
+        [ 0.7124896 ,  0.9189299 , -0.2578693 , ..., -0.4982193 ,
+         -0.98169625,  0.3771086 ],
+        [-0.96602875,  0.2520068 ,  0.8261244 , ..., -0.7265942 ,
+          0.5231435 , -0.8301581 ]]], dtype=float32)&gt;
+</code></pre>
+<p>返回的输出张量 <code>shape</code>为<code>[4,80,64]</code>，中间维度的 <code>80 </code>即为时间戳维度</p>
+<h4 id="多层SimpleRNN-网络的前向运算"><a href="#多层SimpleRNN-网络的前向运算" class="headerlink" title="多层SimpleRNN 网络的前向运算"></a>多层SimpleRNN 网络的前向运算</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#以两层为例</span></span><br><span class="line">net=tf.keras.Sequential([</span><br><span class="line">    <span class="comment">#除最末层外，都需要返回所有时间戳的输出，用作下一层的输入</span></span><br><span class="line">    tf.keras.layers.SimpleRNN(<span class="number">64</span>,return_sequences=<span class="literal">True</span>),</span><br><span class="line">    <span class="comment">#tf.keras.layers.SimpleRNN(64,return_sequences=True),#此时out shape：4, 80, 64</span></span><br><span class="line">    tf.keras.layers.SimpleRNN(<span class="number">64</span>),<span class="comment">#只要最后一个时间戳的输出，此时 out shape：4，64</span></span><br><span class="line">])</span><br><span class="line">out=net(x)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">out.shape</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>TensorShape([4, 64])
+</code></pre>
+<h3 id="LSTMCell"><a href="#LSTMCell" class="headerlink" title="LSTMCell"></a>LSTMCell</h3><p><code>LSTMCell </code>的用法和<code>SimpleRNNCell</code>基本一致， 区别在于<code>LSTM</code>的状态变量 <code>List </code>有两个， 即<code>[ h𝑡, 𝒄𝑡]</code>， 需要分别初始化，其中<code>List</code>第一个元素为<code> h𝑡</code>，第二个元素为<code>𝒄𝑡</code>。 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#新建一个状态向量长度ℎ = 64的 LSTM Cell，其中状态向量𝒄𝑡和输出向量 𝑡的长度都为ℎ</span></span><br><span class="line">x=tf.random.normal([<span class="number">2</span>,<span class="number">80</span>,<span class="number">100</span>])<span class="comment">#2个句子，每个句子包含80个单词，embedding后的单词向量长度为100</span></span><br><span class="line">xt=x[:,<span class="number">0</span>,:]<span class="comment">#得到一个时间戳的输入</span></span><br><span class="line">cell=tf.keras.layers.LSTMCell(<span class="number">64</span>)<span class="comment">#创建LSTMCell</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#初始化状态和输出List:[h,c]</span></span><br><span class="line">state=[tf.zeros([<span class="number">2</span>,<span class="number">64</span>]),tf.zeros([<span class="number">2</span>,<span class="number">64</span>])]</span><br><span class="line"><span class="comment">#前向计算</span></span><br><span class="line">out,state=cell(xt,state)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">id</span>(out),<span class="built_in">id</span>(state[<span class="number">0</span>]),<span class="built_in">id</span>(state[<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>(3078980607848, 3078980607848, 3078978869912)
+</code></pre>
+<p>返回的输出<code> out</code> 和<code>List</code>的第一个元素 <code>h𝑡</code>的 <code>id </code>是相同的，这与基础的<code>RNN</code>初衷一致，都是为了格式的统一</p>
+<p>通过在时间戳上展开循环运算，即可完成一次层的前向传播</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> xt <span class="keyword">in</span> tf.unstack(x,axis=<span class="number">1</span>):</span><br><span class="line">    <span class="comment">#前向计算</span></span><br><span class="line">    out,state=cell(xt,state)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">out.shape</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>TensorShape([2, 64])
+</code></pre>
+<h3 id="LSTM-层"><a href="#LSTM-层" class="headerlink" title="LSTM 层"></a>LSTM 层</h3><h4 id="一层LSTM层"><a href="#一层LSTM层" class="headerlink" title="一层LSTM层"></a>一层LSTM层</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#一层LSTM层，内存向量长度为64</span></span><br><span class="line">layer=tf.keras.layers.LSTM(<span class="number">64</span>)</span><br><span class="line"><span class="comment"># 序列通过 LSTM 层，默认返回最后一个时间戳的输出 h</span></span><br><span class="line">out = layer(x)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">out.shape</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>TensorShape([2, 64])
+</code></pre>
+<p>经过 <code>LSTM</code> 层前向传播后，默认只会返回最后一个时间戳的输出， 如果需要返回每个时间<br>戳上面的输出， 需要设置<code>return_sequences=True</code>标志。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建 LSTM 层时，设置返回每个时间戳上的输出</span></span><br><span class="line">layer = tf.keras.layers.LSTM(<span class="number">64</span>, return_sequences=<span class="literal">True</span>)</span><br><span class="line"><span class="comment"># 前向计算，每个时间戳上的输出自动进行了 concat，拼成一个张量</span></span><br><span class="line">out = layer(x)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">out.shape<span class="comment">#80代表80个时间戳</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>TensorShape([2, 80, 64])
+</code></pre>
+<h4 id="多层LSTM层"><a href="#多层LSTM层" class="headerlink" title="多层LSTM层"></a>多层LSTM层</h4><p>对于多层神经网络， 可以通过<code> Sequential</code> 容器包裹多层 <code>LSTM </code>层，并设置所有非末层网络 <code>return_sequences=True</code>，这是因为非末层的<code> LSTM</code> 层需要上一层在所有时间戳的输出<br>作为输入。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">net = tf.keras.Sequential([</span><br><span class="line">    tf.keras.layers.LSTM(<span class="number">64</span>, return_sequences=<span class="literal">True</span>), <span class="comment"># 非末层需要返回所有时间戳输出</span></span><br><span class="line">    tf.keras.layers.LSTM(<span class="number">64</span>)</span><br><span class="line">])</span><br><span class="line"><span class="comment"># 一次通过网络模型，即可得到最末层、最后一个时间戳的输出</span></span><br><span class="line">out = net(x)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">out.shape</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>TensorShape([2, 64])
+</code></pre>
+<h3 id="GRUCell"><a href="#GRUCell" class="headerlink" title="GRUCell"></a>GRUCell</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">x=tf.random.normal([<span class="number">2</span>,<span class="number">80</span>,<span class="number">100</span>])</span><br><span class="line"><span class="comment"># 初始化状态向量， GRU 只有一个</span></span><br><span class="line">h = [tf.zeros([<span class="number">2</span>,<span class="number">64</span>])]</span><br><span class="line">cell = tf.keras.layers.GRUCell(<span class="number">64</span>) <span class="comment"># 新建 GRU Cell，向量长度为 64</span></span><br><span class="line"><span class="comment"># 在时间戳维度上解开，循环通过 cell</span></span><br><span class="line"><span class="keyword">for</span> xt <span class="keyword">in</span> tf.unstack(x, axis=<span class="number">1</span>):</span><br><span class="line">    out, h = cell(xt, h)</span><br><span class="line"><span class="comment"># 输出形状</span></span><br><span class="line">out.shape</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>TensorShape([2, 64])
+</code></pre>
+<h3 id="GRU层"><a href="#GRU层" class="headerlink" title="GRU层"></a>GRU层</h3><h4 id="单层GRU"><a href="#单层GRU" class="headerlink" title="单层GRU"></a>单层GRU</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#一层GRU层，内存向量长度为64</span></span><br><span class="line"><span class="comment">#layer=tf.keras.layers.GRU(64,return_sequences=True)#此时out的shape为：[2,80,64]，其中80代表80个时间戳</span></span><br><span class="line">layer=tf.keras.layers.GRU(<span class="number">64</span>)</span><br><span class="line"><span class="comment"># 序列通过 GRU层，默认返回最后一个时间戳的输出 h</span></span><br><span class="line">out = layer(x)</span><br><span class="line">out.shape</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>TensorShape([2, 64])
+</code></pre>
+<h4 id="多层GRU"><a href="#多层GRU" class="headerlink" title="多层GRU"></a>多层GRU</h4><p>通过<code> layers.GRU</code> 类可以方便创建一层 <code>GRU </code>网络层，通过 <code>Sequential </code>容器可以堆叠多<br>层 <code>GRU </code>层的网络</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">net = tf.keras.Sequential([</span><br><span class="line">    tf.keras.layers.GRU(<span class="number">64</span>, return_sequences=<span class="literal">True</span>),</span><br><span class="line">    tf.keras.layers.GRU(<span class="number">64</span>)</span><br><span class="line">])</span><br><span class="line">out = net(x)</span><br><span class="line">out.shape</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>TensorShape([2, 64])
+</code></pre>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/DL/">DL</a></div><div class="post_share"><div class="social-share" data-image="https://s1.ax1x.com/2020/08/16/dVBEsU.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/08/16/LSTM/"><img class="prev-cover" src="https://s1.ax1x.com/2020/08/16/dVcI61.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">LSTM</div></div></a></div><div class="next-post pull-right"><a href="/2020/08/13/%E5%85%83%E7%BB%84%E4%B8%8E%E9%9B%86%E5%90%88-Python%E5%9F%BA%E7%A1%80%E8%BF%9E%E8%BD%BD%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89/"><img class="next-cover" src="https://s1.ax1x.com/2020/08/13/az8yu9.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">元组与集合-Python基础连载（十一）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/04/05/1%E5%B0%8F%E6%97%B6%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8PyTorch/" title="1小时快速入门PyTorch"><img class="cover" src="https://z3.ax1x.com/2021/04/10/cajxDs.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-05</div><div class="title">1小时快速入门PyTorch</div></div></a></div><div><a href="/2021/07/28/6D%E5%A7%BF%E6%80%81%E4%BC%B0%E8%AE%A1%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="FFB6D"><img class="cover" src="https://www.cdnjson.com/images/2021/08/02/288c7ab422d3d3d15.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-28</div><div class="title">FFB6D</div></div></a></div><div><a href="/2021/04/09/FaceFromX/" title="FaceFromX"><img class="cover" src="https://z3.ax1x.com/2021/04/09/cUQzfU.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-09</div><div class="title">FaceFromX</div></div></a></div><div><a href="/2021/07/30/G2L-Net/" title="G2L-Net"><img class="cover" src="https://www.cdnjson.com/images/2021/08/02/14eac1ef7f05c4615.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-30</div><div class="title">G2L-Net</div></div></a></div><div><a href="/2020/10/12/Keras%E4%B8%AD%E5%85%B3%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84trainable%E7%8A%B6%E6%80%81%E7%9A%84%E9%97%AE%E9%A2%98/" title="Keras中关于模型的trainable状态的问题"><img class="cover" src="https://s1.ax1x.com/2020/07/19/URRLqI.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-10-12</div><div class="title">Keras中关于模型的trainable状态的问题</div></div></a></div><div><a href="/2020/08/16/LSTM/" title="LSTM"><img class="cover" src="https://s1.ax1x.com/2020/08/16/dVcI61.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-16</div><div class="title">LSTM</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://www.cdnjson.com/images/2021/11/27/_20210211193948.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">雨落诗山山亦奇</div><div class="author-info__description">本站为读研版&工作版博客，大学版移步 --> fuhanshi.github.io</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">160</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">本站内容的最终版本将发布在微信公众号[南极Python]</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Embedding%E5%B1%82"><span class="toc-number">1.</span> <span class="toc-text">Embedding层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SimpleRNNCell"><span class="toc-number">2.</span> <span class="toc-text">SimpleRNNCell</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E5%B1%82SimpleRNNCell%E7%BD%91%E7%BB%9C"><span class="toc-number">2.1.</span> <span class="toc-text">一层SimpleRNNCell网络</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E5%B1%82-SimpleRNNCell-%E7%BD%91%E7%BB%9C"><span class="toc-number">2.2.</span> <span class="toc-text">多层 SimpleRNNCell 网络</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SimpleRNN-%E5%B1%82"><span class="toc-number">3.</span> <span class="toc-text">SimpleRNN 层</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E5%B1%82SimpleRNN-%E7%BD%91%E7%BB%9C%E7%9A%84%E5%89%8D%E5%90%91%E8%BF%90%E7%AE%97"><span class="toc-number">3.1.</span> <span class="toc-text">单层SimpleRNN 网络的前向运算</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E5%B1%82SimpleRNN-%E7%BD%91%E7%BB%9C%E7%9A%84%E5%89%8D%E5%90%91%E8%BF%90%E7%AE%97"><span class="toc-number">3.2.</span> <span class="toc-text">多层SimpleRNN 网络的前向运算</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LSTMCell"><span class="toc-number">4.</span> <span class="toc-text">LSTMCell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LSTM-%E5%B1%82"><span class="toc-number">5.</span> <span class="toc-text">LSTM 层</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E5%B1%82LSTM%E5%B1%82"><span class="toc-number">5.1.</span> <span class="toc-text">一层LSTM层</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E5%B1%82LSTM%E5%B1%82"><span class="toc-number">5.2.</span> <span class="toc-text">多层LSTM层</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GRUCell"><span class="toc-number">6.</span> <span class="toc-text">GRUCell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GRU%E5%B1%82"><span class="toc-number">7.</span> <span class="toc-text">GRU层</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E5%B1%82GRU"><span class="toc-number">7.1.</span> <span class="toc-text">单层GRU</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E5%B1%82GRU"><span class="toc-number">7.2.</span> <span class="toc-text">多层GRU</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/09/03/%E5%A6%82%E4%BD%95%E7%9B%91%E6%8E%A7%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E6%97%B6%E7%9A%84%E7%B3%BB%E7%BB%9F%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF/" title="如何监控模型推理时的系统状态信息"><img src="https://s21.ax1x.com/2024/05/04/pkAljWq.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="如何监控模型推理时的系统状态信息"/></a><div class="content"><a class="title" href="/2024/09/03/%E5%A6%82%E4%BD%95%E7%9B%91%E6%8E%A7%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E6%97%B6%E7%9A%84%E7%B3%BB%E7%BB%9F%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF/" title="如何监控模型推理时的系统状态信息">如何监控模型推理时的系统状态信息</a><time datetime="2024-09-03T13:00:05.000Z" title="发表于 2024-09-03 21:00:05">2024-09-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/01/Transformer%E7%9A%84Decoder%E5%9C%A8%E8%AE%AD%E7%BB%83%E5%92%8C%E6%8E%A8%E7%90%86%E9%98%B6%E6%AE%B5%E7%9A%84%E5%BC%82%E5%90%8C%E7%82%B9%E6%80%BB%E7%BB%93/" title="Transformer的Decoder在训练和推理阶段的异同点总结"><img src="https://s21.ax1x.com/2024/06/01/pk8xi1x.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Transformer的Decoder在训练和推理阶段的异同点总结"/></a><div class="content"><a class="title" href="/2024/06/01/Transformer%E7%9A%84Decoder%E5%9C%A8%E8%AE%AD%E7%BB%83%E5%92%8C%E6%8E%A8%E7%90%86%E9%98%B6%E6%AE%B5%E7%9A%84%E5%BC%82%E5%90%8C%E7%82%B9%E6%80%BB%E7%BB%93/" title="Transformer的Decoder在训练和推理阶段的异同点总结">Transformer的Decoder在训练和推理阶段的异同点总结</a><time datetime="2024-06-01T07:15:20.000Z" title="发表于 2024-06-01 15:15:20">2024-06-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/04/Python-Flask%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" title="Python-Flask快速上手"><img src="https://s21.ax1x.com/2024/05/04/pkAljWq.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python-Flask快速上手"/></a><div class="content"><a class="title" href="/2024/05/04/Python-Flask%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" title="Python-Flask快速上手">Python-Flask快速上手</a><time datetime="2024-05-04T09:27:57.000Z" title="发表于 2024-05-04 17:27:57">2024-05-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/07/%E5%9B%BE%E5%83%8F%E9%85%8D%E5%87%86/" title="图像配准小结"><img src="https://s21.ax1x.com/2024/04/22/pk9mOqf.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="图像配准小结"/></a><div class="content"><a class="title" href="/2024/01/07/%E5%9B%BE%E5%83%8F%E9%85%8D%E5%87%86/" title="图像配准小结">图像配准小结</a><time datetime="2024-01-07T11:18:38.000Z" title="发表于 2024-01-07 19:18:38">2024-01-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/10/25/SAM%E9%AA%A8%E5%B9%B2%E8%BF%81%E7%A7%BB/" title="将SAM编码器迁移到自定义分割子任务中"><img src="https://s21.ax1x.com/2024/04/22/pk9myG9.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="将SAM编码器迁移到自定义分割子任务中"/></a><div class="content"><a class="title" href="/2023/10/25/SAM%E9%AA%A8%E5%B9%B2%E8%BF%81%E7%A7%BB/" title="将SAM编码器迁移到自定义分割子任务中">将SAM编码器迁移到自定义分割子任务中</a><time datetime="2023-10-25T11:18:38.000Z" title="发表于 2023-10-25 19:18:38">2023-10-25</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://s1.ax1x.com/2020/08/16/dVBEsU.png')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By 雨落诗山山亦奇</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
