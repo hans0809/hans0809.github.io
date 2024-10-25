@@ -1,0 +1,297 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>PyTorch转TensorRT-engine保姆级教程 | 南极Python</title><meta name="keywords" content="DL"><meta name="author" content="雨落诗山山亦奇"><meta name="copyright" content="雨落诗山山亦奇"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="torch2onnx2trt使用指南-详细版本在模型训练完成后，所得到的权重往往存在一定的冗余，在基于该权重进行推理时，会消耗一部分时间来执行这些冗余部分的前向传播过程。 通过一些技术手段来减少这些冗余，往往可以在保证推理结果准确性的基础上获得一定程度的推理效率提升。 TensorRT 是 NVIDIA 开发的高性能深度学习推理优化器，专为加速神经网络推理而设计。使用TensorRT ，能够将模型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyTorch转TensorRT-engine保姆级教程">
+<meta property="og:url" content="http://yoursite.com/2024/10/25/PyTorch%E8%BD%ACTensorRT-engine%E4%BF%9D%E5%A7%86%E7%BA%A7%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="南极Python">
+<meta property="og:description" content="torch2onnx2trt使用指南-详细版本在模型训练完成后，所得到的权重往往存在一定的冗余，在基于该权重进行推理时，会消耗一部分时间来执行这些冗余部分的前向传播过程。 通过一些技术手段来减少这些冗余，往往可以在保证推理结果准确性的基础上获得一定程度的推理效率提升。 TensorRT 是 NVIDIA 开发的高性能深度学习推理优化器，专为加速神经网络推理而设计。使用TensorRT ，能够将模型">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s21.ax1x.com/2024/04/22/pk9nSiQ.jpg">
+<meta property="article:published_time" content="2024-10-25T11:49:44.000Z">
+<meta property="article:modified_time" content="2024-10-25T11:57:24.946Z">
+<meta property="article:author" content="雨落诗山山亦奇">
+<meta property="article:tag" content="DL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s21.ax1x.com/2024/04/22/pk9nSiQ.jpg"><link rel="shortcut icon" href="https://www.cdnjson.com/images/2021/11/27/_20210211193948.png"><link rel="canonical" href="http://yoursite.com/2024/10/25/PyTorch%E8%BD%ACTensorRT-engine%E4%BF%9D%E5%A7%86%E7%BA%A7%E6%95%99%E7%A8%8B/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'PyTorch转TensorRT-engine保姆级教程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-10-25 19:57:24'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/macblack.css"><meta name="generator" content="Hexo 5.4.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://www.cdnjson.com/images/2021/11/27/_20210211193948.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">161</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s21.ax1x.com/2024/04/22/pk9nSiQ.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">南极Python</a></span><div id="menus"><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">PyTorch转TensorRT-engine保姆级教程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-10-25T11:49:44.000Z" title="发表于 2024-10-25 19:49:44">2024-10-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-10-25T11:57:24.946Z" title="更新于 2024-10-25 19:57:24">2024-10-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">深度学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="PyTorch转TensorRT-engine保姆级教程"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="torch2onnx2trt使用指南-详细版本"><a href="#torch2onnx2trt使用指南-详细版本" class="headerlink" title="torch2onnx2trt使用指南-详细版本"></a>torch2onnx2trt使用指南-详细版本</h1><p>在模型训练完成后，所得到的权重往往存在一定的冗余，在基于该权重进行推理时，会消耗一部分时间来执行这些冗余部分的前向传播过程。</p>
+<p>通过一些技术手段来减少这些冗余，往往可以在保证推理结果准确性的基础上获得一定程度的推理效率提升。</p>
+<p>TensorRT 是 NVIDIA 开发的高性能深度学习推理优化器，专为加速神经网络推理而设计。使用TensorRT ，能够将模型权重转换为高效的推理引擎，显著提升推理速度和降低延迟，适用于各种深度学习应用。</p>
+<p>以下是我在RTX3060显卡上使用TensorRT前后测试的单模型推理时间结果：</p>
+<table>
+<thead>
+<tr>
+<th>模型格式</th>
+<th>前向推理时间(单位：s)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PyTorch</td>
+<td>51s</td>
+</tr>
+<tr>
+<td>ONNX</td>
+<td>44s</td>
+</tr>
+<tr>
+<td>TensorRT Engine(FP32)</td>
+<td>35s</td>
+</tr>
+<tr>
+<td>TensorRT Engine(FP16)</td>
+<td>15s</td>
+</tr>
+</tbody></table>
+<p>可以看到，借助TensorRT，在保持模型全精度(FP32)的前提下，前向推理时间降低为原来的32%，加速比为145%；如果进一步开启半精度(FP16)，前向推理时间可以降低为原来的70%，加速比达到了340%。</p>
+<h1 id="本文目标"><a href="#本文目标" class="headerlink" title="本文目标"></a>本文目标</h1><p>将训练好的PyTorch权重转换为TensorRT的Engine，以提升推理效率。</p>
+<h1 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h1><p>注：本文档所提供的操作步骤均在Linux系统上进行，Windows暂未测试。</p>
+<h2 id="step1-环境搭建"><a href="#step1-环境搭建" class="headerlink" title="step1. 环境搭建"></a>step1. 环境搭建</h2><h3 id="s1-1-TensorRT软件包下载"><a href="#s1-1-TensorRT软件包下载" class="headerlink" title="s1.1. TensorRT软件包下载"></a>s1.1. TensorRT软件包下载</h3><p>首先进入TensorRT的官网(<a target="_blank" rel="noopener" href="https://developer.nvidia.com/tensorrt/download">https://developer.nvidia.com/tensorrt/download</a>)，页面如下：</p>
+<p><img src="1.png" alt="image.png"></p>
+<p>可以看到其中列举了不同版本的TensorRT软件包，每个版本都提供了对于不同的CUDA版本的支持，选择希望下载的版本，比如我选择其中的++TensorRT 8++，来到如下页面：</p>
+<p><img src="2.png" alt="image.png"></p>
+<p>这里提供了++TensorRT 8++对应的细分版本，每个细分版本又分为GA和EA，GA是正式版，EA是测试版，建议选择正式版GA，比如我选择++TensorRT 8.6 GA++，来到如下页面：</p>
+<p><img src="3.png" alt="image.png"></p>
+<p>上述页面提供了不同系统架构以及CUDA版本对应的TensorRT软件包，因此只要确定系统架构和CUDA版本，就可以下载对应版本的TensorRT软件包了。</p>
+<p>:::<br>可以通过`arch`命令来查看机器的系统架构</p>
+<p>我所用的机器是x86_64的；</p>
+<p>可以通过`nvcc –version`来查看CUDA版本：</p>
+<p>我的CUDA版本是11.3。</p>
+<p>:::</p>
+<p>现在已知系统架构是x86_64，CUDA版本是11.3，于是可以定位到上图中绿色框内的软件包，点击即可自动下载。</p>
+<h3 id="s1-2-安装TensorRT"><a href="#s1-2-安装TensorRT" class="headerlink" title="s1.2 安装TensorRT"></a>s1.2 安装TensorRT</h3><p>首先解压上一步下载好的TensorRT安装包：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xzvf TensorRT-8.6.1.6.Linux.x86_64-gnu.cuda-11.8.tar.gz# .tar.gz文件名需要替换为你自己下载版本对应的TensorRT软件包名字</span><br></pre></td></tr></table></figure>
+
+<p>接下来需要设置环境变量。</p>
+<p>使用vim编辑~/.bashrc：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>在文件末尾添加如下内容（注意：需要将/lib和/bin对应的根路径替换为你自己解压后的TensorRT文件夹路径）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/shengtong/algo1/infer_opt/TensorRT-8.6.1.6/lib</span><br><span class="line">export PATH=$PATH:/home/shengtong/algo1/infer_opt/TensorRT-8.6.1.6/bin</span><br></pre></td></tr></table></figure>
+
+<p>添加完成之后，退出vim编辑器，运行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>执行完上述操作后，来验证一下TensorRT是否安装成功，直接在命令行执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">trtexec</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="s1-3-安装TensorRT依赖的工具库"><a href="#s1-3-安装TensorRT依赖的工具库" class="headerlink" title="s1.3 安装TensorRT依赖的工具库"></a>s1.3 安装TensorRT依赖的工具库</h3><p>:::<br>到此已经安装好了TensorRT。然而，在实际运行TensorRT的Engine推理时，还需要一些其它工具来辅助完成推理过程，这里选择polygraphy进行实现。以下是安装方法(注：请严格按照如下方法进行安装，否则可能造成内存泄露)。<br>:::</p>
+<p>首先，进入TensorRT的github页面(<a target="_blank" rel="noopener" href="https://github.com/NVIDIA/TensorRT/">https://github.com/NVIDIA/TensorRT/</a>)，将代码分支由默认的最新分支切换为之前所下载的TensorRT软件包对应的版本，比如我之前下载的是”8.6”的，因此选择切换到”release/8.6”分支，如下：</p>
+<p><img src="4.png" alt="image.png"></p>
+<p>然后，将当前分支对应的源码.zip压缩包下载到自己的机器上，并解压，比如我解压到了`./TensorRT-release-8.6`文件夹。</p>
+<p>接着，依次执行如下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd ./TensorRT-release-8.6/tools/Polygraphy</span><br><span class="line">python3 -m pip install wheel</span><br><span class="line">python setup.py bdist_wheel</span><br><span class="line">cd ./dist</span><br><span class="line">python3 -m pip install polygraphy-*-py2.py3-none-any.whl</span><br></pre></td></tr></table></figure>
+
+<p>这样就完成了polygraphy的安装。</p>
+<p>至此，环境搭建结束。</p>
+<h2 id="step2-PyTorch权重转换为ONNX"><a href="#step2-PyTorch权重转换为ONNX" class="headerlink" title="step2. PyTorch权重转换为ONNX"></a>step2. PyTorch权重转换为ONNX</h2><h3 id="s2-1-定义模型"><a href="#s2-1-定义模型" class="headerlink" title="s2.1 定义模型"></a>s2.1 定义模型</h3><p>针对训练好的PyTorch格式权重，首先定义你的神经网络模型，并加载训练好的权重，然后将其移动到GPU上，并设置为推理模式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">model_path=<span class="string">&#x27;./weight.pth&#x27;</span></span><br><span class="line">model=MyModel()</span><br><span class="line">model.load_state_dict(torch.load(model_path))</span><br><span class="line"></span><br><span class="line">model.cuda()</span><br><span class="line">model.<span class="built_in">eval</span>()</span><br></pre></td></tr></table></figure>
+
+<h3 id="s2-2-定义输入数据结构"><a href="#s2-2-定义输入数据结构" class="headerlink" title="s2.2 定义输入数据结构"></a>s2.2 定义输入数据结构</h3><p>这里的输入数据结构指的是模型推理时的张量形状(Tensor shape)，比如推理时我的输入是(batch _size, 3, 512, 512)大小，那么此时需要定义的数据结构的大小为(1, 3, 512, 512):</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dummy_input = torch.randn(<span class="number">1</span>,<span class="number">3</span>, <span class="number">512</span>,<span class="number">512</span>)</span><br><span class="line">dummy_input.cuda()<span class="comment"># 同样需要将其移动到GPU上</span></span><br></pre></td></tr></table></figure>
+
+<p>这个数据用于帮助 ONNX 生成器了解模型的输入形状，以便在导出模型时能够正确地构建计算图。</p>
+<h3 id="s2-3-执行转换"><a href="#s2-3-执行转换" class="headerlink" title="s2.3 执行转换"></a>s2.3 执行转换</h3><p>执行如下命令，就可以完成PyTorch权重到ONNX格式的转换：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.onnx.export(model, dummy_input, <span class="string">&quot;onnx.onnx&quot;</span>, opset_version=<span class="number">11</span>,input_names = [<span class="string">&#x27;input&#x27;</span>],output_names = [<span class="string">&#x27;output&#x27;</span>], dynamic_axes=&#123;<span class="string">&#x27;input&#x27;</span>:&#123;<span class="number">0</span> : <span class="string">&#x27;batch_size&#x27;</span>&#125;,<span class="string">&#x27;output&#x27;</span>:&#123;<span class="number">0</span> : <span class="string">&#x27;batch_size&#x27;</span>&#125;&#125;,verbose=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p>其中，”onnx.onnx”就是转换后生成的ONNX文件名，可以自定义。</p>
+<h2 id="step3-ONNX转换为TensorRT-Engine"><a href="#step3-ONNX转换为TensorRT-Engine" class="headerlink" title="step3. ONNX转换为TensorRT Engine"></a>step3. ONNX转换为TensorRT Engine</h2><p>直接运行如下代码，就可以将ONNX转换为TensorRT Engine：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> polygraphy.backend.trt <span class="keyword">import</span> (</span><br><span class="line">    CreateConfig,</span><br><span class="line">    Profile,</span><br><span class="line">    TrtRunner,</span><br><span class="line">    engine_from_network,</span><br><span class="line">    network_from_onnx_path,</span><br><span class="line">    save_engine,</span><br><span class="line">    engine_from_bytes</span><br><span class="line">)</span><br><span class="line"><span class="keyword">from</span> polygraphy.backend.common <span class="keyword">import</span> bytes_from_path</span><br><span class="line"></span><br><span class="line">onnx_path=<span class="string">&#x27;./onnx.onnx&#x27;</span><span class="comment"># ONNX路径</span></span><br><span class="line">save_engine_path=<span class="string">&#x27;trt_engine.engine&#x27;</span><span class="comment"># 生成的engine保存路径</span></span><br><span class="line">USE_FP16 = <span class="literal">True</span><span class="comment"># 是否开启fp16</span></span><br><span class="line">profiles = [Profile().add(<span class="string">&quot;input&quot;</span>, <span class="built_in">min</span>=(<span class="number">1</span>, <span class="number">3</span>,<span class="number">512</span>, <span class="number">512</span>), opt=(<span class="number">8</span>, <span class="number">3</span>,<span class="number">512</span>, <span class="number">512</span>), <span class="built_in">max</span>=(<span class="number">32</span>, <span class="number">3</span>,<span class="number">512</span>, <span class="number">512</span>))]<span class="comment"># 动态batch size设置</span></span><br><span class="line"></span><br><span class="line">engine=engine_from_network(network_from_onnx_path(onnx_path),config=CreateConfig(profiles=profiles,fp16=USE_FP16))</span><br><span class="line">save_engine(engine, save_engine_path)</span><br></pre></td></tr></table></figure>
+
+<p>运行前，需要配置其中的参数，包括：</p>
+<ul>
+<li>onnx_path：step2中转换得到的ONNX文件路径；</li>
+<li>save_engine_path：生成的engine保存路径；</li>
+<li>USE_FP16：是否开启fp16；</li>
+<li>profiles：设置动态batsh size的大小，包括最小/最优/最大的batch size数值。通常需要结合权重大小、推理数据大小以及显存大小进行多次测试，以充分利用显存。</li>
+</ul>
+<h2 id="step4-将TensorRT-Engine嵌入到推理流程"><a href="#step4-将TensorRT-Engine嵌入到推理流程" class="headerlink" title="step4. 将TensorRT Engine嵌入到推理流程"></a>step4. 将TensorRT Engine嵌入到推理流程</h2><p>这一步需要修改原始PyTorch推理脚本中的两个地方，包括：</p>
+<ul>
+<li>模型加载</li>
+<li>前向传播</li>
+</ul>
+<h3 id="step4-1-修改模型加载方式"><a href="#step4-1-修改模型加载方式" class="headerlink" title="step4.1 修改模型加载方式"></a>step4.1 修改模型加载方式</h3><p>修改前：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">model_path=<span class="string">&#x27;./WEIGHT.pth&#x27;</span><span class="comment"># PyTorch格式权重所在路径</span></span><br><span class="line">model=load_my_model()<span class="comment"># load_my_model是用来定义网络结构的函数</span></span><br><span class="line">model.load_state_dict(torch.load(model_path,map_location=torch.device(<span class="string">&#x27;cpu&#x27;</span>)))</span><br><span class="line">model.to(DEVICE)</span><br><span class="line">model.<span class="built_in">eval</span>()</span><br></pre></td></tr></table></figure>
+
+<p><strong>修改后：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> polygraphy.backend.common <span class="keyword">import</span> BytesFromPath</span><br><span class="line"><span class="keyword">from</span> polygraphy.backend.trt <span class="keyword">import</span> EngineFromBytes, TrtRunner</span><br><span class="line"></span><br><span class="line">engine_path=<span class="string">&#x27;./trt_engine.engine&#x27;</span><span class="comment"># TensorRT Engine所在路径</span></span><br><span class="line">model = EngineFromBytes(BytesFromPath(engine_path))</span><br></pre></td></tr></table></figure>
+
+<h3 id="step4-2-修改前向传播方式"><a href="#step4-2-修改前向传播方式" class="headerlink" title="step4.2 修改前向传播方式"></a>step4.2 修改前向传播方式</h3><p>修改前：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> img_batch <span class="keyword">in</span> pytorch_data_loader:</span><br><span class="line">  img_batch=img_batch.cuda().<span class="built_in">float</span>()<span class="comment"># 将PyTorch Tensor从CPU传输到GPU</span></span><br><span class="line">  output=model(img_batch)<span class="comment"># 执行前向传播</span></span><br><span class="line">  output = ((output &gt; thres)*<span class="number">255</span>).detach().cpu().numpy().astype(np.uint8).transpose((<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>))<span class="comment"># 后处理</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>修改后:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> TrtRunner(model) <span class="keyword">as</span> runner:<span class="comment"># 使用上下文管理的方式执行trt engine的推理</span></span><br><span class="line">  <span class="keyword">for</span> img_batch <span class="keyword">in</span> pytorch_data_loader:</span><br><span class="line">    img_batch = img_batch.numpy().astype(np.float32)<span class="comment"># 将PyTorch Tensor转到numpy格式，以满足TensorRT Engine的输入格式</span></span><br><span class="line">    output=runner.infer(feed_dict=&#123;<span class="string">&quot;input&quot;</span>: img_batch&#125;)[<span class="string">&#x27;output&#x27;</span>]<span class="comment"># 执行前向传播</span></span><br><span class="line">    binary_mask = ((output &gt; thres)*<span class="number">255</span>).astype(np.uint8).transpose((<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>))<span class="comment"># 后处理</span></span><br></pre></td></tr></table></figure>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/DL/">DL</a></div><div class="post_share"><div class="social-share" data-image="https://s21.ax1x.com/2024/04/22/pk9nSiQ.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/09/03/%E5%A6%82%E4%BD%95%E7%9B%91%E6%8E%A7%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E6%97%B6%E7%9A%84%E7%B3%BB%E7%BB%9F%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF/"><img class="next-cover" src="https://s21.ax1x.com/2024/05/04/pkAljWq.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">如何监控模型推理时的系统状态信息</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/04/05/1%E5%B0%8F%E6%97%B6%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8PyTorch/" title="1小时快速入门PyTorch"><img class="cover" src="https://z3.ax1x.com/2021/04/10/cajxDs.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-05</div><div class="title">1小时快速入门PyTorch</div></div></a></div><div><a href="/2021/07/28/6D%E5%A7%BF%E6%80%81%E4%BC%B0%E8%AE%A1%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="FFB6D"><img class="cover" src="https://www.cdnjson.com/images/2021/08/02/288c7ab422d3d3d15.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-28</div><div class="title">FFB6D</div></div></a></div><div><a href="/2021/04/09/FaceFromX/" title="FaceFromX"><img class="cover" src="https://z3.ax1x.com/2021/04/09/cUQzfU.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-09</div><div class="title">FaceFromX</div></div></a></div><div><a href="/2021/07/30/G2L-Net/" title="G2L-Net"><img class="cover" src="https://www.cdnjson.com/images/2021/08/02/14eac1ef7f05c4615.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-30</div><div class="title">G2L-Net</div></div></a></div><div><a href="/2020/10/12/Keras%E4%B8%AD%E5%85%B3%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84trainable%E7%8A%B6%E6%80%81%E7%9A%84%E9%97%AE%E9%A2%98/" title="Keras中关于模型的trainable状态的问题"><img class="cover" src="https://s1.ax1x.com/2020/07/19/URRLqI.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-10-12</div><div class="title">Keras中关于模型的trainable状态的问题</div></div></a></div><div><a href="/2020/08/16/LSTM/" title="LSTM"><img class="cover" src="https://s1.ax1x.com/2020/08/16/dVcI61.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-16</div><div class="title">LSTM</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://www.cdnjson.com/images/2021/11/27/_20210211193948.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">雨落诗山山亦奇</div><div class="author-info__description">本站为读研版&工作版博客，大学版移步 --> fuhanshi.github.io</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">161</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">本站内容的最终版本将发布在微信公众号[南极Python]</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#torch2onnx2trt%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97-%E8%AF%A6%E7%BB%86%E7%89%88%E6%9C%AC"><span class="toc-number">1.</span> <span class="toc-text">torch2onnx2trt使用指南-详细版本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%AC%E6%96%87%E7%9B%AE%E6%A0%87"><span class="toc-number">2.</span> <span class="toc-text">本文目标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4"><span class="toc-number">3.</span> <span class="toc-text">操作步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#step1-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">3.1.</span> <span class="toc-text">step1. 环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#s1-1-TensorRT%E8%BD%AF%E4%BB%B6%E5%8C%85%E4%B8%8B%E8%BD%BD"><span class="toc-number">3.1.1.</span> <span class="toc-text">s1.1. TensorRT软件包下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#s1-2-%E5%AE%89%E8%A3%85TensorRT"><span class="toc-number">3.1.2.</span> <span class="toc-text">s1.2 安装TensorRT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#s1-3-%E5%AE%89%E8%A3%85TensorRT%E4%BE%9D%E8%B5%96%E7%9A%84%E5%B7%A5%E5%85%B7%E5%BA%93"><span class="toc-number">3.1.3.</span> <span class="toc-text">s1.3 安装TensorRT依赖的工具库</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step2-PyTorch%E6%9D%83%E9%87%8D%E8%BD%AC%E6%8D%A2%E4%B8%BAONNX"><span class="toc-number">3.2.</span> <span class="toc-text">step2. PyTorch权重转换为ONNX</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#s2-1-%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.2.1.</span> <span class="toc-text">s2.1 定义模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#s2-2-%E5%AE%9A%E4%B9%89%E8%BE%93%E5%85%A5%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-number">3.2.2.</span> <span class="toc-text">s2.2 定义输入数据结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#s2-3-%E6%89%A7%E8%A1%8C%E8%BD%AC%E6%8D%A2"><span class="toc-number">3.2.3.</span> <span class="toc-text">s2.3 执行转换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step3-ONNX%E8%BD%AC%E6%8D%A2%E4%B8%BATensorRT-Engine"><span class="toc-number">3.3.</span> <span class="toc-text">step3. ONNX转换为TensorRT Engine</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step4-%E5%B0%86TensorRT-Engine%E5%B5%8C%E5%85%A5%E5%88%B0%E6%8E%A8%E7%90%86%E6%B5%81%E7%A8%8B"><span class="toc-number">3.4.</span> <span class="toc-text">step4. 将TensorRT Engine嵌入到推理流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#step4-1-%E4%BF%AE%E6%94%B9%E6%A8%A1%E5%9E%8B%E5%8A%A0%E8%BD%BD%E6%96%B9%E5%BC%8F"><span class="toc-number">3.4.1.</span> <span class="toc-text">step4.1 修改模型加载方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#step4-2-%E4%BF%AE%E6%94%B9%E5%89%8D%E5%90%91%E4%BC%A0%E6%92%AD%E6%96%B9%E5%BC%8F"><span class="toc-number">3.4.2.</span> <span class="toc-text">step4.2 修改前向传播方式</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/10/25/PyTorch%E8%BD%ACTensorRT-engine%E4%BF%9D%E5%A7%86%E7%BA%A7%E6%95%99%E7%A8%8B/" title="PyTorch转TensorRT-engine保姆级教程"><img src="https://s21.ax1x.com/2024/04/22/pk9nSiQ.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PyTorch转TensorRT-engine保姆级教程"/></a><div class="content"><a class="title" href="/2024/10/25/PyTorch%E8%BD%ACTensorRT-engine%E4%BF%9D%E5%A7%86%E7%BA%A7%E6%95%99%E7%A8%8B/" title="PyTorch转TensorRT-engine保姆级教程">PyTorch转TensorRT-engine保姆级教程</a><time datetime="2024-10-25T11:49:44.000Z" title="发表于 2024-10-25 19:49:44">2024-10-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/09/03/%E5%A6%82%E4%BD%95%E7%9B%91%E6%8E%A7%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E6%97%B6%E7%9A%84%E7%B3%BB%E7%BB%9F%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF/" title="如何监控模型推理时的系统状态信息"><img src="https://s21.ax1x.com/2024/05/04/pkAljWq.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="如何监控模型推理时的系统状态信息"/></a><div class="content"><a class="title" href="/2024/09/03/%E5%A6%82%E4%BD%95%E7%9B%91%E6%8E%A7%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E6%97%B6%E7%9A%84%E7%B3%BB%E7%BB%9F%E7%8A%B6%E6%80%81%E4%BF%A1%E6%81%AF/" title="如何监控模型推理时的系统状态信息">如何监控模型推理时的系统状态信息</a><time datetime="2024-09-03T13:00:05.000Z" title="发表于 2024-09-03 21:00:05">2024-09-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/01/Transformer%E7%9A%84Decoder%E5%9C%A8%E8%AE%AD%E7%BB%83%E5%92%8C%E6%8E%A8%E7%90%86%E9%98%B6%E6%AE%B5%E7%9A%84%E5%BC%82%E5%90%8C%E7%82%B9%E6%80%BB%E7%BB%93/" title="Transformer的Decoder在训练和推理阶段的异同点总结"><img src="https://s21.ax1x.com/2024/06/01/pk8xi1x.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Transformer的Decoder在训练和推理阶段的异同点总结"/></a><div class="content"><a class="title" href="/2024/06/01/Transformer%E7%9A%84Decoder%E5%9C%A8%E8%AE%AD%E7%BB%83%E5%92%8C%E6%8E%A8%E7%90%86%E9%98%B6%E6%AE%B5%E7%9A%84%E5%BC%82%E5%90%8C%E7%82%B9%E6%80%BB%E7%BB%93/" title="Transformer的Decoder在训练和推理阶段的异同点总结">Transformer的Decoder在训练和推理阶段的异同点总结</a><time datetime="2024-06-01T07:15:20.000Z" title="发表于 2024-06-01 15:15:20">2024-06-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/04/Python-Flask%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" title="Python-Flask快速上手"><img src="https://s21.ax1x.com/2024/05/04/pkAljWq.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python-Flask快速上手"/></a><div class="content"><a class="title" href="/2024/05/04/Python-Flask%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" title="Python-Flask快速上手">Python-Flask快速上手</a><time datetime="2024-05-04T09:27:57.000Z" title="发表于 2024-05-04 17:27:57">2024-05-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/07/%E5%9B%BE%E5%83%8F%E9%85%8D%E5%87%86/" title="图像配准小结"><img src="https://s21.ax1x.com/2024/04/22/pk9mOqf.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="图像配准小结"/></a><div class="content"><a class="title" href="/2024/01/07/%E5%9B%BE%E5%83%8F%E9%85%8D%E5%87%86/" title="图像配准小结">图像配准小结</a><time datetime="2024-01-07T11:18:38.000Z" title="发表于 2024-01-07 19:18:38">2024-01-07</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://s21.ax1x.com/2024/04/22/pk9nSiQ.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By 雨落诗山山亦奇</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/fireworks.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
